@@ -9,6 +9,7 @@ const {
     getSingleProduct,
     updateProduct,
     deleteProduct,
+    getAutocomplete,
 } = require("../controllers/productController");
 
 const {
@@ -21,6 +22,7 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 router.route("/products").get(getProducts);
 router.route("/product/:id").get(getSingleProduct);
 router.route("/products/upload").post(uploadImages).delete(deleteImages);
+router.route("/product/autocomplete/seller").get(getAutocomplete);
 
 router.route("/admin/product/new").post(isAuthenticatedUser, newProduct);
 router

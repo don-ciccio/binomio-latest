@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { ReactSortable } from "react-sortablejs";
+
 import axios from "axios";
 import Spinner from "./Spinner";
 axios.defaults.withCredentials = true;
@@ -13,6 +14,16 @@ axios.defaults.withCredentials = true;
 const API_URL = import.meta.env.VITE_API_URL;
 
 const options = ["Attivo", "Bozza"];
+
+const getSuggestion = async (seller) => {
+    try {
+        let url = `${API_URL}/api/product/autocomplete/seller?seller=${seller}`;
+        let { data } = await axios.get(url);
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 const AddProductForm = ({
     _id,
@@ -22,12 +33,14 @@ const AddProductForm = ({
     images: existingImages,
     category: existingCategory,
     properties: assignedProperties,
+    seller: assignedSeller,
     status: previousStatus,
 }) => {
     const [isUploading, setIsUploading] = useState(false);
     const [name, setName] = useState(existingTitle || "");
     const [category, setCategory] = useState(existingCategory || "");
     const [status, setStatus] = useState(previousStatus || "");
+    const [seller, setSeller] = useState(assignedSeller || "");
     const [productProperties, setProductProperties] = useState(
         assignedProperties || {}
     );
@@ -38,7 +51,7 @@ const AddProductForm = ({
 
     const [isButtonShown, setIsButtonShown] = useState(null);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
+    const [suggestions, setSuggestions] = useState([]);
     const clickHandler = (index) => {
         setIsButtonShown((prev) => {
             return prev === index ? null : index;
@@ -86,6 +99,7 @@ const AddProductForm = ({
             price,
             images,
             category,
+            seller,
             status,
             properties: productProperties,
         };
@@ -165,6 +179,12 @@ const AddProductForm = ({
             catInfo = parentCat;
         }
     }
+
+    const onChangeSuggestion = async (e) => {
+        setSeller(e.target.value);
+        let data = await getSuggestion(e.target.value);
+        setSuggestions(data);
+    };
 
     return (
         <form onSubmit={saveProduct}>
@@ -374,6 +394,44 @@ const AddProductForm = ({
                     <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                         <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
                             <h3 className='font-medium text-black dark:text-white'>
+                                Produttore
+                            </h3>
+                        </div>
+                        <div className='flex flex-col gap-5.5 p-6.5'>
+                            <div className='relative z-20 bg-transparent dark:bg-form-input'>
+                                <input
+                                    autoComplete='off'
+                                    list='seller'
+                                    value={seller}
+                                    onChange={(e) => onChangeSuggestion(e)}
+                                    type='text'
+                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                />
+                                <ul
+                                    className={`${
+                                        suggestions.length === 0 ? "hidden" : ""
+                                    } absolute z-999  rounded-lg border-[1.5px] border-stroke bg-white py-3 px-5 shadow-default dark:border-strokedark dark:bg-boxdark block translate-y-0.5 w-full`}
+                                    id='seller'
+                                >
+                                    {suggestions.map(({ seller, _id }) => (
+                                        <li
+                                            className='cursor-pointer flex w-full items-center gap-2 rounded-sm py-1.5 pr-4 pl-2 text-left text-sm hover:bg-gray dark:hover:bg-meta-4'
+                                            onClick={() => {
+                                                setSeller(seller);
+                                                setSuggestions([]);
+                                            }}
+                                            key={_id}
+                                        >
+                                            {seller}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
+                        <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
+                            <h3 className='font-medium text-black dark:text-white'>
                                 Categoria
                             </h3>
                         </div>
@@ -511,5 +569,6 @@ AddProductForm.propTypes = {
     images: PropTypes.array,
     category: PropTypes.string,
     status: PropTypes.string,
+    seller: PropTypes.string,
     properties: PropTypes.object,
 };

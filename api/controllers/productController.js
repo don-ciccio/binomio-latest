@@ -7,8 +7,16 @@ const APIFeatures = require("../utils/apiFeatures");
 
 // Create new product => /api/v1/admin/product/new
 exports.newProduct = catchAsyncErrors(async (req, res, next) => {
-    const { name, description, price, images, category, properties, status } =
-        req.body;
+    const {
+        name,
+        description,
+        price,
+        images,
+        category,
+        properties,
+        seller,
+        status,
+    } = req.body;
 
     if (!name || !description || !price || !images || !category || !status) {
         return next(new ErrorHandler("Field required", 400));
@@ -20,6 +28,7 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
         price,
         images,
         category,
+        seller,
         status,
         properties,
     });
@@ -45,6 +54,40 @@ exports.productStatus = catchAsyncErrors(async (req, res) => {
     } catch (error) {
         res.status(401).json(error);
     }
+});
+
+exports.getAutocomplete = catchAsyncErrors(async (req, res, next) => {
+    let results;
+    if (req.query.seller) {
+        results = await Product.aggregate([
+            {
+                $search: {
+                    index: "default",
+                    autocomplete: {
+                        query: req.query.seller,
+                        path: "seller",
+                        fuzzy: {
+                            maxEdits: 1,
+                        },
+                        tokenOrder: "sequential",
+                    },
+                },
+            },
+            {
+                $project: {
+                    seller: 1,
+                    _id: 1,
+                },
+            },
+            {
+                $limit: 10,
+            },
+        ]);
+        console.log(results);
+
+        if (results) return res.send(results);
+    }
+    res.send([]);
 });
 
 // Get all products => /api/v1/products
@@ -134,12 +177,22 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
         images,
         category,
         properties,
+        seller,
         status,
     } = req.body;
 
     const product = await Product.updateOne(
         { _id },
-        { name, description, price, images, category, properties, status }
+        {
+            name,
+            description,
+            price,
+            images,
+            category,
+            properties,
+            seller,
+            status,
+        }
     );
     console.log(product);
     res.status(200).json({
