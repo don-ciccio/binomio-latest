@@ -1,15 +1,15 @@
-import Breadcrumb from "@/components/BreadCrumb";
+import Breadcrumb from "@/components/common/BreadCrumb";
 
 import { useGetProducts } from "@/store/react-query/hooks/useQueries";
 
-import ProductsTable from "@/components/ProductsTable";
-import AddProductButton from "../../components/AddProductButton";
+import ProductsTable from "@/components/table/ProductsTable";
+import AddButton from "@/components/common/AddButton";
 
 import { useState } from "react";
 
-import ProductsTableTop from "@/components/ProductsTableTop";
-import CategoryTableTop from "@/components/CategoryTableTop";
-import Pagination from "@/components/Pagination";
+import ProductsTableTop from "@/components/table/ProductsTableTop";
+import CategoryTableTop from "@/components/table/CategoryTableTop";
+import Pagination from "@/components/table/Pagination";
 
 const Products = () => {
     const [sort, setSort] = useState({ sort: "price", order: "asc" });
@@ -41,11 +41,10 @@ const Products = () => {
         });
     };
 
-    console.log(products);
     return (
         <>
             <Breadcrumb pageName='Prodotti' />
-            <AddProductButton />
+            <AddButton link={"/products/add"} label={"Aggiungi Prodotto"} />
             <div className='flex flex-col gap-5 md:gap-7 2xl:gap-10'>
                 <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                     <div className='data-table-common data-table-one max-w-full overflow-x-auto'>

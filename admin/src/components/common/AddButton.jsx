@@ -1,9 +1,10 @@
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-const AddProductButton = () => {
+const AddProductButton = ({ link, label }) => {
     return (
         <div className='mb-6 flex  gap-3 flex-row items-center justify-between'>
             <Link
-                to={"/products/add"}
+                to={link}
                 className='flex items-center gap-2 rounded bg-primary py-2 px-4.5 font-medium text-white hover:bg-opacity-80'
             >
                 <svg
@@ -19,10 +20,15 @@ const AddProductButton = () => {
                         fill=''
                     ></path>
                 </svg>
-                Aggiungi Prodotto
+                {label}
             </Link>
         </div>
     );
 };
 
 export default AddProductButton;
+
+AddProductButton.propTypes = {
+    link: PropTypes.string,
+    label: PropTypes.string,
+};

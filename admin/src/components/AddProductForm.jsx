@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ReactSortable } from "react-sortablejs";
 
 import axios from "axios";
-import Spinner from "./Spinner";
+import Spinner from "./common/Spinner";
 axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -188,8 +188,8 @@ const AddProductForm = ({
 
     return (
         <form onSubmit={saveProduct}>
-            <div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
-                <div className='flex flex-col gap-5'>
+            <div className='grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-3'>
+                <div className='sm:col-span-2 flex flex-col gap-5'>
                     {/* <!-- Input Fields --> */}
                     <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                         <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
@@ -207,7 +207,7 @@ const AddProductForm = ({
                                     placeholder='Titolo'
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                 />
                             </div>
                             <div className='mb-5'>
@@ -218,12 +218,12 @@ const AddProductForm = ({
                                     <div className='flex flex-col'>
                                         <div
                                             id='FileUpload'
-                                            className='relative block mb-4 appearance-none rounded-sm border border-dashed border-stroke bg-white py-4 px-4 dark:border-strokedark dark:bg-boxdark sm:py-14'
+                                            className='relative mb-5.5 block w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5'
                                         >
                                             <input
                                                 type='file'
                                                 onChange={uploadImages}
-                                                className='cursor-pointer absolute inset-0 z-50 m-0  p-0 opacity-0 outline-none'
+                                                className='cursor-pointer absolute inset-0 z-50 m-0 h-full w-full p-0 opacity-0 outline-none'
                                             />
                                             <div className='flex flex-col items-center justify-center space-y-3'>
                                                 <span className='flex h-11.5 w-11.5 items-center justify-center rounded-full border border-stroke bg-primary/5 dark:border-strokedark'>
@@ -330,20 +330,25 @@ const AddProductForm = ({
                                     onChange={(e) =>
                                         setDescription(e.target.value)
                                     }
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                 ></textarea>
                             </div>
                             <div>
                                 <label className='mb-3 block text-black dark:text-white'>
-                                    Prezzo (in EUR)
+                                    Prezzo
                                 </label>
-                                <input
-                                    type='number'
-                                    placeholder='Prezzo'
-                                    value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                />
+                                <div className='input-icon input-icon-right'>
+                                    <input
+                                        type='number'
+                                        placeholder='Prezzo'
+                                        value={price}
+                                        onChange={(e) =>
+                                            setPrice(e.target.value)
+                                        }
+                                        className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    />
+                                    <i>€</i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -360,7 +365,7 @@ const AddProductForm = ({
                                 <select
                                     value={status}
                                     onChange={handleChange}
-                                    className='relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    className='relative z-20 w-full appearance-none rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                 >
                                     <option value={options[0]}>
                                         {options[0]}
@@ -405,7 +410,7 @@ const AddProductForm = ({
                                     value={seller}
                                     onChange={(e) => onChangeSuggestion(e)}
                                     type='text'
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                 />
                                 <ul
                                     className={`${
@@ -442,7 +447,7 @@ const AddProductForm = ({
                                     onChange={(e) =>
                                         setCategory(e.target.value)
                                     }
-                                    className='relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    className='relative z-20 w-full appearance-none rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                 >
                                     <option value=''>Nessuna</option>
                                     {categories?.map((category, i) => (
@@ -483,7 +488,7 @@ const AddProductForm = ({
                                         </label>
                                         {p.values.includes("") ? (
                                             <input
-                                                className='w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                                className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                                 value={
                                                     productProperties[p.name]
                                                 }
@@ -498,7 +503,7 @@ const AddProductForm = ({
                                         ) : (
                                             <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                                 <select
-                                                    className='relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                                    className='relative z-20 w-full appearance-none rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                                     value={
                                                         productProperties[
                                                             p.name
@@ -546,14 +551,21 @@ const AddProductForm = ({
                         </div>
                     </div>
                 </div>
-                <div className='flex'>
-                    <button
-                        className='inline-flex items-center justify-center rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10'
-                        type='submit'
-                    >
-                        Salva
-                    </button>
-                </div>
+            </div>
+            <div className='flex justify-start gap-4.5 mt-6'>
+                <button
+                    type='submit'
+                    className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
+                >
+                    Annulla
+                </button>
+
+                <button
+                    className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
+                    type='submit'
+                >
+                    Salva
+                </button>
             </div>
         </form>
     );

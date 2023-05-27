@@ -6,7 +6,7 @@ import { LoadUser, clearErrors } from "@/store/redux/actions/authActions";
 import { enqueueSnackbar } from "notistack";
 
 import { useEffect } from "react";
-import Loader from "./components/Loader";
+import Loader from "./components/common/Loader";
 
 function App() {
     const dispatch = useDispatch();

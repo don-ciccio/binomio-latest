@@ -41,7 +41,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     return (
         <aside
             ref={sidebar}
-            className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-[#1C2434] duration-300 ease-linear dark:bg-[#1A222C] lg:static lg:translate-x-0 ${
+            className={`absolute left-0 top-0 z-9999 flex h-screen w-64 flex-col overflow-y-hidden bg-[#1C2434] duration-300 ease-linear dark:bg-[#1A222C] lg:static lg:translate-x-0 ${
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
         >
@@ -118,6 +118,31 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                 </NavLink>
                             </li>
                             {/* <!-- Menu Item Products --> */}
+                            <li>
+                                <NavLink
+                                    to='/categories'
+                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                                        pathname.includes("categories") &&
+                                        "bg-graydark dark:bg-meta-4"
+                                    }`}
+                                >
+                                    <svg
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        className='h-5 w-5'
+                                        fill='none'
+                                        viewBox='0 0 24 24'
+                                        stroke='currentColor'
+                                        strokeWidth={2}
+                                    >
+                                        <path
+                                            strokeLinecap='round'
+                                            strokeLinejoin='round'
+                                            d='M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10'
+                                        />
+                                    </svg>
+                                    Categorie
+                                </NavLink>
+                            </li>
                         </ul>
                     </div>
                 </nav>

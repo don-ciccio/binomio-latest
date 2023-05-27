@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import Products from "@/pages/Products/Products";
 import Add from "@/pages/Products/Add";
 import Edit from "@/pages/Products/Edit";
+import Categories from "@/pages/Categories/Categories";
 
 const routes = (isAuthenticated) => [
     {
@@ -21,6 +22,10 @@ const routes = (isAuthenticated) => [
             },
             { path: "products/add", element: <Add /> },
             { path: "products/:id", element: <Edit /> },
+            {
+                path: "categories",
+                element: <Categories />,
+            },
         ],
     },
     {

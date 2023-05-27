@@ -203,3 +203,33 @@
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon>i {
+  position: absolute;
+  display: block;
+  transform: translate(0, -52%);
+  top: 50%;
+  pointer-events: none;
+  width: 40px;
+  text-align: center;
+  font-style: normal;
+}
+
+.input-icon>input {
+  padding-left: 25px;
+  padding-right: 0;
+}
+
+.input-icon-right>i {
+  right: 0;
+}
+
+.input-icon-right>input {
+  padding-left: 0;
+  padding-right: 25px;
+  text-align: right;
+}

@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import { changeProductStatus } from "@/store/react-query/queries";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
+import Modal from "../common/Modal";
+import View from "@/pages/Products/View";
 
 const options = ["Attivo", "Bozza"];
 
@@ -10,6 +12,21 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
     const queryClient = useQueryClient();
 
     const [dropdown, setDropdown] = useState(null);
+    const [modal, setModal] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState({});
+
+    const toggle = useCallback(
+        (id) => () => {
+            setModal(!modal);
+            const view = data?.products.find(({ _id }) => {
+                return _id === id;
+            });
+
+            setSelectedProduct(view);
+        },
+        [data?.products, modal]
+    );
+
     const mutation = useMutation({
         mutationFn: ({ id, status }) => {
             return changeProductStatus(id, status);
@@ -270,7 +287,12 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
                                                         </defs>
                                                     </svg>
                                                 </Link>
-                                                <button className='hover:text-primary'>
+                                                <button
+                                                    className='hover:text-primary'
+                                                    onClick={toggle(
+                                                        product._id
+                                                    )}
+                                                >
                                                     <svg
                                                         className='fill-current'
                                                         width='18'
@@ -289,6 +311,17 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
                                                         />
                                                     </svg>
                                                 </button>
+
+                                                <Modal
+                                                    show={modal}
+                                                    close={() =>
+                                                        setModal(!modal)
+                                                    }
+                                                >
+                                                    <View
+                                                        data={selectedProduct}
+                                                    />
+                                                </Modal>
                                                 <button className='hover:text-primary'>
                                                     <svg
                                                         className='fill-current'

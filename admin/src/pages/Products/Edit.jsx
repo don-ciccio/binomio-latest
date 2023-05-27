@@ -1,6 +1,6 @@
-import Breadcrumb from "@/components/BreadCrumb";
+import Breadcrumb from "@/components/common/BreadCrumb";
 import AddProductForm from "@/components/AddProductForm";
-import Loader from "@/components/Loader";
+import Loader from "@/components/common/Loader";
 
 import { useGetProductById } from "../../store/react-query/hooks/useQueries";
 import { useParams } from "react-router-dom";
