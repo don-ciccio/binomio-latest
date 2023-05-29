@@ -29,10 +29,32 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
             );
         } else {
             const search = req.query.search || "";
-            const query = {
-                name: { $regex: search, $options: "i" },
-            };
-            res.status(200).json(await Category.find(query).populate("parent"));
+            let data = await Category.aggregate([
+                {
+                    $match: { name: { $regex: search, $options: "i" } },
+                },
+                {
+                    $lookup: {
+                        from: "products",
+                        localField: "_id",
+                        foreignField: "category",
+                        as: "products",
+                    },
+                },
+                {
+                    $project: {
+                        name: 1,
+                        _id: 1,
+                        parent: 1,
+                        properties: 1,
+                        number_of_product: { $size: "$products" },
+                    },
+                },
+            ]).exec();
+
+            res.status(200).json(
+                await Category.populate(data, { path: "parent" })
+            );
         }
     } catch (error) {
         return next(new ErrorHandler(error.message, 404));

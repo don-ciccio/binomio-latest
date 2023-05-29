@@ -46,6 +46,9 @@ const CategoryTable = ({ isLoading, categories }) => {
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
                                     Collezione
                                 </th>
+                                <th className='py-4 px-4 font-medium text-black dark:text-white'>
+                                    Prodotti
+                                </th>
                                 <th className=' py-4 px-4 font-medium text-black dark:text-white'>
                                     Azione
                                 </th>
@@ -63,6 +66,11 @@ const CategoryTable = ({ isLoading, categories }) => {
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
                                             <p className='text-black dark:text-whiten'>
                                                 {category?.parent?.name}
+                                            </p>
+                                        </td>
+                                        <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                                            <p className='text-black dark:text-whiten'>
+                                                {category?.number_of_product}
                                             </p>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
