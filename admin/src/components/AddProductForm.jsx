@@ -72,7 +72,7 @@ const AddProductForm = ({
             return axios.put(`${API_URL}/api/admin/product`, { ...data, _id });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["product"] });
+            queryClient.invalidateQueries({ queryKey: ["products"] });
             history(redirect);
         },
     });
@@ -82,7 +82,7 @@ const AddProductForm = ({
             return axios.post(`${API_URL}/api/admin/product/new`, data);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["product"] });
+            queryClient.invalidateQueries({ queryKey: ["products"] });
             history(redirect);
         },
     });
@@ -127,7 +127,7 @@ const AddProductForm = ({
             currentImg.filter((img, i) => i !== isButtonShown)
         );
 
-        queryClient.invalidateQueries({ queryKey: ["product"] });
+        queryClient.invalidateQueries({ queryKey: ["products"] });
     };
 
     const uploadImages = async (e) => {
@@ -554,7 +554,8 @@ const AddProductForm = ({
             </div>
             <div className='flex justify-start gap-4.5 mt-6'>
                 <button
-                    type='submit'
+                    type='button'
+                    onClick={() => history(-1)}
                     className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
                 >
                     Annulla

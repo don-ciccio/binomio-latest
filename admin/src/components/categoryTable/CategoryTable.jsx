@@ -1,9 +1,36 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { useCallback, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
+import axios from "axios";
 import TableLoader from "../common/TableLoader";
+import DangerModal from "../common/DangerModal";
+axios.defaults.withCredentials = true;
 
+const API_URL = import.meta.env.VITE_API_URL;
 const CategoryTable = ({ isLoading, categories }) => {
+    const [modal, setModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState({});
+    const queryClient = useQueryClient();
+
+    const toggle = useCallback(
+        (id) => () => {
+            setModal(!modal);
+            const view = categories?.find(({ _id }) => {
+                return _id === id;
+            });
+
+            setSelectedCategory(view);
+        },
+        [categories, modal]
+    );
+
+    const deleteCategory = async (id) => {
+        await axios.delete(`${API_URL}/api/admin/category/delete?_id=${id}`);
+        queryClient.invalidateQueries(["categories"], { type: "all" });
+    };
+
     return (
         <div className='rounded-sm  bg-white px-5 pt-6 pb-2.5  dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1'>
             <div className='max-w-full overflow-x-auto'>
@@ -39,7 +66,7 @@ const CategoryTable = ({ isLoading, categories }) => {
                                             </p>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                                            <div className='flex items-center space-x-3.5'>
+                                            <div className='flex items-center gap-3'>
                                                 <Link
                                                     to={`${category._id}`}
                                                     className='hover:text-primary'
@@ -70,7 +97,12 @@ const CategoryTable = ({ isLoading, categories }) => {
                                                     </svg>
                                                 </Link>
 
-                                                <button className='hover:text-primary'>
+                                                <button
+                                                    onClick={toggle(
+                                                        category._id
+                                                    )}
+                                                    className='hover:text-primary'
+                                                >
                                                     <svg
                                                         className='fill-current'
                                                         width='18'
@@ -97,6 +129,22 @@ const CategoryTable = ({ isLoading, categories }) => {
                                                         />
                                                     </svg>
                                                 </button>
+                                                <DangerModal
+                                                    show={modal}
+                                                    close={() =>
+                                                        setModal(!modal)
+                                                    }
+                                                    onClick={() => {
+                                                        deleteCategory(
+                                                            selectedCategory._id
+                                                        );
+                                                        setModal(!modal);
+                                                    }}
+                                                    title={`Elimina ${selectedCategory.name}`}
+                                                    text={
+                                                        "Sei sicuro di voler eliminare questa categoria?"
+                                                    }
+                                                />
                                             </div>
                                         </td>
                                     </>

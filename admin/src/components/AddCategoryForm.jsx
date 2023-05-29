@@ -1,6 +1,16 @@
 import PropTypes from "prop-types";
+import { Icon } from "@iconify/react";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 import { useGetCategories } from "@/store/react-query/hooks/useQueries";
+
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AddCategoryForm = ({
     _id,
@@ -9,10 +19,37 @@ const AddCategoryForm = ({
     properties: existingProperties,
 }) => {
     const [name, setName] = useState(existingTitle || "");
-    const [parentCategory, setParentCategory] = useState(existingParent || "");
+    const [parent, setParent] = useState(existingParent || "");
     const [properties, setProperties] = useState(existingProperties || []);
 
     const { data: categories } = useGetCategories({ search: "" });
+
+    const history = useNavigate();
+    const queryClient = useQueryClient();
+
+    const redirect = window.location.search
+        ? window.location.search.split("=")[1]
+        : "/categories";
+
+    const mutationPut = useMutation({
+        mutationFn: ({ data, _id }) => {
+            return axios.put(`${API_URL}/api/admin/category`, { ...data, _id });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["categories"] });
+            history(redirect);
+        },
+    });
+
+    const mutationPost = useMutation({
+        mutationFn: ({ data }) => {
+            return axios.post(`${API_URL}/api/admin/category/new`, data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["categories"] });
+            history(redirect);
+        },
+    });
 
     const addProperty = () => {
         setProperties((prev) => {
@@ -20,7 +57,7 @@ const AddCategoryForm = ({
         });
     };
 
-    const handlePropertyNameChange = (index, newName) => {
+    const handlePropertyNameChange = (index, property, newName) => {
         setProperties((prev) => {
             const properties = [...prev];
             properties[index].name = newName;
@@ -28,7 +65,7 @@ const AddCategoryForm = ({
         });
     };
 
-    const handlePropertyValueChange = (index, newValues) => {
+    const handlePropertyValueChange = (index, property, newValues) => {
         setProperties((prev) => {
             const properties = [...prev];
             properties[index].values = newValues;
@@ -47,6 +84,20 @@ const AddCategoryForm = ({
 
     const saveCategory = async (e) => {
         e.preventDefault();
+        const data = {
+            name,
+            parent,
+            properties: properties.map((p) => ({
+                name: p.name,
+                values: p.values,
+            })),
+        };
+
+        if (_id) {
+            mutationPut.mutate({ data: data, _id: _id });
+        } else {
+            mutationPost.mutate({ data: data });
+        }
     };
     return (
         <form onSubmit={saveCategory}>
@@ -78,10 +129,8 @@ const AddCategoryForm = ({
                             </label>
                             <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                 <select
-                                    value={parentCategory}
-                                    onChange={(e) =>
-                                        setParentCategory(e.target.value)
-                                    }
+                                    value={parent}
+                                    onChange={(e) => setParent(e.target.value)}
                                     className='relative z-20 w-full appearance-none rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                 >
                                     <option value=''>Nessuna</option>
@@ -175,19 +224,40 @@ const AddCategoryForm = ({
                                                 placeholder='valori, multipli con la virgola'
                                             />
                                             <button
-                                                className='justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
+                                                className='justify-center rounded bg-danger py-2 px-3.5 font-medium text-gray hover:bg-opacity-95'
                                                 onClick={() =>
                                                     removeProperty(i)
                                                 }
                                                 type='button'
                                             >
-                                                Elimina
+                                                <Icon
+                                                    className='w-6 h-6'
+                                                    icon={
+                                                        "fluent:delete-24-regular"
+                                                    }
+                                                />
                                             </button>
                                         </div>
                                     ))}
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className='flex justify-start gap-4.5 mt-6'>
+                    <button
+                        type='button'
+                        onClick={() => history(-1)}
+                        className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
+                    >
+                        Annulla
+                    </button>
+
+                    <button
+                        className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
+                        type='submit'
+                    >
+                        Salva
+                    </button>
                 </div>
             </div>
         </form>

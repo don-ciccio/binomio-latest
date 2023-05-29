@@ -194,7 +194,7 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
             status,
         }
     );
-    console.log(product);
+
     res.status(200).json({
         success: true,
         product,

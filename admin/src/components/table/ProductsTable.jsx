@@ -244,7 +244,7 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
                                             </div>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                                            <div className='flex items-center space-x-3.5'>
+                                            <div className='flex items-center gap-2.5'>
                                                 <Link
                                                     to={`${product._id}`}
                                                     className='hover:text-primary'
