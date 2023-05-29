@@ -10,4 +10,4 @@ const Add = () => {
     );
 };
 
-export default Add;
+export { Add as AddProduct };

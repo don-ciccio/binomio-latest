@@ -3,8 +3,12 @@ import AdminLogin from "@/pages/Authentication/AdminLogin";
 
 import { Navigate } from "react-router-dom";
 import Products from "@/pages/Products/Products";
-import Add from "@/pages/Products/Add";
-import Edit from "@/pages/Products/Edit";
+
+import { AddProduct } from "@/pages/Products/Add";
+import { AddCategory } from "@/pages/Categories/Add";
+
+import { EditProduct } from "@/pages/Products/Edit";
+import { EditCategory } from "@/pages/Categories/Edit";
 import Categories from "@/pages/Categories/Categories";
 
 const routes = (isAuthenticated) => [
@@ -20,12 +24,14 @@ const routes = (isAuthenticated) => [
                 path: "products",
                 element: <Products />,
             },
-            { path: "products/add", element: <Add /> },
-            { path: "products/:id", element: <Edit /> },
+            { path: "products/add", element: <AddProduct /> },
+            { path: "products/:id", element: <EditProduct /> },
             {
                 path: "categories",
                 element: <Categories />,
             },
+            { path: "categories/add", element: <AddCategory /> },
+            { path: "categories/:id", element: <EditCategory /> },
         ],
     },
     {

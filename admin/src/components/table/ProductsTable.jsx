@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
 import View from "@/pages/Products/View";
+import TableLoader from "../common/TableLoader";
 
 const options = ["Attivo", "Bozza"];
 
@@ -32,18 +33,12 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
             return changeProductStatus(id, status);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({
-                predicate: (query) => {
-                    if (query.queryKey[0].includes("products")) {
-                        return true;
-                    }
-                },
-            });
+            queryClient.invalidateQueries(["products"], { type: "all" });
         },
     });
     const handleChange = (id, status, index) => {
         mutation.mutate({ id: id, status: status });
-        queryClient.invalidateQueries({ queryKey: ["product"] });
+
         clickHandler(index);
     };
 
@@ -75,15 +70,7 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
         <div className='rounded-sm  bg-white px-5 pt-6 pb-2.5  dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1'>
             <div className='max-w-full overflow-x-auto'>
                 {isLoading ? (
-                    <div className='animate-pulse'>
-                        <div className='h-4 bg-bodydark2 mt-3 mb-12 rounded'></div>
-                        <div className='h-4 bg-bodydark mb-8 rounded'></div>
-                        <div className='h-4 bg-bodydark2 mb-6 rounded'></div>
-                        <div className='h-4 bg-bodydark mb-8 rounded'></div>
-                        <div className='h-4 bg-bodydark2 mb-6 rounded'></div>
-                        <div className='h-4 bg-bodydark2 mt-3 mb-6 rounded'></div>
-                        <div className='h-4 bg-bodydark mb-8 rounded'></div>
-                    </div>
+                    <TableLoader />
                 ) : (
                     <table className='w-full table-auto'>
                         <thead>

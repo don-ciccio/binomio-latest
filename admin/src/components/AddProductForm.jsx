@@ -61,7 +61,7 @@ const AddProductForm = ({
     const history = useNavigate();
     const queryClient = useQueryClient();
 
-    const { data: categories, isSuccess } = useGetCategories();
+    const { data: categories, isSuccess } = useGetCategories({ search: "" });
 
     const redirect = window.location.search
         ? window.location.search.split("=")[1]

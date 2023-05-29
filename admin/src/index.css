@@ -43,7 +43,6 @@
 
 .datatable-top {
   display: flex;
-  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   border-bottom-width: 1px;
@@ -216,7 +215,7 @@
   pointer-events: none;
   width: 40px;
   text-align: center;
-  font-style: normal;
+  font-style: italic;
 }
 
 .input-icon>input {

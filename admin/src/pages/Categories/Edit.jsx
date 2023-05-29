@@ -1,14 +1,15 @@
 import Breadcrumb from "@/components/common/BreadCrumb";
-import AddProductForm from "@/components/AddProductForm";
+import AddCategoryForm from "@/components/AddCategoryForm";
 import Loader from "@/components/common/Loader";
 
-import { useGetProductById } from "@/store/react-query/hooks/useQueries";
+import { useGetCategoryById } from "@/store/react-query/hooks/useQueries";
 import { useParams } from "react-router-dom";
 
 const Edit = () => {
     const { id } = useParams();
 
-    const { data: product, isLoading } = useGetProductById(id);
+    const { data: category, isLoading } = useGetCategoryById(id);
+
     if (isLoading)
         return (
             <div className='flex items-center justify-center h-screen'>
@@ -20,9 +21,9 @@ const Edit = () => {
         <>
             <Breadcrumb pageName='Modifica Prodotto' />
 
-            <AddProductForm {...product.data.product} />
+            <AddCategoryForm {...category?.data} />
         </>
     );
 };
 
-export { Edit as EditProduct };
+export { Edit as EditCategory };

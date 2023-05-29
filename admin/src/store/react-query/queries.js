@@ -16,12 +16,15 @@ export const getProducts = async (
     }&category=${filterCategory.toString()}&status=${status}&search=${search}`;
 
     const { data } = await axios.get(url);
-    console.log(data);
     return data;
 };
 
 export const getProduct = async (id) => {
     return await axios.get(`${API_URL}/api/product/${id}`);
+};
+
+export const getCategory = async (id) => {
+    return await axios.get(`${API_URL}/api/category/${id}`);
 };
 
 export const changeProductStatus = async (id, status) => {
@@ -34,7 +37,9 @@ export const updateProduct = async (data, id) => {
     return await axios.put(`${API_URL}/api/admin/product`, { ...data, id });
 };
 
-export const getCategories = async () => {
-    const { data } = await axios.get(`${API_URL}/api/categories`);
+export const getCategories = async (search = "") => {
+    const { data } = await axios.get(
+        `${API_URL}/api/categories?search=${search}`
+    );
     return data;
 };

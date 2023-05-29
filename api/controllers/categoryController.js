@@ -5,10 +5,16 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 
 exports.getCategories = catchAsyncErrors(async (req, res, next) => {
     try {
-        if (req.query?.id) {
-            res.status(200).json(await Category.findOne({ _id: req.query.id }));
+        if (req.params.id) {
+            res.status(200).json(
+                await Category.findOne({ _id: req.params.id })
+            );
         } else {
-            res.status(200).json(await Category.find().populate("parent"));
+            const search = req.query.search || "";
+            const query = {
+                name: { $regex: search, $options: "i" },
+            };
+            res.status(200).json(await Category.find(query).populate("parent"));
         }
     } catch (error) {
         return next(new ErrorHandler(error.message, 404));

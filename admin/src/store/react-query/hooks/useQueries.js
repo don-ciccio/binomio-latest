@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getProducts, getCategories, getProduct } from "../queries";
+import {
+    getProducts,
+    getCategories,
+    getProduct,
+    getCategory,
+} from "../queries";
 
 export const useGetProducts = ({
     page,
@@ -9,7 +14,7 @@ export const useGetProducts = ({
     search,
 }) => {
     return useQuery(
-        [["products"], { page, sort, filterCategory, status, search }],
+        ["products", "list", { page, sort, filterCategory, status, search }],
         () => getProducts(page, sort, filterCategory, status, search),
         {
             keepPreviousData: true,
@@ -20,9 +25,21 @@ export const useGetProducts = ({
 };
 
 export const useGetProductById = (id) => {
-    return useQuery(["product", id], () => getProduct(id));
+    return useQuery(["products", "details", id], () => getProduct(id));
 };
 
-export const useGetCategories = () => {
-    return useQuery(["categories"], () => getCategories());
+export const useGetCategoryById = (id) => {
+    return useQuery(["categories", "details", id], () => getCategory(id));
+};
+
+export const useGetCategories = ({ search }) => {
+    return useQuery(
+        ["categories", "list", { search }],
+        () => getCategories(search),
+        {
+            keepPreviousData: true,
+            staleTime: 5000,
+            cacheTime: 1000 * 60 * 60 * 24,
+        }
+    );
 };
