@@ -137,22 +137,41 @@ const CategoryTable = ({ isLoading, categories }) => {
                                                         />
                                                     </svg>
                                                 </button>
-                                                <DangerModal
-                                                    show={modal}
-                                                    close={() =>
-                                                        setModal(!modal)
-                                                    }
-                                                    onClick={() => {
-                                                        deleteCategory(
-                                                            selectedCategory._id
-                                                        );
-                                                        setModal(!modal);
-                                                    }}
-                                                    title={`Elimina ${selectedCategory.name}`}
-                                                    text={
-                                                        "Sei sicuro di voler eliminare questa categoria?"
-                                                    }
-                                                />
+                                                {selectedCategory.number_of_product >
+                                                0 ? (
+                                                    <DangerModal
+                                                        show={modal}
+                                                        close={() =>
+                                                            setModal(!modal)
+                                                        }
+                                                        cancel={false}
+                                                        onClick={() =>
+                                                            setModal(!modal)
+                                                        }
+                                                        title={`Impossibile Eliminare ${selectedCategory.name}`}
+                                                        text={
+                                                            "Non è possibile eliminare questa categoria perché contiene dei prodotti."
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <DangerModal
+                                                        cancel={true}
+                                                        show={modal}
+                                                        close={() =>
+                                                            setModal(!modal)
+                                                        }
+                                                        onClick={() => {
+                                                            deleteCategory(
+                                                                selectedCategory._id
+                                                            );
+                                                            setModal(!modal);
+                                                        }}
+                                                        title={`Elimina ${selectedCategory.name}`}
+                                                        text={
+                                                            "Sei sicuro di voler eliminare questa categoria?"
+                                                        }
+                                                    />
+                                                )}
                                             </div>
                                         </td>
                                     </>

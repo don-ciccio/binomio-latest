@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const DangerModal = ({ show, close, title, text, onClick }) => {
+const DangerModal = ({ show, close, title, text, onClick, cancel }) => {
     return (
         <>
             {show ? (
@@ -34,8 +34,27 @@ const DangerModal = ({ show, close, title, text, onClick }) => {
                             {title}
                         </h3>
                         <p className='mb-10'>{text}</p>
-                        <div className='-mx-3 flex flex-wrap gap-y-4'>
-                            <div className='w-full px-3 2xsm:w-1/2'>
+                        {cancel ? (
+                            <div className='-mx-3 flex flex-wrap gap-y-4'>
+                                <div className='w-full px-3 2xsm:w-1/2'>
+                                    <button
+                                        onClick={() => close()}
+                                        className='block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1'
+                                    >
+                                        Annulla
+                                    </button>
+                                </div>
+                                <div className='w-full px-3 2xsm:w-1/2'>
+                                    <button
+                                        onClick={() => onClick()}
+                                        className='block w-full rounded border border-meta-1 bg-meta-1 p-3 text-center font-medium text-white transition hover:bg-opacity-90'
+                                    >
+                                        Elimina
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className='-mx-3 flex flex-wrap gap-y-4'>
                                 <button
                                     onClick={() => close()}
                                     className='block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1'
@@ -43,15 +62,7 @@ const DangerModal = ({ show, close, title, text, onClick }) => {
                                     Annulla
                                 </button>
                             </div>
-                            <div className='w-full px-3 2xsm:w-1/2'>
-                                <button
-                                    onClick={() => onClick()}
-                                    className='block w-full rounded border border-meta-1 bg-meta-1 p-3 text-center font-medium text-white transition hover:bg-opacity-90'
-                                >
-                                    Elimina
-                                </button>
-                            </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             ) : null}
@@ -63,6 +74,7 @@ export default DangerModal;
 
 DangerModal.propTypes = {
     show: PropTypes.bool,
+    cancel: PropTypes.bool,
     close: PropTypes.func,
     title: PropTypes.string,
     text: PropTypes.string,

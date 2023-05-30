@@ -67,6 +67,7 @@ exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
     if (!name || !_id) {
         return next(new ErrorHandler(error.message, 400));
     }
+    console.log(properties);
     const category = await Category.updateOne(
         { _id },
         {
