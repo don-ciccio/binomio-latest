@@ -39,7 +39,7 @@ const AddProductForm = ({
     const [isUploading, setIsUploading] = useState(false);
     const [name, setName] = useState(existingTitle || "");
     const [category, setCategory] = useState(existingCategory || "");
-    const [status, setStatus] = useState(previousStatus || "");
+    const [status, setStatus] = useState(previousStatus || "Attivo");
     const [seller, setSeller] = useState(assignedSeller || "");
     const [productProperties, setProductProperties] = useState(
         assignedProperties || {}

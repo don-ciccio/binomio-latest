@@ -4,6 +4,8 @@ import {
     getCategories,
     getProduct,
     getCategory,
+    getStores,
+    getStore,
 } from "../queries";
 
 export const useGetProducts = ({
@@ -32,6 +34,10 @@ export const useGetCategoryById = (id) => {
     return useQuery(["categories", "details", id], () => getCategory(id));
 };
 
+export const useGetStoreById = (id) => {
+    return useQuery(["stores", "details", id], () => getStore(id));
+};
+
 export const useGetCategories = ({ search }) => {
     return useQuery(
         ["categories", "list", { search }],
@@ -42,4 +48,12 @@ export const useGetCategories = ({ search }) => {
             cacheTime: 1000 * 60 * 60 * 24,
         }
     );
+};
+
+export const useGetStores = () => {
+    return useQuery(["stores", "list"], () => getStores(), {
+        keepPreviousData: true,
+        staleTime: 5000,
+        cacheTime: 1000 * 60 * 60 * 24,
+    });
 };

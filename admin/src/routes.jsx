@@ -9,6 +9,8 @@ import { AddCategory } from "@/pages/Categories/Add";
 
 import { EditProduct } from "@/pages/Products/Edit";
 import { EditCategory } from "@/pages/Categories/Edit";
+import { EditStore } from "@/pages/Store/Edit";
+
 import Categories from "@/pages/Categories/Categories";
 import Stores from "@/pages/Store/Stores";
 import { AddStore } from "@/pages/Store/Add";
@@ -39,6 +41,7 @@ const routes = (isAuthenticated) => [
                 element: <Stores />,
             },
             { path: "stores/add", element: <AddStore /> },
+            { path: "stores/:id", element: <EditStore /> },
         ],
     },
     {

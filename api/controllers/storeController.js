@@ -4,16 +4,16 @@ const Days = require("../models/days");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { generateWeek } = require("../utils/apiFunctions");
 
-exports.newStore = catchAsyncErrors(async (req, res, next) => {
-    const { isOpen, name, shopAddress, deliveryRadius } = req.fields;
+const ErrorHandler = require("../utils/errorHandler");
 
-    const parsedOpen = JSON.parse(isOpen);
-    const parsedShopAddress = JSON.parse(shopAddress);
+exports.newStore = catchAsyncErrors(async (req, res, next) => {
+    const { isOpen, name, shopAddress, deliveryRadius } = req.body;
+
     try {
         const store = new Store({
-            isOpen: parsedOpen,
+            isOpen,
             name,
-            shopAddress: parsedShopAddress,
+            shopAddress,
             deliveryRadius,
         });
 
@@ -41,4 +41,39 @@ exports.newStore = catchAsyncErrors(async (req, res, next) => {
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }
+});
+
+exports.getAllStores = catchAsyncErrors(async (req, res, next) => {
+    try {
+        if (req.params.id) {
+            res.status(200).json(await Store.findOne({ _id: req.params.id }));
+        } else {
+            res.status(200).json(await Store.find().sort({ _id: -1 }));
+        }
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 404));
+    }
+});
+
+exports.updateStore = catchAsyncErrors(async (req, res, next) => {
+    const { isOpen, name, shopAddress, deliveryRadius, _id } = req.body;
+
+    if (!name || !_id) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+
+    const store = await Store.updateOne(
+        { _id },
+        {
+            isOpen,
+            name,
+            shopAddress,
+            deliveryRadius,
+        }
+    );
+
+    res.status(200).json({
+        success: true,
+        store,
+    });
 });

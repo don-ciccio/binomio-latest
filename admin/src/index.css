@@ -223,6 +223,31 @@
   padding-right: 0;
 }
 
+.input-km {
+  position: relative;
+}
+
+.input-km>i {
+  position: absolute;
+  display: block;
+  transform: translate(0, -52%);
+  top: 50%;
+  pointer-events: none;
+  width: 40px;
+  text-align: center;
+  font-style: italic;
+}
+
+
+.input-km>input {
+      padding-left: 14px;
+        padding-right: 26px;
+}
+
+.input-km-right>i {
+  right: 40px;
+}
+
 .input-icon-right>i {
   right: 0;
 }

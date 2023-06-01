@@ -1,15 +1,15 @@
 import Breadcrumb from "@/components/common/BreadCrumb";
-import AddCategoryForm from "@/components/AddCategoryForm";
+import AddStoreForm from "@/components/AddStoreForm";
 import Loader from "@/components/common/Loader";
 
-import { useGetCategoryById } from "@/store/react-query/hooks/useQueries";
 import { useParams } from "react-router-dom";
+import { useGetStoreById } from "@/store/react-query/hooks/useQueries";
 
 const Edit = () => {
     const { id } = useParams();
 
-    const { data: category, isLoading } = useGetCategoryById(id);
-
+    const { data: store, isLoading } = useGetStoreById(id);
+    console.log(store);
     if (isLoading)
         return (
             <div className='flex items-center justify-center h-screen'>
@@ -19,11 +19,10 @@ const Edit = () => {
 
     return (
         <>
-            <Breadcrumb pageName='Modifica Categoria' />
-
-            <AddCategoryForm {...category?.data} />
+            <Breadcrumb pageName='Modifica Sede' />
+            <AddStoreForm {...store?.data} />
         </>
     );
 };
 
-export { Edit as EditCategory };
+export { Edit as EditStore };

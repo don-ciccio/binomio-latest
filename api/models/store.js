@@ -56,8 +56,6 @@ storeSchema.pre("save", async function (next) {
         formattedAddress: loc.formattedAddress,
     };
 
-    // Do not save address
-    this.shopAddress = undefined;
     next();
 });
 
