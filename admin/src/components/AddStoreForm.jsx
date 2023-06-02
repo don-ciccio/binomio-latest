@@ -74,9 +74,6 @@ const AddStoreForm = ({
                                 Dettagli del Negozio
                             </h3>
                             <div className='flex'>
-                                <label className='mr-6 relative inline-flex text-black font-medium dark:text-white'>
-                                    Attiva questa sede:
-                                </label>
                                 <label className='relative inline-flex cursor-pointer'>
                                     <input
                                         checked={isOpen}

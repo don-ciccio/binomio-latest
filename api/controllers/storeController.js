@@ -78,37 +78,35 @@ exports.updateStore = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-exports.getCalendarByStore = catchAsyncErrors(async (req, res) => {
+exports.getCalendarByStore = catchAsyncErrors(async (req, res, next) => {
     let filter = {};
-    if (req.params.id) {
-        filter = { owner: req.params.id };
-    }
-    try {
-        await Days.find(filter, (err, calendar) => {
-            if (err) {
-                res.json("Error while fetching data");
-            } else {
-                let days = calendar
-                    .map((date) => ({
-                        name: new Date(date.day).toLocaleDateString("it-IT", {
-                            weekday: "long",
-                        }),
-                        available: date.available,
-                        weekday: date.weekday,
-                        startHour: date.startHour,
-                        endHour: date.endHour,
-                    }))
-                    .sort((a, b) => {
-                        return a.weekday - b.weekday;
-                    });
 
-                res.json(days);
-            }
-        })
-
-            .select("-__v -slotTime")
-            .clone();
-    } catch (error) {
-        return next(new ErrorHandler(error.message, 400));
+    if (req.query.id) {
+        filter = { owner: req.query.id };
     }
+
+    await Days.find(filter, (err, calendar) => {
+        if (err) {
+            res.json("Error while fetching data");
+        } else {
+            let days = calendar
+                .map((date) => ({
+                    name: new Date(date.day).toLocaleDateString("it-IT", {
+                        weekday: "long",
+                    }),
+                    available: date.available,
+                    weekday: date.weekday,
+                    startHour: date.startHour,
+                    endHour: date.endHour,
+                }))
+                .sort((a, b) => {
+                    return a.weekday - b.weekday;
+                });
+
+            res.json(days);
+        }
+    })
+
+        .select("-__v -slotTime")
+        .clone();
 });

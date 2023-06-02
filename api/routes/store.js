@@ -20,8 +20,6 @@ router
     .put(isAuthenticatedUser, authorizeRoles("admin"), updateStore)
     .get(isAuthenticatedUser, authorizeRoles("admin"), getAllStores);
 
-router
-    .route("/admin/calendar/:id")
-    .get(isAuthenticatedUser, getCalendarByStore);
+router.route("/admin/calendar").get(isAuthenticatedUser, getCalendarByStore);
 
 module.exports = router;
