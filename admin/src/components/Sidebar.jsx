@@ -41,7 +41,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     return (
         <aside
             ref={sidebar}
-            className={`absolute left-0 top-0 z-9999 flex h-screen w-64 flex-col overflow-y-hidden bg-[#1C2434] duration-300 ease-linear dark:bg-[#1A222C] lg:static lg:translate-x-0 ${
+            className={`absolute left-0 top-0 z-9999 flex h-screen w-60 flex-col overflow-y-hidden bg-[#1C2434] duration-300 ease-linear dark:bg-[#1A222C] lg:static lg:translate-x-0 ${
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
         >
@@ -156,6 +156,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                         icon={"bx:store"}
                                     />
                                     Negozio
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to='/delivery'
+                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                                        pathname.includes("delivery") &&
+                                        "bg-graydark dark:bg-meta-4"
+                                    }`}
+                                >
+                                    <Icon
+                                        className='w-5 h-5'
+                                        icon={"nimbus:scooter"}
+                                    />
+                                    Delivery
                                 </NavLink>
                             </li>
                         </ul>

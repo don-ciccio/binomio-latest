@@ -15,6 +15,8 @@ import Categories from "@/pages/Categories/Categories";
 import Stores from "@/pages/Store/Stores";
 import { AddStore } from "@/pages/Store/Add";
 
+import Delivery from "@/pages/Delivery/Delivery";
+
 const routes = (isAuthenticated) => [
     {
         path: "/",
@@ -42,6 +44,10 @@ const routes = (isAuthenticated) => [
             },
             { path: "stores/add", element: <AddStore /> },
             { path: "stores/:id", element: <EditStore /> },
+            {
+                path: "delivery",
+                element: <Delivery />,
+            },
         ],
     },
     {

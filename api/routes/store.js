@@ -5,6 +5,7 @@ const {
     newStore,
     getAllStores,
     updateStore,
+    getCalendarByStore,
 } = require("../controllers/storeController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
@@ -18,5 +19,9 @@ router
     .route("/admin/store")
     .put(isAuthenticatedUser, authorizeRoles("admin"), updateStore)
     .get(isAuthenticatedUser, authorizeRoles("admin"), getAllStores);
+
+router
+    .route("/admin/calendar/:id")
+    .get(isAuthenticatedUser, getCalendarByStore);
 
 module.exports = router;

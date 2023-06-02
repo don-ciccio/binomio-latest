@@ -5,7 +5,7 @@ import { useGetStores } from "@/store/react-query/hooks/useQueries";
 
 const Stores = () => {
     const { data: stores, isLoading } = useGetStores();
-    console.log(stores);
+
     return (
         <>
             <Breadcrumb pageName='Sedi' />
