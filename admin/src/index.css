@@ -6,6 +6,7 @@
   body {
     @apply font-satoshi font-normal text-base text-body bg-whiten relative z-1;
   }
+ 
 }
 
 @layer components {}
@@ -256,4 +257,60 @@
   padding-left: 0;
   padding-right: 25px;
   text-align: right;
+}
+
+.react-datepicker__time-box {
+    display: block;
+    
+      color: #64748B;
+      position: relative;
+}
+
+.react-datepicker-popper {
+  z-index: 999 !important;
+}
+
+.react-datepicker__time-container {
+width: 98px !important;
+}
+
+.react-datepicker__time {
+background-color: #EFF4FB !important;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+width: 98px !important;
+}
+
+.react-datepicker--time-only .react-datepicker__time-container{
+font-family: "Satoshi";
+font-size: 14px;
+}
+
+.react-datepicker-time__header {
+  font-size: 14px;
+
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+  background-color: #3C50E0;
+}
+
+.react-datepicker {
+  border: 1px solid #d8dee5;
+}
+
+.react-datepicker__header--time {
+  /* padding-bottom: 8px; */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.react-datepicker__header {
+  text-align: center;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #aeaeae;
+  border-top-left-radius: 0.3em;
+  padding: 4px 0;
+  position: relative;
 }

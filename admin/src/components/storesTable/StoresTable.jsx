@@ -52,7 +52,7 @@ const StoresTable = ({ data, isLoading }) => {
                                     </label>
                                     <span>
                                         {store.isOpen === true
-                                            ? "Attivo"
+                                            ? "Aperto"
                                             : "Chiuso"}
                                     </span>
                                 </div>

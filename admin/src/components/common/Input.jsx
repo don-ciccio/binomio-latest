@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const Input = ({ name, available, onChange, index }) => {
     return (
-        <div className='flex w-1/12'>
+        <div className='flex'>
             <label className='relative inline-flex cursor-pointer'>
                 <input
                     id={name}
