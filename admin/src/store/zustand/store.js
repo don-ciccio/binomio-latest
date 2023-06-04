@@ -46,3 +46,60 @@ export const useWeekdaysStore = create((set) => ({
         }));
     },
 }));
+
+export const useSlotStore = create((set) => ({
+    loading: false,
+    hasErrors: false,
+    fetch: async (id) => {
+        set(() => ({
+            data: [],
+            loading: true,
+        }));
+        try {
+            const week_ids = [0, 1, 2, 3, 4, 5, 6];
+            let config = {
+                params: {
+                    weekday: [],
+                },
+                paramsSerializer: function handleQuery(query) {
+                    // this will process params
+                    // This should query the params properly for you.
+                    return Object.entries(query)
+                        .map(([key, value], i) =>
+                            Array.isArray(value)
+                                ? `${key}=${value.join("&" + key + "=")}`
+                                : `${key}=${value}`
+                        )
+                        .join("&");
+                },
+            };
+            config.params.weekday = week_ids;
+            const response = await axios.get(
+                `${API_URL}/api/admin/calendar/slots?id=${id}`,
+                config
+            );
+
+            set((state) => ({
+                data: (state.data = response.data),
+                loading: false,
+            }));
+        } catch (err) {
+            set(() => ({ hasErrors: true, loading: false }));
+        }
+    },
+    toggleTimeSlot: (time, weekday) => {
+        set((state) => ({
+            data: state.data.map((day) => ({
+                ...day,
+                slotTime:
+                    day.weekday === weekday
+                        ? day.slotTime.map((item) =>
+                              item.time === time
+                                  ? { ...item, active: !item.active }
+                                  : item
+                          )
+                        : day.slotTime,
+            })),
+        }));
+    },
+}));

@@ -232,9 +232,7 @@ const AddCategoryForm = ({
                                             >
                                                 <Icon
                                                     className='w-6 h-6'
-                                                    icon={
-                                                        "fluent:delete-24-regular"
-                                                    }
+                                                    icon={"ion:trash-sharp"}
                                                 />
                                             </button>
                                         </div>

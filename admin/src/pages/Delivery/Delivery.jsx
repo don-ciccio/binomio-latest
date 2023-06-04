@@ -4,17 +4,21 @@ import Loader from "@/components/common/Loader";
 import { useEffect, useState } from "react";
 import DeliveryForm from "@/components/DeliveryForm";
 import { useWeekdaysStore } from "@/store/zustand/store";
+import DeliverySlots from "@/components/DeliverySlots";
+import { useSlotStore } from "@/store/zustand/store";
 
 const Delivery = () => {
     const [store, setStore] = useState("");
 
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
+    const fetchSlotTime = useSlotStore((state) => state.fetch);
 
     useEffect(() => {
         if (store !== undefined) {
             fetchWeekdays(store);
+            fetchSlotTime(store);
         }
-    }, [fetchWeekdays, store]);
+    }, [fetchWeekdays, fetchSlotTime, store]);
 
     const { data: stores, isLoading } = useGetStores();
     return (
@@ -70,6 +74,7 @@ const Delivery = () => {
                     )}
                 </div>
                 {store && store.length > 0 ? <DeliveryForm /> : null}
+                {store && store.length > 0 ? <DeliverySlots /> : null}
             </div>
         </>
     );

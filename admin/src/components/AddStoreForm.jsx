@@ -172,7 +172,7 @@ const AddStoreForm = ({
                                         onChange={(e) =>
                                             setDeliveryRadius(e.target.value)
                                         }
-                                        className='pr-7 w-[80px] rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                        className='pr-7 w-[88px] rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                     />
                                     <i className='right-10'>km</i>
                                 </div>

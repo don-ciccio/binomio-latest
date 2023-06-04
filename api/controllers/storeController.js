@@ -1,6 +1,8 @@
 const Store = require("../models/store");
 const Days = require("../models/days");
 
+const mongoose = require("mongoose");
+
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { generateWeek } = require("../utils/apiFunctions");
 
@@ -109,4 +111,39 @@ exports.getCalendarByStore = catchAsyncErrors(async (req, res, next) => {
 
         .select("-__v -slotTime")
         .clone();
+});
+
+exports.getSlotsByWeekday = catchAsyncErrors(async (req, res, next) => {
+    if (req.query.id) {
+        const owner = req.query.id;
+        const slotList = await Days.aggregate([
+            {
+                $match: {
+                    owner: mongoose.Types.ObjectId(owner),
+                    available: true,
+                },
+            },
+            {
+                $addFields: {
+                    slotTime: {
+                        $filter: {
+                            input: "$slotTime",
+                            as: "slotTime",
+                            cond: {
+                                $and: [
+                                    { $gte: ["$$slotTime.time", "$startHour"] },
+                                    { $lte: ["$$slotTime.time", "$endHour"] },
+                                ],
+                            },
+                        },
+                    },
+                },
+            },
+        ]);
+        if (!slotList) {
+            res.status(500).json({ success: false });
+        }
+
+        res.json(slotList);
+    }
 });
