@@ -1,6 +1,6 @@
 import Breadcrumb from "@/components/common/BreadCrumb";
 import AddButton from "@/components/common/AddButton";
-import StoresTable from "@/components/storesTable/StoresTable";
+import StoresTable from "@/components/storeTable/StoreTable";
 import { useGetStores } from "@/store/react-query/hooks/useQueries";
 
 const Stores = () => {

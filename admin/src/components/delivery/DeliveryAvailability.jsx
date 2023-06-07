@@ -1,7 +1,7 @@
 import { useWeekdaysStore } from "@/store/zustand/store";
 import Loader from "@/components/common/Loader";
-import Input from "./common/Input";
-import { CustomTimePicker } from "./common/CustomTimePicker";
+import Input from "../common/Input";
+import { CustomTimePicker } from "../common/CustomTimePicker";
 
 const DeliveryForm = () => {
     const weekdays = useWeekdaysStore((state) => state.data);
@@ -51,21 +51,6 @@ const DeliveryForm = () => {
                                         ) : (
                                             <div className='inline-flex gap-3'>
                                                 <span>Chiuso</span>
-                                                <svg
-                                                    xmlns='http://www.w3.org/2000/svg'
-                                                    width='21'
-                                                    height='21'
-                                                    viewBox='0 0 24 24'
-                                                >
-                                                    <path
-                                                        fill='none'
-                                                        stroke='currentColor'
-                                                        strokeLinecap='round'
-                                                        strokeLinejoin='round'
-                                                        strokeWidth='2'
-                                                        d='M9.353 3C5.849 4.408 3 7.463 3 11.47A9.53 9.53 0 0 0 12.53 21c4.007 0 7.062-2.849 8.47-6.353C8.17 17.065 8.14 8.14 9.353 3z'
-                                                    />
-                                                </svg>
                                             </div>
                                         )}
                                     </span>

@@ -1,26 +1,114 @@
 import Breadcrumb from "@/components/common/BreadCrumb";
 import { useGetStores } from "@/store/react-query/hooks/useQueries";
 import Loader from "@/components/common/Loader";
-import { useEffect, useState } from "react";
-import DeliveryForm from "@/components/DeliveryForm";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import DeliveryAvailability from "@/components/delivery/DeliveryAvailability";
+import BlackoutDates from "@/components/delivery/BlackoutDates";
+
 import { useWeekdaysStore } from "@/store/zustand/store";
-import DeliverySlots from "@/components/DeliverySlots";
+import DeliverySlots from "@/components/delivery/DeliverySlots";
 import { useSlotStore } from "@/store/zustand/store";
+import { useBlackoutDaysStore } from "../../store/zustand/store";
+
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Delivery = () => {
+    const { data: stores, isLoading } = useGetStores();
     const [store, setStore] = useState("");
 
+    const weekdays = useWeekdaysStore((state) => state.data);
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
+
     const fetchSlotTime = useSlotStore((state) => state.fetch);
+    const slotTime = useSlotStore((state) => state.data);
+
+    const fetchBlackoutDays = useBlackoutDaysStore((state) => state.fetch);
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [blackoutDates, setBlackoutDates] = useState([]);
+    const [date, setDate] = useState([]);
+    const [selected, setSelected] = useState([]);
 
     useEffect(() => {
         if (store !== undefined) {
             fetchWeekdays(store);
             fetchSlotTime(store);
+            fetchBlackoutDays(store);
         }
-    }, [fetchWeekdays, fetchSlotTime, store]);
+    }, [fetchWeekdays, fetchSlotTime, store, fetchBlackoutDays]);
 
-    const { data: stores, isLoading } = useGetStores();
+    const isFirstRender = useRef(true);
+
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+
+    const mutation = useMutation(
+        ({ data, id }) => {
+            return axios.put(
+                `${API_URL}/api/admin/calendar/settings?id=${store}`,
+                { ...data, id },
+                config
+            );
+        },
+        {
+            onSuccess: () => {
+                fetchSlotTime(store);
+                fetchBlackoutDays(store);
+                setDate([]);
+                setBlackoutDates([]);
+                setSelected([]);
+            },
+        }
+    );
+
+    const handleChange = useCallback(() => {
+        try {
+            const data = {
+                settings: weekdays,
+                slots: slotTime,
+                dates: blackoutDates,
+                selected: selected,
+            };
+
+            mutation.mutate({ data: data, id: store });
+        } catch (error) {
+            console.log(error.message);
+        }
+    }, [weekdays]);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false; // toggle flag after first render/mounting
+            return;
+        }
+        handleChange();
+    }, [weekdays]);
+
+    const updateSettings = (event) => {
+        event.preventDefault();
+
+        try {
+            const data = {
+                settings: weekdays,
+                slots: slotTime,
+                dates: blackoutDates,
+                selected: selected,
+            };
+
+            mutation.mutate({ data: data, id: store });
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
     return (
         <>
             <Breadcrumb pageName='Delivery' />
@@ -73,8 +161,43 @@ const Delivery = () => {
                         </div>
                     )}
                 </div>
-                {store && store.length > 0 ? <DeliveryForm /> : null}
-                {store && store.length > 0 ? <DeliverySlots /> : null}
+
+                <form onSubmit={updateSettings}>
+                    <div className='flex flex-col gap-5.5'>
+                        {store && store.length > 0 ? (
+                            <DeliveryAvailability />
+                        ) : null}
+                        {store && store.length > 0 ? <DeliverySlots /> : null}
+                        {store && store.length > 0 ? (
+                            <BlackoutDates
+                                date={date}
+                                setDate={setDate}
+                                startDate={startDate}
+                                setStartDate={setStartDate}
+                                selected={selected}
+                                setSelected={setSelected}
+                                blackoutDates={blackoutDates}
+                                setBlackoutDates={setBlackoutDates}
+                            />
+                        ) : null}
+                        <div className='flex justify-start gap-4.5 mt-6'>
+                            <button
+                                type='button'
+                                onClick={() => history(-1)}
+                                className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
+                            >
+                                Annulla
+                            </button>
+
+                            <button
+                                className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
+                                type='submit'
+                            >
+                                Salva
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </>
     );

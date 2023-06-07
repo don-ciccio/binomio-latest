@@ -2,14 +2,14 @@ import Breadcrumb from "@/components/common/BreadCrumb";
 
 import { useGetProducts } from "@/store/react-query/hooks/useQueries";
 
-import ProductsTable from "@/components/table/ProductsTable";
+import ProductsTable from "@/components/productTable/ProductsTable";
 import AddButton from "@/components/common/AddButton";
 
 import { useState } from "react";
 
-import ProductsTableTop from "@/components/table/ProductsTableTop";
-import CategoryTableTop from "@/components/table/CategoryTableTop";
-import Pagination from "@/components/table/Pagination";
+import ProductsTableTop from "@/components/productTable/ProductsTableTop";
+import CategoryTableTop from "@/components/productTable/CategoryTableTop";
+import Pagination from "@/components/productTable/Pagination";
 
 const Products = () => {
     const [sort, setSort] = useState({ sort: "price", order: "asc" });

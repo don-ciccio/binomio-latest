@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useSlotStore } from "@/store/zustand/store";
-import { useWeekdaysStore } from "../store/zustand/store";
+import { useWeekdaysStore } from "../../store/zustand/store";
 import { format } from "date-fns";
-import { Icon } from "@iconify/react";
 
 import Loader from "@/components/common/Loader";
 
@@ -15,7 +14,6 @@ const DeliverySlots = () => {
 
     const weekdays = useWeekdaysStore((state) => state.data);
 
-    console.log(slotTime);
     return (
         <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
             <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>

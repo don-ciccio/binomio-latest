@@ -65,7 +65,7 @@ export const useSlotStore = create((set) => ({
                     // this will process params
                     // This should query the params properly for you.
                     return Object.entries(query)
-                        .map(([key, value], i) =>
+                        .map(([key, value]) =>
                             Array.isArray(value)
                                 ? `${key}=${value.join("&" + key + "=")}`
                                 : `${key}=${value}`
@@ -101,5 +101,24 @@ export const useSlotStore = create((set) => ({
                         : day.slotTime,
             })),
         }));
+    },
+}));
+
+export const useBlackoutDaysStore = create((set) => ({
+    loading: false,
+    hasErrors: false,
+    fetch: async (id) => {
+        set(() => ({ loading: true }));
+        try {
+            const response = await axios.get(
+                `${API_URL}/api/admin/calendar/blackoutdays?id=${id}`
+            );
+            set((state) => ({
+                data: (state.data = response.data.blackOutDays),
+                loading: false,
+            }));
+        } catch (error) {
+            set(() => ({ hasErrors: true, loading: false }));
+        }
     },
 }));

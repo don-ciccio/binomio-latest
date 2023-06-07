@@ -7,6 +7,8 @@ const {
     updateStore,
     getCalendarByStore,
     getSlotsByWeekday,
+    getBlackoutDays,
+    deliverySettings,
 } = require("../controllers/storeController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
@@ -26,5 +28,13 @@ router.route("/admin/calendar").get(isAuthenticatedUser, getCalendarByStore);
 router
     .route("/admin/calendar/slots")
     .get(isAuthenticatedUser, authorizeRoles("admin"), getSlotsByWeekday);
+
+router
+    .route("/admin/calendar/blackoutdays")
+    .get(isAuthenticatedUser, authorizeRoles("admin"), getBlackoutDays);
+
+router
+    .route("/admin/calendar/settings")
+    .put(isAuthenticatedUser, authorizeRoles("admin"), deliverySettings);
 
 module.exports = router;

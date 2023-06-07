@@ -147,3 +147,127 @@ exports.getSlotsByWeekday = catchAsyncErrors(async (req, res, next) => {
         res.json(slotList);
     }
 });
+
+exports.getBlackoutDays = catchAsyncErrors(async (req, res, next) => {
+    let filter = {};
+    if (req.query.id) {
+        filter = {
+            owner: req.query.id,
+        };
+    }
+    try {
+        await Store.find(filter, "blackOutDays -_id", (err, result) => {
+            if (err) return console.log(err.message);
+            res.json(...result);
+        }).clone();
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+});
+
+exports.deliverySettings = catchAsyncErrors(async (req, res, next) => {
+    let { settings, slots, dates, selected } = req.body;
+
+    try {
+        if (dates.length > 0) {
+            const ISOarray = dates.map((date) => {
+                return new Date(
+                    new Date(date).setDate(new Date(date).getDate() + 1)
+                );
+            });
+
+            if (req.query.id) {
+                await Store.findByIdAndUpdate(
+                    { _id: mongoose.Types.ObjectId(req.query.id) },
+                    {
+                        $push: {
+                            blackOutDays: { $each: ISOarray },
+                        },
+                    },
+                    {
+                        new: true,
+                        upsert: true,
+                    }
+                );
+            }
+        }
+
+        if (selected.length > 0) {
+            const ISOselected = selected.map((date) => {
+                return new Date(
+                    new Date(date).setDate(new Date(date).getDate() + 1)
+                );
+            });
+
+            if (req.query.id) {
+                await Store.findByIdAndUpdate(
+                    { _id: mongoose.Types.ObjectId(req.query.id) },
+                    {
+                        $pull: {
+                            blackOutDays: {
+                                $in: ISOselected,
+                            },
+                        },
+                    },
+                    {
+                        new: true,
+                    }
+                );
+            }
+        }
+
+        bulk = [];
+
+        if (req.query.id) {
+            settings.forEach((item) => {
+                let updateDoc = {
+                    updateMany: {
+                        filter: {
+                            owner: req.query.id,
+                            weekday: item.weekday,
+                        },
+                        update: {
+                            $set: {
+                                available: item.available,
+                                startHour: item.startHour,
+                                endHour: item.endHour,
+                            },
+                        },
+                    },
+                };
+
+                bulk.push(updateDoc);
+            });
+
+            slots.forEach((s) => {
+                s.slotTime.forEach((t) => {
+                    let updateSlot = {
+                        updateMany: {
+                            filter: {
+                                owner: req.query.id,
+                                weekday: s.weekday,
+                            },
+                            update: {
+                                $set: {
+                                    "slotTime.$[elem].active": t.active,
+                                },
+                            },
+                            arrayFilters: [{ "elem.time": t.time }],
+                        },
+                    };
+                    bulk.push(updateSlot);
+                });
+            });
+        }
+
+        const options = { ordered: false };
+
+        await Days.bulkWrite(bulk, options);
+
+        res.status(200).json({
+            success: true,
+        });
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+});
