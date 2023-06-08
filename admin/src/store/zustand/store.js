@@ -12,7 +12,7 @@ export const useWeekdaysStore = create((set) => ({
         set(() => ({ loading: true }));
         try {
             const response = await axios.get(
-                `${API_URL}/api/admin/calendar?id=${id}`
+                `${API_URL}/api/admin/calendar/${id}`
             );
             set((state) => ({
                 data: (state.data = response.data),
@@ -75,7 +75,7 @@ export const useSlotStore = create((set) => ({
             };
             config.params.weekday = week_ids;
             const response = await axios.get(
-                `${API_URL}/api/admin/calendar/slots?id=${id}`,
+                `${API_URL}/api/admin/calendar/${id}/slots`,
                 config
             );
 
@@ -111,7 +111,7 @@ export const useBlackoutDaysStore = create((set) => ({
         set(() => ({ loading: true }));
         try {
             const response = await axios.get(
-                `${API_URL}/api/admin/calendar/blackoutdays?id=${id}`
+                `${API_URL}/api/admin/calendar/${id}/blackoutdays`
             );
             set((state) => ({
                 data: (state.data = response.data.blackOutDays),

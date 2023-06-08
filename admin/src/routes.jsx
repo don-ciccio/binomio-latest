@@ -16,6 +16,7 @@ import Stores from "@/pages/Store/Stores";
 import { AddStore } from "@/pages/Store/Add";
 
 import Delivery from "@/pages/Delivery/Delivery";
+import DeliverySettings from "@/pages/Delivery/DeliverySettings";
 
 const routes = (isAuthenticated) => [
     {
@@ -48,6 +49,7 @@ const routes = (isAuthenticated) => [
                 path: "delivery",
                 element: <Delivery />,
             },
+            { path: "delivery/:id", element: <DeliverySettings /> },
         ],
     },
     {

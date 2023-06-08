@@ -114,52 +114,43 @@ exports.getCalendarByStore = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getSlotsByWeekday = catchAsyncErrors(async (req, res, next) => {
-    if (req.query.id) {
-        const owner = req.query.id;
-        const slotList = await Days.aggregate([
-            {
-                $match: {
-                    owner: mongoose.Types.ObjectId(owner),
-                    available: true,
-                },
+    const slotList = await Days.aggregate([
+        {
+            $match: {
+                owner: mongoose.Types.ObjectId(req.params.id),
+                available: true,
             },
-            {
-                $addFields: {
-                    slotTime: {
-                        $filter: {
-                            input: "$slotTime",
-                            as: "slotTime",
-                            cond: {
-                                $and: [
-                                    { $gte: ["$$slotTime.time", "$startHour"] },
-                                    { $lte: ["$$slotTime.time", "$endHour"] },
-                                ],
-                            },
+        },
+        {
+            $addFields: {
+                slotTime: {
+                    $filter: {
+                        input: "$slotTime",
+                        as: "slotTime",
+                        cond: {
+                            $and: [
+                                { $gte: ["$$slotTime.time", "$startHour"] },
+                                { $lte: ["$$slotTime.time", "$endHour"] },
+                            ],
                         },
                     },
                 },
             },
-        ]);
-        if (!slotList) {
-            res.status(500).json({ success: false });
-        }
-
-        res.json(slotList);
+        },
+    ]);
+    if (!slotList) {
+        res.status(500).json({ success: false });
     }
+
+    res.json(slotList);
 });
 
 exports.getBlackoutDays = catchAsyncErrors(async (req, res, next) => {
-    let filter = {};
-    if (req.query.id) {
-        filter = {
-            owner: req.query.id,
-        };
-    }
     try {
-        await Store.find(filter, "blackOutDays -_id", (err, result) => {
-            if (err) return console.log(err.message);
-            res.json(...result);
-        }).clone();
+        const result = await Store.findById(req.params.id).select(
+            "blackOutDays -_id"
+        );
+        res.json(result);
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }
@@ -176,20 +167,18 @@ exports.deliverySettings = catchAsyncErrors(async (req, res, next) => {
                 );
             });
 
-            if (req.query.id) {
-                await Store.findByIdAndUpdate(
-                    { _id: mongoose.Types.ObjectId(req.query.id) },
-                    {
-                        $push: {
-                            blackOutDays: { $each: ISOarray },
-                        },
+            await Store.findByIdAndUpdate(
+                { _id: mongoose.Types.ObjectId(req.params.id) },
+                {
+                    $push: {
+                        blackOutDays: { $each: ISOarray },
                     },
-                    {
-                        new: true,
-                        upsert: true,
-                    }
-                );
-            }
+                },
+                {
+                    new: true,
+                    upsert: true,
+                }
+            );
         }
 
         if (selected.length > 0) {
@@ -199,66 +188,62 @@ exports.deliverySettings = catchAsyncErrors(async (req, res, next) => {
                 );
             });
 
-            if (req.query.id) {
-                await Store.findByIdAndUpdate(
-                    { _id: mongoose.Types.ObjectId(req.query.id) },
-                    {
-                        $pull: {
-                            blackOutDays: {
-                                $in: ISOselected,
-                            },
+            await Store.findByIdAndUpdate(
+                { _id: mongoose.Types.ObjectId(req.params.id) },
+                {
+                    $pull: {
+                        blackOutDays: {
+                            $in: ISOselected,
                         },
                     },
-                    {
-                        new: true,
-                    }
-                );
-            }
+                },
+                {
+                    new: true,
+                }
+            );
         }
 
         bulk = [];
 
-        if (req.query.id) {
-            settings.forEach((item) => {
-                let updateDoc = {
+        settings.forEach((item) => {
+            let updateDoc = {
+                updateMany: {
+                    filter: {
+                        owner: req.params.id,
+                        weekday: item.weekday,
+                    },
+                    update: {
+                        $set: {
+                            available: item.available,
+                            startHour: item.startHour,
+                            endHour: item.endHour,
+                        },
+                    },
+                },
+            };
+
+            bulk.push(updateDoc);
+        });
+
+        slots.forEach((s) => {
+            s.slotTime.forEach((t) => {
+                let updateSlot = {
                     updateMany: {
                         filter: {
-                            owner: req.query.id,
-                            weekday: item.weekday,
+                            owner: req.params.id,
+                            weekday: s.weekday,
                         },
                         update: {
                             $set: {
-                                available: item.available,
-                                startHour: item.startHour,
-                                endHour: item.endHour,
+                                "slotTime.$[elem].active": t.active,
                             },
                         },
+                        arrayFilters: [{ "elem.time": t.time }],
                     },
                 };
-
-                bulk.push(updateDoc);
+                bulk.push(updateSlot);
             });
-
-            slots.forEach((s) => {
-                s.slotTime.forEach((t) => {
-                    let updateSlot = {
-                        updateMany: {
-                            filter: {
-                                owner: req.query.id,
-                                weekday: s.weekday,
-                            },
-                            update: {
-                                $set: {
-                                    "slotTime.$[elem].active": t.active,
-                                },
-                            },
-                            arrayFilters: [{ "elem.time": t.time }],
-                        },
-                    };
-                    bulk.push(updateSlot);
-                });
-            });
-        }
+        });
 
         const options = { ordered: false };
 
@@ -267,6 +252,55 @@ exports.deliverySettings = catchAsyncErrors(async (req, res, next) => {
         res.status(200).json({
             success: true,
         });
+        /* if (dates.length > 0) {
+            await asyncForEach(dates, async (date) => {
+                await Days.findOneAndUpdate(
+                    {
+                        day: {
+                            $gte: date,
+                            $lt: new Date(
+                                new Date(date).setDate(
+                                    new Date(date).getDate() + 1
+                                )
+                            ).toISOString(),
+                        },
+                    },
+                    [
+                        {
+                            $set: {
+                                blackOutDay: { $not: "$blackOutDay" },
+                                available: { $not: "$available" },
+                            },
+                        },
+                    ]
+                );
+            });
+        } */
+
+        /* if (selected.length > 0) {
+            await asyncForEach(selected, async (selectedItem) => {
+                await Days.findOneAndUpdate(
+                    {
+                        day: {
+                            $gte: selectedItem,
+                            $lt: new Date(
+                                new Date(selectedItem).setDate(
+                                    new Date(selectedItem).getDate() + 1
+                                )
+                            ).toISOString(),
+                        },
+                    },
+                    [
+                        {
+                            $set: {
+                                blackOutDay: { $not: "$blackOutDay" },
+                                available: { $not: "$available" },
+                            },
+                        },
+                    ]
+                );
+            });
+        } */
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }

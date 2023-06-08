@@ -23,18 +23,20 @@ router
     .put(isAuthenticatedUser, authorizeRoles("admin"), updateStore)
     .get(isAuthenticatedUser, authorizeRoles("admin"), getAllStores);
 
-router.route("/admin/calendar").get(isAuthenticatedUser, getCalendarByStore);
+router
+    .route("/admin/calendar/:id")
+    .get(isAuthenticatedUser, getCalendarByStore);
 
 router
-    .route("/admin/calendar/slots")
+    .route("/admin/calendar/:id/slots")
     .get(isAuthenticatedUser, authorizeRoles("admin"), getSlotsByWeekday);
 
 router
-    .route("/admin/calendar/blackoutdays")
+    .route("/admin/calendar/:id/blackoutdays")
     .get(isAuthenticatedUser, authorizeRoles("admin"), getBlackoutDays);
 
 router
-    .route("/admin/calendar/settings")
+    .route("/admin/calendar/:id/settings")
     .put(isAuthenticatedUser, authorizeRoles("admin"), deliverySettings);
 
 module.exports = router;

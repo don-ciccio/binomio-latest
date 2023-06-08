@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 
 import { useCallback, useEffect } from "react";
 import { format, formatISO, parse, startOfDay } from "date-fns";
-import { Icon } from "@iconify/react";
 
 import { useBlackoutDaysStore, useWeekdaysStore } from "@/store/zustand/store";
 import Loader from "@/components/common/Loader";
@@ -31,6 +30,7 @@ const BlackoutDates = ({
 
     useEffect(() => {
         blackoutDays?.forEach((day) => {
+            console.log(day);
             const setTimezone = new Date(
                 new Date(day).getTime() -
                     new Date(day).getTimezoneOffset() * -6000
@@ -112,7 +112,7 @@ const BlackoutDates = ({
                     Date di blackout
                 </h3>
             </div>
-            <div className='flex flex-col gap-5.5 p-6.5'>
+            <div className='flex flex-col p-6.5'>
                 <div className='flex flex-row items-center mb-5'>
                     <div className='relative '>
                         {loading ? (
@@ -131,7 +131,7 @@ const BlackoutDates = ({
                             />
                         )}
                     </div>
-                    <div className='ml-5 relative'>
+                    <div className='ml-5 flex'>
                         <button
                             type='button'
                             onClick={(e) => handleAddDate(e)}
