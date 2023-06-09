@@ -205,45 +205,47 @@ exports.deliverySettings = catchAsyncErrors(async (req, res, next) => {
 
         bulk = [];
 
-        settings.forEach((item) => {
-            let updateDoc = {
-                updateMany: {
-                    filter: {
-                        owner: req.params.id,
-                        weekday: item.weekday,
-                    },
-                    update: {
-                        $set: {
-                            available: item.available,
-                            startHour: item.startHour,
-                            endHour: item.endHour,
-                        },
-                    },
-                },
-            };
-
-            bulk.push(updateDoc);
-        });
-
-        slots.forEach((s) => {
-            s.slotTime.forEach((t) => {
-                let updateSlot = {
+        if (req.params.id) {
+            settings.forEach((item) => {
+                let updateDoc = {
                     updateMany: {
                         filter: {
                             owner: req.params.id,
-                            weekday: s.weekday,
+                            weekday: item.weekday,
                         },
                         update: {
                             $set: {
-                                "slotTime.$[elem].active": t.active,
+                                available: item.available,
+                                startHour: item.startHour,
+                                endHour: item.endHour,
                             },
                         },
-                        arrayFilters: [{ "elem.time": t.time }],
                     },
                 };
-                bulk.push(updateSlot);
+
+                bulk.push(updateDoc);
             });
-        });
+
+            slots.forEach((s) => {
+                s.slotTime.forEach((t) => {
+                    let updateSlot = {
+                        updateMany: {
+                            filter: {
+                                owner: req.params.id,
+                                weekday: s.weekday,
+                            },
+                            update: {
+                                $set: {
+                                    "slotTime.$[elem].active": t.active,
+                                },
+                            },
+                            arrayFilters: [{ "elem.time": t.time }],
+                        },
+                    };
+                    bulk.push(updateSlot);
+                });
+            });
+        }
 
         const options = { ordered: false };
 
@@ -252,55 +254,6 @@ exports.deliverySettings = catchAsyncErrors(async (req, res, next) => {
         res.status(200).json({
             success: true,
         });
-        /* if (dates.length > 0) {
-            await asyncForEach(dates, async (date) => {
-                await Days.findOneAndUpdate(
-                    {
-                        day: {
-                            $gte: date,
-                            $lt: new Date(
-                                new Date(date).setDate(
-                                    new Date(date).getDate() + 1
-                                )
-                            ).toISOString(),
-                        },
-                    },
-                    [
-                        {
-                            $set: {
-                                blackOutDay: { $not: "$blackOutDay" },
-                                available: { $not: "$available" },
-                            },
-                        },
-                    ]
-                );
-            });
-        } */
-
-        /* if (selected.length > 0) {
-            await asyncForEach(selected, async (selectedItem) => {
-                await Days.findOneAndUpdate(
-                    {
-                        day: {
-                            $gte: selectedItem,
-                            $lt: new Date(
-                                new Date(selectedItem).setDate(
-                                    new Date(selectedItem).getDate() + 1
-                                )
-                            ).toISOString(),
-                        },
-                    },
-                    [
-                        {
-                            $set: {
-                                blackOutDay: { $not: "$blackOutDay" },
-                                available: { $not: "$available" },
-                            },
-                        },
-                    ]
-                );
-            });
-        } */
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }

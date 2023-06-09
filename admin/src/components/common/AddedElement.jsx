@@ -3,15 +3,15 @@ import { Icon } from "@iconify/react";
 
 const AddedElement = ({ value, deleteHandler }) => {
     return (
-        <div className='ml-2  py-5 flex gap-3 flex-row items-center'>
-            <div className='flex font-medium text-black'>{value}</div>
-            <div className='ml-5 flex justify-items-center mt-0.5'>
+        <div className='cursor-pointer hover:bg-bodydark1/50 px-2 py-2 border-t border-bodydark2/50 justify-between flex gap-3 flex-row items-center'>
+            <div className='flex  text-black h-full'>{value}</div>
+            <div className=' flex justify-center items-center '>
                 <button
-                    className='justify-center rounded bg-danger py-1 px-1.5 font-medium text-gray hover:bg-opacity-95'
+                    className='justify-center rounded bg-danger py-1 px-1.5  text-gray hover:bg-opacity-95'
                     type='button'
                     onClick={deleteHandler}
                 >
-                    <Icon className='w-4 h-4' icon={"ion:trash-sharp"} />
+                    <Icon className='w-5 h-5' icon={"ion:trash-sharp"} />
                 </button>
             </div>
         </div>

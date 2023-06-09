@@ -1,10 +1,10 @@
 import Breadcrumb from "@/components/common/BreadCrumb";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import DeliveryAvailability from "@/components/delivery/DeliveryAvailability";
-
+import { useMounted } from "@/hooks/useMounted";
 import { useWeekdaysStore } from "@/store/zustand/store";
 import DeliverySlots from "@/components/delivery/DeliverySlots";
 import { useSlotStore } from "@/store/zustand/store";
@@ -27,7 +27,6 @@ const DeliverySettings = () => {
     const slotTime = useSlotStore((state) => state.data);
 
     const fetchBlackoutDays = useBlackoutDaysStore((state) => state.fetch);
-    const blackoutDays = useBlackoutDaysStore((state) => state.data);
 
     const [startDate, setStartDate] = useState(new Date());
     const [blackoutDates, setBlackoutDates] = useState([]);
@@ -35,14 +34,14 @@ const DeliverySettings = () => {
     const [selected, setSelected] = useState([]);
 
     useEffect(() => {
-        if (!weekdays || !slotTime || !blackoutDays) {
-            fetchWeekdays(id);
-            fetchSlotTime(id);
-            fetchBlackoutDays(id);
-        }
+        fetchWeekdays(id);
+        fetchSlotTime(id);
+        fetchBlackoutDays(id);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
-    const isFirstRender = useRef(true);
+    const mounted = useMounted();
 
     const config = {
         headers: {
@@ -86,10 +85,7 @@ const DeliverySettings = () => {
     }, [weekdays]);
 
     useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false; // toggle flag after first render/mounting
-            return;
-        }
+        if (!mounted()) return;
         handleChange();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [weekdays]);
@@ -106,6 +102,7 @@ const DeliverySettings = () => {
             };
 
             mutation.mutate({ data: data, id: id });
+            history(-1);
         } catch (error) {
             console.log(error.message);
         }
@@ -113,40 +110,38 @@ const DeliverySettings = () => {
 
     return (
         <>
-            <Breadcrumb pageName='Delivery' />
+            <Breadcrumb pageName='Gestione consegne' />
             <div className='flex flex-col gap-5'>
                 <form onSubmit={updateSettings}>
                     <div className='flex flex-col gap-5.5'>
-                        <>
-                            <DeliveryAvailability />
-                            <DeliverySlots />
-                            <BlackoutDates
-                                date={date}
-                                setDate={setDate}
-                                startDate={startDate}
-                                setStartDate={setStartDate}
-                                selected={selected}
-                                setSelected={setSelected}
-                                blackoutDates={blackoutDates}
-                                setBlackoutDates={setBlackoutDates}
-                            />
-                            <div className='flex justify-start gap-4.5 mt-6'>
-                                <button
-                                    type='button'
-                                    onClick={() => history(-1)}
-                                    className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
-                                >
-                                    Annulla
-                                </button>
+                        <DeliveryAvailability />
+                        <DeliverySlots />
+                        <BlackoutDates
+                            date={date}
+                            setDate={setDate}
+                            startDate={startDate}
+                            setStartDate={setStartDate}
+                            selected={selected}
+                            setSelected={setSelected}
+                            blackoutDates={blackoutDates}
+                            setBlackoutDates={setBlackoutDates}
+                        />
+                        <div className='flex justify-start gap-4.5 mt-6'>
+                            <button
+                                type='button'
+                                onClick={() => history(-1)}
+                                className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
+                            >
+                                Annulla
+                            </button>
 
-                                <button
-                                    className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
-                                    type='submit'
-                                >
-                                    Salva
-                                </button>
-                            </div>
-                        </>
+                            <button
+                                className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
+                                type='submit'
+                            >
+                                Salva
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

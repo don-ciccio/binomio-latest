@@ -29,6 +29,7 @@ const BlackoutDates = ({
     const blackoutDaysLoading = useBlackoutDaysStore((state) => state.loading);
 
     useEffect(() => {
+        setDate([]);
         blackoutDays?.forEach((day) => {
             console.log(day);
             const setTimezone = new Date(
@@ -112,7 +113,7 @@ const BlackoutDates = ({
                     Date di blackout
                 </h3>
             </div>
-            <div className='flex flex-col p-6.5'>
+            <div className='flex flex-col p-6.5 gap-3'>
                 <div className='flex flex-row items-center mb-5'>
                     <div className='relative '>
                         {loading ? (
@@ -159,16 +160,16 @@ const BlackoutDates = ({
                         <Loader />
                     </div>
                 ) : (
-                    <>
+                    <div className='flex flex-col'>
                         {date.map((row, id) => (
-                            <div key={id}>
+                            <div className='' key={id}>
                                 <AddedElement
                                     value={row.props.value}
                                     deleteHandler={() => removeDiv(row)}
                                 />
                             </div>
                         ))}
-                    </>
+                    </div>
                 )}
             </div>
         </div>
