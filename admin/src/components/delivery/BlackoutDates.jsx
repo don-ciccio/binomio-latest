@@ -31,7 +31,6 @@ const BlackoutDates = ({
     useEffect(() => {
         setDate([]);
         blackoutDays?.forEach((day) => {
-            console.log(day);
             const setTimezone = new Date(
                 new Date(day).getTime() -
                     new Date(day).getTimezoneOffset() * -6000

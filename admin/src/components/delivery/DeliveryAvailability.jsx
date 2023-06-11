@@ -19,7 +19,7 @@ const DeliveryForm = () => {
             </div>
             <div className='flex flex-col gap-5.5 p-6.5'>
                 <div>
-                    <label className='mb-5 block text-black dark:text-white'>
+                    <label className='mb-7 block text-black dark:text-white'>
                         Seleziona i giorni di consegna:
                     </label>
                     {loading ? (
