@@ -1,3 +1,122 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+label.block {
+    text-align: left;
+}
+
+label {
+    font-size: .9rem;
+}
+
+Footer input:not(:placeholder-shown)~button {
+    @apply opacity-90;
+}
+
+@layer utilities {
+
+    /* Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
+    }
+}
+
+.page-content {
+    padding-top: calc(70px + theme("spacing.5"));
+    padding-right: 0.625rem;
+    padding-bottom: 60px;
+    padding-left: 0.625rem;
+}
+
+/* Loader */
+.loader {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+    width: 80px;
+    height: 80px;
+    padding-left: 0;
+}
+
+.loader:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #3b82f6;
+    border-color: #3b82f6 transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+
+.linkk {
+    width: 100%;
+    display: inline-flex;
+    color: #000000;
+    text-decoration: none;
+    transition: all 1s;
+    border-radius: 5px;
+}
+
+.linkk:hover {
+    background: rgba(91, 81, 81, 0.201);
+    color: black;
+    transition: all 0.5s;
+}
+
+.active-link {
+    background: #E0A82E;
+    color: black;
+    border-radius: 5px;
+    width: 100%;
+    display: inline-flex;
+
+}
+
+.table-text {
+    color: #84848F
+}
+
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+    background-color: #FEAF00 !important;
+
+}
+
+.tabs-boxed {
+
+    background-color: #fbf8f6 !important;
+
+    border-radius: var(--rounded-btn, 0.5rem);
+}
+
+:root {
+    background-color: #ffffff !important;
+}

@@ -1,7 +1,15 @@
+import HeroSection from "./layouts/HeroSection";
+
 export default async function Home() {
     return (
-        <main>
-            <p className='text-xl'>Main content!!!!</p>
-        </main>
+        <div
+            className='
+            flex 
+            min-h-screen 
+            flex-col
+            '
+        >
+            <HeroSection />
+        </div>
     );
 }
