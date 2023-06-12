@@ -17,6 +17,7 @@ import { AddStore } from "@/pages/Store/Add";
 
 import Delivery from "@/pages/Delivery/Delivery";
 import DeliverySettings from "@/pages/Delivery/DeliverySettings";
+import Content from "@/pages/Theme/Content";
 
 const routes = (isAuthenticated) => [
     {
@@ -50,6 +51,10 @@ const routes = (isAuthenticated) => [
                 element: <Delivery />,
             },
             { path: "delivery/:id", element: <DeliverySettings /> },
+            {
+                path: "theme",
+                element: <Content />,
+            },
         ],
     },
     {

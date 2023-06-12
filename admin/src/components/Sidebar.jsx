@@ -173,6 +173,23 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                     Delivery
                                 </NavLink>
                             </li>
+                            <li>
+                                <NavLink
+                                    to='/theme'
+                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                                        pathname.includes("theme") &&
+                                        "bg-graydark dark:bg-meta-4"
+                                    }`}
+                                >
+                                    <Icon
+                                        className='w-5 h-5'
+                                        icon={
+                                            "material-symbols:home-work-outline-rounded"
+                                        }
+                                    />
+                                    Tema
+                                </NavLink>
+                            </li>
                         </ul>
                     </div>
                 </nav>

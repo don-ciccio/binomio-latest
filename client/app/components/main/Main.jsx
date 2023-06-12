@@ -101,14 +101,14 @@ const Main = React.forwardRef((props, ref) => {
                     </div>
                 </div>
                 <div className='relative z-2'>
-                    <div className='xxs:-mt-84 lg:-mt-52 mx-auto mb-24 relative w-full lg:w-4/6 block'>
+                    <div className='xxs:-mt-84 mx-auto mb-24 relative w-full lg:w-4/6 block'>
                         <span
                             {...props}
                             ref={ref}
                             className='w-32 h-32 left-2/4 -ml-16 p-3 z-10 absolute'
                             id='home-logo-placeholder'
                         ></span>
-                        <div className='top-12 relative pt-20 pb-8 px-3 text-center	rounded-2xl	shadow-sm bg-white overflow-hidden '>
+                        <div className='top-16 relative pt-20 pb-8 px-3 text-center	rounded-2xl	shadow-sm bg-white overflow-hidden '>
                             <h2 className='mb-2.5 tracking-wide uppercase text-2xl max-w-3xl mx-auto font-medium'>
                                 Binomio da mangiare
                             </h2>

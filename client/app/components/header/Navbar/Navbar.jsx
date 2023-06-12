@@ -118,7 +118,7 @@ const Navbar = forwardRef((props, ref) => {
                             px-0
                             `}
                         >
-                            <Links />
+                            <Links categories={props.categories} />
                             <HamburgerMenu
                                 open={open}
                                 toggle={show ? setOpen : setToggle}

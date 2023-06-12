@@ -17,6 +17,7 @@ const Header = forwardRef((props, ref) => {
                     ref={ref}
                     style={props.style}
                     className={props.className}
+                    categories={props.categories}
                 >
                     {props.children}
                 </Navbar>

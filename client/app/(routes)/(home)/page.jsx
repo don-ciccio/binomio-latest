@@ -1,6 +1,9 @@
+import { getCategories } from "@/app/lib/api";
 import HeroSection from "./layouts/HeroSection";
 
 export default async function Home() {
+    const initialData = await getCategories("");
+
     return (
         <div
             className='
@@ -9,7 +12,7 @@ export default async function Home() {
             flex-col
             '
         >
-            <HeroSection />
+            <HeroSection categories={initialData} />
         </div>
     );
 }

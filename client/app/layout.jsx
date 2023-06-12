@@ -1,5 +1,6 @@
 import "@/app/styles/globals.css";
 import { Nunito } from "next/font/google";
+import Providers from "./providers";
 
 export const metadata = {
     title: "NextJs Ecommerce Template",
@@ -13,7 +14,9 @@ const font = Nunito({
 export default function RootLayout({ children }) {
     return (
         <html lang='it'>
-            <body className={font.className}>{children}</body>
+            <body className={font.className}>
+                <Providers>{children}</Providers>
+            </body>
         </html>
     );
 }
