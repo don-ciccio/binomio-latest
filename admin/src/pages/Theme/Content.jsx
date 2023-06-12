@@ -1,10 +1,23 @@
 import Breadcrumb from "@/components/common/BreadCrumb";
+import Loader from "@/components/common/Loader";
+
+import ContentForm from "@/components/ContentForm";
+import { useGetContent } from "@/store/react-query/hooks/useQueries";
 
 const Content = () => {
+    const { data, isLoading } = useGetContent();
+
+    if (isLoading)
+        return (
+            <div className='flex items-center justify-center h-screen'>
+                <Loader />
+            </div>
+        );
+
     return (
         <>
             <Breadcrumb pageName='Tema' />
-            <div>Content</div>
+            <ContentForm {...data?.data.content} />
         </>
     );
 };

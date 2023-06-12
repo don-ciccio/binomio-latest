@@ -1,8 +1,9 @@
-import { getCategories } from "@/app/lib/api";
+import { getCategories, getContent } from "@/app/lib/api";
 import HeroSection from "./layouts/HeroSection";
 
 export default async function Home() {
-    const initialData = await getCategories("");
+    const initialCategories = await getCategories("");
+    const initialContent = await getContent();
 
     return (
         <div
@@ -12,7 +13,10 @@ export default async function Home() {
             flex-col
             '
         >
-            <HeroSection categories={initialData} />
+            <HeroSection
+                categories={initialCategories}
+                message={initialContent.data?.content.topbar}
+            />
         </div>
     );
 }

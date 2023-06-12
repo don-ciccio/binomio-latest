@@ -6,6 +6,7 @@ import {
     getCategory,
     getStores,
     getStore,
+    getContent,
 } from "../queries";
 
 export const useGetProducts = ({
@@ -52,6 +53,14 @@ export const useGetCategories = ({ search }) => {
 
 export const useGetStores = () => {
     return useQuery(["stores", "list"], () => getStores(), {
+        keepPreviousData: true,
+        staleTime: 5000,
+        cacheTime: 1000 * 60 * 60 * 24,
+    });
+};
+
+export const useGetContent = () => {
+    return useQuery(["content"], () => getContent(), {
         keepPreviousData: true,
         staleTime: 5000,
         cacheTime: 1000 * 60 * 60 * 24,

@@ -10,6 +10,12 @@ export const getCategories = async (search) => {
     return data;
 };
 
+export const getContent = async () => {
+    return await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/content`
+    );
+};
+
 export const useGetCategories = ({ search, categories }) => {
     return useQuery(
         ["categories", "list", { search }],
@@ -18,4 +24,10 @@ export const useGetCategories = ({ search, categories }) => {
             initialData: categories,
         }
     );
+};
+
+export const useGetContent = ({ message }) => {
+    return useQuery(["content"], () => getContent(), {
+        initialData: message,
+    });
 };

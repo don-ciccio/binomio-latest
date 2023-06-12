@@ -10,7 +10,7 @@ const Header = forwardRef((props, ref) => {
     return (
         <Container>
             <ThemeProvider>
-                <TopMenu message='FREE SHIPPING' />
+                <TopMenu message={props.message} />
                 <Navbar
                     {...props}
                     id={props.id}
