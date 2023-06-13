@@ -4,9 +4,9 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 
 exports.topbarContent = catchAsyncErrors(async (req, res, next) => {
-    const { topbar, _id } = req.body;
+    const { topbar, heroTitle, heroDescription, _id } = req.body;
 
-    if (!topbar) {
+    if (!topbar || !heroTitle || !heroDescription) {
         return next(new ErrorHandler("Field required", 400));
     }
 
@@ -15,6 +15,8 @@ exports.topbarContent = catchAsyncErrors(async (req, res, next) => {
             { _id },
             {
                 topbar,
+                heroTitle,
+                heroDescription,
             }
         );
 
@@ -25,6 +27,8 @@ exports.topbarContent = catchAsyncErrors(async (req, res, next) => {
     } else {
         const content = Content.create({
             topbar,
+            heroTitle,
+            heroDescription,
         });
 
         res.status(200).json({

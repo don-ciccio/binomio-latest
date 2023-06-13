@@ -14,8 +14,11 @@ import RippleButton from "../ui/Button";
 
 /* data */
 import { items } from "./Cards/items";
+import { useGetContentHero } from "@/app/lib/api";
 
 const Main = React.forwardRef((props, ref) => {
+    const { data } = useGetContentHero(props);
+
     const divScroll = useRef();
     const [scrollPosition, setScrollPosition] = useState(0);
     const [scrollRange, setScrollRange] = useState(0);
@@ -110,11 +113,10 @@ const Main = React.forwardRef((props, ref) => {
                         ></span>
                         <div className='top-16 relative pt-20 pb-8 px-3 text-center	rounded-2xl	shadow-sm bg-white overflow-hidden '>
                             <h2 className='mb-2.5 tracking-wide uppercase text-2xl max-w-3xl mx-auto font-medium'>
-                                Binomio da mangiare
+                                {data.data?.content.heroTitle}
                             </h2>
                             <p className='text-base px-3 max-w-3xl mx-auto mt-0 mb-1.5'>
-                                Scopri il nostro menu con ingredienti sempre
-                                freschi per la tua cena leggera.
+                                {data.data?.content.heroDescription}
                             </p>
 
                             <div className='mt-8 block'>

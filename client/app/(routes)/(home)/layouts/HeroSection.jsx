@@ -12,7 +12,7 @@ import useAnimationFrame from "@/app/lib/hooks/useAnimationFrame";
 import useIntersectionObserver from "@/app/lib/hooks/useIntersectionObserver";
 import SVGLogo from "@/app/components/icons/SVGLogo";
 
-const HeroSection = ({ categories, message }) => {
+const HeroSection = ({ categories, message, herotitle, herodescription }) => {
     const triggerRef = useRef();
     const targetElement = useRef();
 
@@ -100,7 +100,11 @@ const HeroSection = ({ categories, message }) => {
                     <SVGLogo className='overflow-hidden align-middle h-full w-full' />
                 </Header>
             </animated.div>
-            <Main ref={triggerRef} />
+            <Main
+                herotitle={herotitle}
+                herodescription={herodescription}
+                ref={triggerRef}
+            />
         </>
     );
 };

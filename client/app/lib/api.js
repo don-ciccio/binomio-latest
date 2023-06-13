@@ -31,3 +31,9 @@ export const useGetContent = ({ message }) => {
         initialData: message,
     });
 };
+
+export const useGetContentHero = (props) => {
+    return useQuery(["content"], () => getContent(), {
+        initialData: props,
+    });
+};

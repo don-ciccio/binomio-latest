@@ -16,6 +16,8 @@ export default async function Home() {
             <HeroSection
                 categories={initialCategories}
                 message={initialContent.data?.content.topbar}
+                herotitle={initialContent.data?.content.heroTitle}
+                herodescription={initialContent.data?.content.heroDescription}
             />
         </div>
     );

@@ -7,9 +7,18 @@ axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const ContentForm = ({ _id, topbar: existingTopbar }) => {
+const ContentForm = ({
+    _id,
+    topbar: existingTopbar,
+    heroTitle: existingTitle,
+    heroDescription: existingDescription,
+}) => {
     const history = useNavigate();
     const [topbar, setTopbar] = useState(existingTopbar || "");
+    const [heroTitle, setHeroTitle] = useState(existingTitle || "");
+    const [heroDescription, setHeroDescription] = useState(
+        existingDescription || ""
+    );
 
     const queryClient = useQueryClient();
 
@@ -40,6 +49,8 @@ const ContentForm = ({ _id, topbar: existingTopbar }) => {
         e.preventDefault();
         const data = {
             topbar,
+            heroTitle,
+            heroDescription,
         };
 
         if (_id) {
@@ -74,6 +85,33 @@ const ContentForm = ({ _id, topbar: existingTopbar }) => {
                                 />
                             </div>
                         </div>
+                        <div className='flex flex-col gap-5.5 p-6.5'>
+                            <div>
+                                <label className='mb-3 block text-black dark:text-white'>
+                                    Sezione Hero
+                                </label>
+                                <input
+                                    type='text'
+                                    placeholder='Titolo Hero'
+                                    value={heroTitle}
+                                    onChange={(e) =>
+                                        setHeroTitle(e.target.value)
+                                    }
+                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                />
+                            </div>
+                            <div>
+                                <textarea
+                                    type='text'
+                                    placeholder='Descrizione Hero'
+                                    value={heroDescription}
+                                    onChange={(e) =>
+                                        setHeroDescription(e.target.value)
+                                    }
+                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className='flex justify-start gap-4.5 mt-6'>
@@ -102,4 +140,6 @@ export default ContentForm;
 ContentForm.propTypes = {
     _id: PropTypes.string,
     topbar: PropTypes.string,
+    heroTitle: PropTypes.string,
+    heroDescription: PropTypes.string,
 };
