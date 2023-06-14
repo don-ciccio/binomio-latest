@@ -81,7 +81,13 @@ exports.uploadCategoryImages = catchAsyncErrors(async (req, res, next) => {
                     height: 600,
                     width: 600,
                     fit: "contain",
-                    position: sharp.gravity.center,
+                    position: "bottom",
+                    background: {
+                        r: 0,
+                        g: 0,
+                        b: 0,
+                        alpha: 1,
+                    },
                 })
                 .toFormat("webp", {
                     quality: 70,

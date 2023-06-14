@@ -13,12 +13,14 @@ import Slider from "./Cards/Slider";
 import RippleButton from "../ui/Button";
 
 /* data */
-import { items } from "./Cards/items";
-import { useGetContentHero } from "@/app/lib/api";
+import { useGetContentHero, useGetCategories } from "@/app/lib/api";
 
 const Main = React.forwardRef((props, ref) => {
     const { data } = useGetContentHero(props);
+    const [search, setSearch] = useState("");
+    const { data: categories } = useGetCategories({ search, props });
 
+    const withoutParent = categories.filter((p) => !p.hasOwnProperty("parent"));
     const divScroll = useRef();
     const [scrollPosition, setScrollPosition] = useState(0);
     const [scrollRange, setScrollRange] = useState(0);
@@ -129,7 +131,7 @@ const Main = React.forwardRef((props, ref) => {
                             <div className='mx-auto block'>
                                 <div className='w-screen'>
                                     <h2 className='tracking-wide uppercase text-xl mb-8'>
-                                        Our Collections
+                                        Galleria
                                     </h2>
                                     <div className='overflow-hidden'>
                                         <a.div
@@ -143,7 +145,7 @@ const Main = React.forwardRef((props, ref) => {
                                         >
                                             <div className='md:h-60 xxs:h-48 -mt-2.5 px-2.5 text-left flex'>
                                                 <Cards
-                                                    items={items}
+                                                    items={withoutParent}
                                                     style={{ transform: t }}
                                                 />
                                             </div>
