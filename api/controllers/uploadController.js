@@ -61,6 +61,51 @@ exports.uploadImages = catchAsyncErrors(async (req, res, next) => {
     }
 });
 
+exports.uploadCategoryImages = catchAsyncErrors(async (req, res, next) => {
+    const { files } = await promisifyUpload(req);
+    console.log(files);
+    try {
+        if (!files) {
+            next(new ErrorHandler("File not uploaded", 500));
+        }
+
+        const links = [];
+
+        for (const file of files.file) {
+            const newFilename = `categoryImage_${Date.now().toString()}.webp`;
+            const input = sharp(fs.readFileSync(file.path));
+
+            await input
+                .trim()
+                .resize({
+                    height: 600,
+                    width: 600,
+                    fit: "contain",
+                    position: sharp.gravity.center,
+                })
+                .toFormat("webp", {
+                    quality: 70,
+                    alphaQuality: 70,
+                    nearLossless: true,
+                })
+                .toBuffer({ resolveWithObject: true })
+                .then(async ({ data }) => {
+                    await uploadFile(
+                        data,
+                        `categoryImage/${newFilename}`,
+                        "image/webp"
+                    );
+                });
+
+            const link = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/categoryImage/${newFilename}`;
+            links.push(link);
+            return res.json({ links });
+        }
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+});
+
 exports.deleteImages = catchAsyncErrors(async (req, res, next) => {
     const adr = req.body.url;
 

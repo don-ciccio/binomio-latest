@@ -9,8 +9,16 @@ const {
 } = require("../controllers/categoryController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
+const {
+    uploadCategoryImages,
+    deleteImages,
+} = require("../controllers/uploadController");
 
 router.route("/categories").get(getCategories);
+router
+    .route("/categories/upload")
+    .post(uploadCategoryImages)
+    .delete(deleteImages);
 router.route("/category/:id").get(getCategories);
 
 router.route("/admin/category/new").post(isAuthenticatedUser, newCategory);

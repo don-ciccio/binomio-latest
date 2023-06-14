@@ -1,5 +1,8 @@
 import PropTypes from "prop-types";
 import { Icon } from "@iconify/react";
+import Spinner from "./common/Spinner";
+
+import { ReactSortable } from "react-sortablejs";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -17,10 +20,16 @@ const AddCategoryForm = ({
     name: existingTitle,
     parent: existingParent,
     properties: existingProperties,
+    images: existingImages,
 }) => {
     const [name, setName] = useState(existingTitle || "");
     const [parent, setParent] = useState(existingParent || "");
     const [properties, setProperties] = useState(existingProperties || []);
+    const [images, setImages] = useState(existingImages || []);
+
+    const [isButtonShown, setIsButtonShown] = useState(null);
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
 
     const { data: categories } = useGetCategories({ search: "" });
 
@@ -50,6 +59,54 @@ const AddCategoryForm = ({
             history(redirect);
         },
     });
+
+    const clickHandler = (index) => {
+        setIsButtonShown((prev) => {
+            return prev === index ? null : index;
+        });
+    };
+
+    const deleteImages = async (e) => {
+        e.preventDefault();
+        const removed = images[isButtonShown].toString();
+
+        if (isFormSubmitted) {
+            await axios.delete(`${API_URL}/api/categories/upload`, {
+                data: { url: removed },
+                headers: { "Content-Type": "application/json" },
+            });
+        }
+
+        setImages((currentImg) =>
+            currentImg.filter((img, i) => i !== isButtonShown)
+        );
+
+        queryClient.invalidateQueries({ queryKey: ["categories"] });
+    };
+
+    const uploadImages = async (e) => {
+        const files = e.target?.files;
+
+        if (files?.length !== undefined && files?.length > 0) {
+            setIsUploading(true);
+            const data = new FormData();
+            for (const file of Array.from(files)) {
+                data.append("file", file);
+                const res = await axios.post(
+                    `${API_URL}/api/categories/upload`,
+                    data
+                );
+                setImages((oldImages) => {
+                    return [...oldImages, ...res.data.links];
+                });
+                setIsUploading(false);
+            }
+        }
+    };
+
+    const updateImagesOrder = (images) => {
+        setImages(images);
+    };
 
     const addProperty = () => {
         setProperties((prev) => {
@@ -87,6 +144,7 @@ const AddCategoryForm = ({
         const data = {
             name,
             parent,
+            images,
             properties: properties.map((p) => ({
                 name: p.name,
                 values: p.values,
@@ -98,71 +156,189 @@ const AddCategoryForm = ({
         } else {
             mutationPost.mutate({ data: data });
         }
+        setIsFormSubmitted(true);
     };
     return (
         <form onSubmit={saveCategory}>
             <div className='grid grid-cols-1 gap-5'>
                 <div className='flex flex-col gap-5'>
-                    <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                        <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                            <h3 className='font-medium text-black dark:text-white'>
-                                Caratteristiche Categoria
-                            </h3>
-                        </div>
-                        <div className='flex flex-col gap-5.5 p-6.5'>
-                            <div>
+                    <div className='flex md:flex-row flex-col gap-5'>
+                        <div className='md:w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
+                            <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
+                                <h3 className='font-medium text-black dark:text-white'>
+                                    Caratteristiche Categoria
+                                </h3>
+                            </div>
+                            <div className='flex flex-col gap-5.5 p-6.5'>
+                                <div>
+                                    <label className='mb-3 block text-black dark:text-white'>
+                                        Titolo
+                                    </label>
+                                    <input
+                                        type='text'
+                                        placeholder='Nome Categoria'
+                                        value={name}
+                                        onChange={(e) =>
+                                            setName(e.target.value)
+                                        }
+                                        className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    />
+                                </div>
+                            </div>
+                            <div className='flex flex-col  p-6.5'>
                                 <label className='mb-3 block text-black dark:text-white'>
-                                    Titolo
+                                    Collezione
                                 </label>
-                                <input
-                                    type='text'
-                                    placeholder='Nome Categoria'
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                />
+                                <div className='relative z-20 bg-transparent dark:bg-form-input'>
+                                    <select
+                                        value={parent}
+                                        onChange={(e) =>
+                                            setParent(e.target.value)
+                                        }
+                                        className='relative z-20 w-full appearance-none rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    >
+                                        <option value=''>Nessuna</option>
+                                        {categories?.map((category, i) => (
+                                            <option
+                                                key={i}
+                                                value={category._id}
+                                            >
+                                                {category.name}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2'>
+                                        <svg
+                                            className='fill-current'
+                                            width='24'
+                                            height='24'
+                                            viewBox='0 0 24 24'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                        >
+                                            <g opacity='0.8'>
+                                                <path
+                                                    fillRule='evenodd'
+                                                    clipRule='evenodd'
+                                                    d='M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z'
+                                                    fill=''
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <div className='flex flex-col  p-6.5'>
-                            <label className='mb-3 block text-black dark:text-white'>
-                                Collezione
-                            </label>
-                            <div className='relative z-20 bg-transparent dark:bg-form-input'>
-                                <select
-                                    value={parent}
-                                    onChange={(e) => setParent(e.target.value)}
-                                    className='relative z-20 w-full appearance-none rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                >
-                                    <option value=''>Nessuna</option>
-                                    {categories?.map((category, i) => (
-                                        <option key={i} value={category._id}>
-                                            {category.name}
-                                        </option>
-                                    ))}
-                                </select>
-
-                                <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2'>
-                                    <svg
-                                        className='fill-current'
-                                        width='24'
-                                        height='24'
-                                        viewBox='0 0 24 24'
-                                        fill='none'
-                                        xmlns='http://www.w3.org/2000/svg'
+                        <div className='md:w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
+                            <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
+                                <h3 className='font-medium text-black dark:text-white'>
+                                    Immagine
+                                </h3>
+                            </div>
+                            <div className='flex flex-col gap-5.5 p-6.5'>
+                                <div className='flex flex-col'>
+                                    <div
+                                        id='FileUpload'
+                                        className='relative mb-5.5 block w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5'
                                     >
-                                        <g opacity='0.8'>
-                                            <path
-                                                fillRule='evenodd'
-                                                clipRule='evenodd'
-                                                d='M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z'
-                                                fill=''
-                                            ></path>
-                                        </g>
-                                    </svg>
-                                </span>
+                                        <input
+                                            type='file'
+                                            onChange={uploadImages}
+                                            className='cursor-pointer absolute inset-0 z-50 m-0 h-full w-full p-0 opacity-0 outline-none'
+                                        />
+                                        <div className='flex flex-col items-center justify-center space-y-3'>
+                                            <span className='flex h-11.5 w-11.5 items-center justify-center rounded-full border border-stroke bg-primary/5 dark:border-strokedark'>
+                                                <svg
+                                                    width='20'
+                                                    height='20'
+                                                    viewBox='0 0 20 20'
+                                                    fill='none'
+                                                    xmlns='http://www.w3.org/2000/svg'
+                                                >
+                                                    <g clipPath='url(#clip0_75_12841)'>
+                                                        <path
+                                                            d='M2.5 15.8333H17.5V17.5H2.5V15.8333ZM10.8333 4.85663V14.1666H9.16667V4.85663L4.1075 9.91663L2.92917 8.73829L10 1.66663L17.0708 8.73746L15.8925 9.91579L10.8333 4.85829V4.85663Z'
+                                                            fill='#3C50E0'
+                                                        ></path>
+                                                    </g>
+                                                    <defs>
+                                                        <clipPath id='clip0_75_12841'>
+                                                            <rect
+                                                                width='20'
+                                                                height='20'
+                                                                fill='white'
+                                                            ></rect>
+                                                        </clipPath>
+                                                    </defs>
+                                                </svg>
+                                            </span>
+                                            <p className='text-center text-xs'>
+                                                <span className='text-primary'>
+                                                    Clicca per effetture
+                                                    l&rsquo;upload
+                                                </span>{" "}
+                                                o trascina l&rsquo;immagine
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-row flex-wrap items-start gap-1 max-h-18'>
+                                        <ReactSortable
+                                            list={images}
+                                            setList={updateImagesOrder}
+                                            className='flex gap-2 group'
+                                        >
+                                            {!!images?.length &&
+                                                images.map((link, i) => (
+                                                    <div
+                                                        className='max-w-11 cursor-pointer'
+                                                        key={i}
+                                                    >
+                                                        <div
+                                                            className='relative'
+                                                            onMouseEnter={() =>
+                                                                clickHandler(i)
+                                                            }
+                                                            onMouseLeave={() =>
+                                                                clickHandler(i)
+                                                            }
+                                                        >
+                                                            <img
+                                                                src={link}
+                                                                alt=''
+                                                                className='rounded-sm border border-bodydark border-dashed dark:border-strokedark'
+                                                            />
+                                                            <button
+                                                                onClick={
+                                                                    deleteImages
+                                                                }
+                                                                className={`${
+                                                                    isButtonShown ===
+                                                                    i
+                                                                        ? "absolute -right-1 -top-2 bg-danger text-white rounded-full"
+                                                                        : "hidden"
+                                                                }`}
+                                                            >
+                                                                <Icon
+                                                                    className='w-4 h-4'
+                                                                    icon='iconamoon:close-bold'
+                                                                />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                        </ReactSortable>
+                                        {isUploading && (
+                                            <div className='h-6 mt-2 ml-1.5 flex items-center'>
+                                                <Spinner />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                         <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
                             <h3 className='font-medium text-black dark:text-white'>
@@ -269,4 +445,5 @@ AddCategoryForm.propTypes = {
     name: PropTypes.string,
     parent: PropTypes.string,
     properties: PropTypes.array,
+    images: PropTypes.array,
 };

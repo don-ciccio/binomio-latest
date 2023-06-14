@@ -9,6 +9,7 @@ const categorySchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Category",
     },
+    images: [{ type: String }],
     properties: [{ type: Object }],
 });
 
