@@ -5,7 +5,7 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 
 // Create new product => /api/admin/category/new
 exports.newCategory = catchAsyncErrors(async (req, res, next) => {
-    const { name, parent, images, properties } = req.body;
+    const { name, parent, images, description, properties } = req.body;
     if (!name) {
         return next(new ErrorHandler("Field required", 400));
     }
@@ -13,6 +13,7 @@ exports.newCategory = catchAsyncErrors(async (req, res, next) => {
     let category = Category.create({
         name,
         images,
+        description,
         parent: parent || undefined,
         properties,
     });
@@ -48,6 +49,7 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
                         _id: 1,
                         parent: 1,
                         images: 1,
+                        description: 1,
                         properties: 1,
                         number_of_product: { $size: "$products" },
                     },
@@ -64,7 +66,7 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
-    const { name, parent, images, properties, _id } = req.body;
+    const { name, parent, images, description, properties, _id } = req.body;
 
     if (!name || !_id) {
         return next(new ErrorHandler(error.message, 400));
@@ -75,6 +77,7 @@ exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
         {
             name,
             images,
+            description,
             parent: parent || undefined,
             properties,
         }

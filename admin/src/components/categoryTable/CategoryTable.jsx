@@ -58,10 +58,18 @@ const CategoryTable = ({ isLoading, categories }) => {
                             {categories.map((category, index) => (
                                 <tr key={index}>
                                     <>
-                                        <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                                            <p className='text-black dark:text-whiten'>
+                                        <td className='flex flex-col gap-5 sm:flex-row sm:items-center border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                                            {category.images?.length > 0 && (
+                                                <img
+                                                    className='h-12.5 w-15 rounded-md'
+                                                    src={category.images[0]}
+                                                    alt={category.name}
+                                                />
+                                            )}
+
+                                            <h5 className='font-medium text-black dark:text-white'>
                                                 {category.name}
-                                            </p>
+                                            </h5>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
                                             <p className='text-black dark:text-whiten'>

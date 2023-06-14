@@ -21,11 +21,13 @@ const AddCategoryForm = ({
     parent: existingParent,
     properties: existingProperties,
     images: existingImages,
+    description: existingDescription,
 }) => {
     const [name, setName] = useState(existingTitle || "");
     const [parent, setParent] = useState(existingParent || "");
     const [properties, setProperties] = useState(existingProperties || []);
     const [images, setImages] = useState(existingImages || []);
+    const [description, setDescription] = useState(existingDescription || "");
 
     const [isButtonShown, setIsButtonShown] = useState(null);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -144,6 +146,7 @@ const AddCategoryForm = ({
         const data = {
             name,
             parent,
+            description,
             images,
             properties: properties.map((p) => ({
                 name: p.name,
@@ -315,7 +318,7 @@ const AddCategoryForm = ({
                                                                 className={`${
                                                                     isButtonShown ===
                                                                     i
-                                                                        ? "absolute -right-1 -top-2 bg-danger text-white rounded-full"
+                                                                        ? "absolute -right-1 -top-2 bg-danger text-white rounded-full z-999"
                                                                         : "hidden"
                                                                 }`}
                                                             >
@@ -338,7 +341,22 @@ const AddCategoryForm = ({
                             </div>
                         </div>
                     </div>
-
+                    <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
+                        <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
+                            <h3 className='font-medium text-black dark:text-white'>
+                                Descrizione
+                            </h3>
+                        </div>
+                        <div className='flex flex-col gap-5.5 p-6.5'>
+                            <textarea
+                                rows={6}
+                                placeholder='Descrizione'
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                            ></textarea>
+                        </div>
+                    </div>
                     <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                         <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
                             <h3 className='font-medium text-black dark:text-white'>
@@ -446,4 +464,5 @@ AddCategoryForm.propTypes = {
     parent: PropTypes.string,
     properties: PropTypes.array,
     images: PropTypes.array,
+    description: PropTypes.string,
 };
