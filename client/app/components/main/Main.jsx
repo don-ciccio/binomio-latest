@@ -117,7 +117,7 @@ const Main = React.forwardRef((props, ref) => {
                             <h2 className='mb-2.5 tracking-wide uppercase text-2xl max-w-3xl mx-auto font-medium'>
                                 {data.data?.content.heroTitle}
                             </h2>
-                            <p className='text-base px-3 max-w-3xl mx-auto mt-0 mb-1.5'>
+                            <p className='text-lg px-3 max-w-3xl mx-auto mt-0 mb-1.5'>
                                 {data.data?.content.heroDescription}
                             </p>
 
@@ -130,8 +130,8 @@ const Main = React.forwardRef((props, ref) => {
                         <div className='xxs:pt-14 md:pb-0 lg:py-14 relative z-1 text-center bg-gray-150 block'>
                             <div className='mx-auto block'>
                                 <div className='w-screen'>
-                                    <h2 className='tracking-wide uppercase text-xl mb-8'>
-                                        Galleria
+                                    <h2 className='tracking-wide uppercase text-2xl mb-8'>
+                                        La nostra offerta
                                     </h2>
                                     <div className='overflow-hidden'>
                                         <a.div

@@ -1,5 +1,5 @@
 import "@/app/styles/globals.css";
-import { Nunito } from "next/font/google";
+import { Karla } from "next/font/google";
 import Providers from "./providers";
 
 export const metadata = {
@@ -7,7 +7,7 @@ export const metadata = {
     description: "Template for NextJs  Ecommerce",
 };
 
-const font = Nunito({
+const font = Karla({
     subsets: ["latin"],
 });
 

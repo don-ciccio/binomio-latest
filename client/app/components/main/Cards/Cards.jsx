@@ -22,20 +22,15 @@ const Cards = ({ style, items }) => {
                                         />
                                     </div>
                                     <div className='py-2.5 px-5 w-full h-full block'>
-                                        <div className='text-right'>
-                                            <span className='inline-block'>
-                                                <SVGLogo className='block h-10 w-10' />
-                                            </span>
-                                        </div>
-                                        <h4 className='xxs:text-sm lg:text-base font-bold leading-none mb-2.5'>
+                                        <h4 className='xxs:text-base lg:text-lg font-bold leading-none mb-2.5'>
                                             {name}
                                         </h4>
-                                        <p className='text-xs mb-1'>
+                                        <p className='text-sm mb-1'>
                                             {description}
                                         </p>
                                         <a
                                             href='/#'
-                                            className='xxs:hidden mt-5 lg:inline-block font-semibold border-b-2	border-black border-solid text-sm tracking-tight pb-0'
+                                            className='xxs:hidden mt-8 lg:inline-block font-semibold border-b-2	border-black border-solid text-sm tracking-tight pb-0'
                                         >
                                             Scopri
                                         </a>

@@ -9,7 +9,7 @@ const url = require("url");
 
 exports.uploadImages = catchAsyncErrors(async (req, res, next) => {
     const { files } = await promisifyUpload(req);
-    console.log(files);
+
     try {
         if (!files) {
             next(new ErrorHandler("File not uploaded", 500));
@@ -63,7 +63,7 @@ exports.uploadImages = catchAsyncErrors(async (req, res, next) => {
 
 exports.uploadCategoryImages = catchAsyncErrors(async (req, res, next) => {
     const { files } = await promisifyUpload(req);
-    console.log(files);
+
     try {
         if (!files) {
             next(new ErrorHandler("File not uploaded", 500));
