@@ -91,7 +91,7 @@ const Navbar = forwardRef((props, ref) => {
     return (
         <>
             <div>
-                <div className='md:px-8 xxs:px-4'>
+                <div className='md:px-10 xxs:px-4'>
                     <div
                         ref={refWidth}
                         className='
