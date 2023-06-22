@@ -7,6 +7,7 @@ const ProductRow = ({ filterCategory }) => {
     const [sort, setSort] = useState({ sort: "price", order: "asc" });
     const [status, setStatus] = useState("All");
     const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(4);
     const [search, setSearch] = useState("");
     const { data } = useGetProducts({
         page,
@@ -14,6 +15,7 @@ const ProductRow = ({ filterCategory }) => {
         filterCategory,
         status,
         search,
+        limit,
     });
 
     return (

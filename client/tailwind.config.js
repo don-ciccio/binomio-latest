@@ -25,6 +25,7 @@ module.exports = {
             },
             backgroundImage: {
                 "down-arrow": "url('./images/arrowdown.svg')",
+                "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
             },
             backgroundSize: {
                 extra: "1rem 12px",

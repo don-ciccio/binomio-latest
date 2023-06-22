@@ -6,19 +6,21 @@ import { useState } from "react";
 const ProductsSection = () => {
     const [search, setSearch] = useState("");
     const { data } = useGetCategories({ search });
+
     return (
         <div className='relative z-2'>
-            <div className='md:px-10 xxs:px-4 xxs:pt-14 md:pb-0 lg:py-14 relative z-1 text-center bg-gray-150 block'>
+            <div className='md:px-10 xxs:px-4 md:pb-0 lg:pb-14 lg:pt-8 relative z-1 text-center bg-gray-150 block'>
                 {data.map(
                     (cat) =>
-                        cat.number_of_product > 0 && (
-                            <>
+                        cat.number_of_product > 0 &&
+                        !cat.parent && (
+                            <div className='mb-10' key={cat._id}>
                                 <div className='mb-8 flex items-baseline justify-between'>
-                                    <h2 className='text-2xl font-medium md:text-3xl uppercase'>
+                                    <h2 className='text-2xl font-medium tracking-wide uppercase'>
                                         {cat.name}
                                     </h2>
                                     <a
-                                        className='hidden md:flex items-center font-medium text-xl'
+                                        className='hidden md:flex items-center font-medium text-base'
                                         href='/'
                                     >
                                         Esplora
@@ -37,7 +39,7 @@ const ProductsSection = () => {
                                     </a>
                                 </div>
                                 <ProductRow filterCategory={cat._id} />
-                            </>
+                            </div>
                         )
                 )}
             </div>

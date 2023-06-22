@@ -9,7 +9,7 @@ export const getProducts = async (
     filterCategory = [],
     status = "All",
     search = "",
-    limit = 3
+    limit = 4
 ) => {
     const url = `${
         process.env.NEXT_PUBLIC_SERVER_URL
