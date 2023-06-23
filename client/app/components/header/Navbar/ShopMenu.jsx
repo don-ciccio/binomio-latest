@@ -3,6 +3,7 @@ import { useState, useEffect, useContext, useCallback } from "react";
 import useMeasure from "react-use-measure";
 import { useSpring, config, animated } from "@react-spring/web";
 import Image from "next/image";
+import { Icon } from "@iconify/react";
 
 /* components */
 import MiniCart from "./ShopMenuComponents/MiniCart";
@@ -168,17 +169,7 @@ const ShopMenu = () => {
                         href='/#'
                         className='p-2.5 block bg-gray-100 rounded-full hover:bg-gray-150'
                     >
-                        <Image
-                            width={20}
-                            height={20}
-                            style={{
-                                width: 20,
-                                height: 20,
-                            }}
-                            src='./images/bag.svg'
-                            alt='cart'
-                            priority
-                        />
+                        <Icon className='w-5 h-5' icon='el:shopping-cart' />
                     </a>
 
                     <span className='absolute -top-3 -right-2 w-5	h-5 object-contain	bg-zinc-800 shadow-sm shadow-zinc-400 rounded-xl justify-center items-center flex'>

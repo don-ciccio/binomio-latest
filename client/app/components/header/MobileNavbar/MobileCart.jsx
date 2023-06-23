@@ -7,6 +7,7 @@ import {
     config,
 } from "@react-spring/web";
 import Image from "next/image";
+import { Icon } from "@iconify/react";
 
 const MobileCart = ({ open, contentWidth, show, toggle }) => {
     const springRef = useSpringRef();
@@ -126,15 +127,9 @@ const MobileCart = ({ open, contentWidth, show, toggle }) => {
                                 className='p-4 block items-center justify-center'
                                 href='/#'
                             >
-                                <Image
-                                    width={20}
-                                    height={20}
-                                    style={{
-                                        width: 20,
-                                        height: 20,
-                                    }}
-                                    src='./images/bag.svg'
-                                    alt='cart'
+                                <Icon
+                                    className='w-5 h-5'
+                                    icon='el:shopping-cart'
                                 />
                             </animated.a>
                             {open && (
