@@ -124,11 +124,11 @@ const MobileCart = ({ open, contentWidth, show, toggle }) => {
                         >
                             <animated.a
                                 style={scale}
-                                className='p-4 block items-center justify-center'
+                                className='py-3.5 pr-4 pl-3 block items-center justify-center'
                                 href='/#'
                             >
                                 <Icon
-                                    className='w-5 h-5'
+                                    className='w-6 h-6'
                                     icon='el:shopping-cart'
                                 />
                             </animated.a>
