@@ -16,6 +16,8 @@ import MiniSearchInput from "./ShopMenuComponents/MiniSearchInput";
 import useComponentVisible from "@/app/lib/hooks/useComponentVisible";
 import { ThemeContext } from "@/app/lib/context/theme";
 import { setToggle } from "@/app/lib/context/reducer";
+import { useCartStore } from "@/app/lib/store";
+import { useCart } from "@/app/lib/hooks/useCart";
 
 const array = [
     { id: 1, component: <MiniCart />, isVisible: true },
@@ -24,6 +26,10 @@ const array = [
 ];
 
 const ShopMenu = () => {
+    const { cart, removeFromCart, updateQuantity } = useCartStore();
+
+    const { cartData, totalPrice, totalQuantity, isLoading } = useCart();
+
     const defaultHeight = 48;
     const [contentHeight, setContentHeight] = useState(defaultHeight);
     const [items, setItems] = useState(array);
@@ -171,10 +177,13 @@ const ShopMenu = () => {
                     >
                         <Icon className='w-5 h-5' icon='el:shopping-cart' />
                     </a>
-
-                    <span className='absolute -top-3 -right-2 w-5	h-5 object-contain	bg-zinc-800 shadow-sm shadow-zinc-400 rounded-xl justify-center items-center flex'>
-                        <span className='text-xs text-zinc-200'>0</span>
-                    </span>
+                    {totalQuantity > 0 && (
+                        <span className='absolute -top-3 -right-2 w-5	h-5 object-contain	bg-zinc-800 shadow-sm shadow-zinc-400 rounded-xl justify-center items-center flex'>
+                            <span className='text-xs text-zinc-200'>
+                                {totalQuantity}
+                            </span>
+                        </span>
+                    )}
                 </animated.li>
             </ul>
         </div>

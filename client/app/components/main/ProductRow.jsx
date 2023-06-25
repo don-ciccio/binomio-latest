@@ -20,9 +20,9 @@ const ProductRow = ({ filterCategory }) => {
 
     return (
         <div className='flex flex-row gap-5'>
-            {data?.products.map((product) => (
+            {data?.products.map((product, index) => (
                 <ProductCard
-                    key={product._id}
+                    id={product._id}
                     name={product.name}
                     price={product.price}
                     images={product.images}

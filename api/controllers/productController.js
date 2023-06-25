@@ -166,6 +166,25 @@ exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+// Get single product detail => /api/v1/product/:id
+exports.getProductsbyId = catchAsyncErrors(async (req, res, next) => {
+    const { filterBy } = req.query;
+    const products = await Product.find({
+        _id: {
+            $in: filterBy,
+        },
+    });
+
+    if (!products) {
+        return next(new ErrorHandler("Product not found", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        products,
+    });
+});
+
 // Update product => /api/v1/admin/product
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     const {

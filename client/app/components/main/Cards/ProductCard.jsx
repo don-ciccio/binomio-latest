@@ -1,12 +1,23 @@
+"use client";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import ReactCardFlip from "react-card-flip";
+import { useCartStore } from "@/app/lib/store";
 
 const ProductCard = ({ name, price, images, id }) => {
     const [isFlipped, setIsFlipped] = useState(false);
+    const { cart, addToCart } = useCartStore();
 
     async function handleClick(e) {
         e.preventDefault();
+
+        const alreadyAdded = cart.find((item) => item.id === id);
+        if (alreadyAdded) {
+            console.log("Already added to cart");
+        } else {
+            addToCart({ id, quantity: 1 });
+        }
+
         setIsFlipped(!isFlipped);
         await delay(800);
         setIsFlipped((prev) => !prev);

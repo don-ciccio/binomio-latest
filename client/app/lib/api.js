@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import querystring from "querystring";
 
 axios.defaults.withCredentials = true;
 
@@ -31,6 +32,15 @@ export const getCategories = async (search) => {
 export const getContent = async () => {
     return await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/content`
+    );
+};
+
+export const getProductsByIds = async (ids) => {
+    const idArray = ids.length < 1 ? null : ids;
+    const query = querystring.stringify({ filterBy: idArray });
+
+    return await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/cart?${query}`
     );
 };
 
