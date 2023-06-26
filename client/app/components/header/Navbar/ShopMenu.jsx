@@ -100,7 +100,13 @@ const ShopMenu = () => {
                                 hidden={!isVisible}
                                 state={state.active}
                             >
-                                {component}
+                                <div
+                                    className={`${
+                                        state.active ? "block" : "hidden"
+                                    }`}
+                                >
+                                    {component}
+                                </div>
                             </ContentAnimated>
                         ))}
                     </div>
@@ -173,12 +179,12 @@ const ShopMenu = () => {
                     onClick={(e) => handleClickLink(e, 1)}
                     className='pl-2.5 pr-0 md:inline'
                 >
-                    <a
-                        href='/#'
+                    <button
+                        type='button'
                         className='p-2.5 block bg-gray-100 rounded-full hover:bg-gray-150'
                     >
                         <Icon className='w-5 h-5' icon='el:shopping-cart' />
-                    </a>
+                    </button>
                     {totalQuantity > 0 && (
                         <span className='absolute -top-3 -right-2 w-5	h-5 object-contain	bg-zinc-800 shadow-sm shadow-zinc-400 rounded-xl justify-center items-center flex'>
                             <span className='text-xs text-zinc-200'>

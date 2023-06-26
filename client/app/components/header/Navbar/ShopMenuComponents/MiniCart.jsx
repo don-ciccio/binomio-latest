@@ -1,3 +1,4 @@
+import RippleButton from "@/app/components/ui/Button";
 import { useCart } from "@/app/lib/hooks/useCart";
 import { useCartStore } from "@/app/lib/store";
 import { Icon } from "@iconify/react";
@@ -7,7 +8,7 @@ const MiniCart = () => {
     const { cartData, totalPrice, isLoading } = useCart();
 
     return (
-        <div className='block'>
+        <>
             <div className='px-5'>
                 <h4 className='uppercase mb-5'>Carrello</h4>
             </div>
@@ -38,46 +39,51 @@ const MiniCart = () => {
                                                             />
                                                         </div>
                                                         <div className='flex flex-grow w-full bg-zinc-300 rounded-xl'>
-                                                            <button
-                                                                type='button'
-                                                                title='Reduce Quantity'
-                                                                onClick={() =>
-                                                                    updateQuantity(
-                                                                        item.id,
-                                                                        "decrease"
-                                                                    )
-                                                                }
-                                                                className={`w-1/3 rounded-l-xl border leading-none ${
-                                                                    item.quantity <
-                                                                    2
-                                                                        ? "cursor-not-allowed bg-skin-muted opacity-75"
-                                                                        : ""
-                                                                }`}
-                                                                tabIndex={
-                                                                    item.quantity <
-                                                                    2
-                                                                        ? -1
-                                                                        : 0
-                                                                }
-                                                            >
-                                                                -
-                                                            </button>
+                                                            <div className='flex justify-center items-center w-1/3'>
+                                                                <button
+                                                                    type='button'
+                                                                    title='Reduce Quantity'
+                                                                    onClick={() =>
+                                                                        updateQuantity(
+                                                                            item.id,
+                                                                            "decrease"
+                                                                        )
+                                                                    }
+                                                                    className={` rounded-l-xl leading-none ${
+                                                                        item.quantity <
+                                                                        2
+                                                                            ? "cursor-not-allowed  opacity-75"
+                                                                            : ""
+                                                                    }`}
+                                                                    tabIndex={
+                                                                        item.quantity <
+                                                                        2
+                                                                            ? -1
+                                                                            : 0
+                                                                    }
+                                                                >
+                                                                    -
+                                                                </button>
+                                                            </div>
+
                                                             <span className=' inline-block w-1/3 text-center'>
                                                                 {item.quantity}
                                                             </span>
-                                                            <button
-                                                                type='button'
-                                                                title='Reduce Quantity'
-                                                                onClick={() =>
-                                                                    updateQuantity(
-                                                                        item.id,
-                                                                        "increase"
-                                                                    )
-                                                                }
-                                                                className='w-1/3 rounded-r-xl border leading-none'
-                                                            >
-                                                                +
-                                                            </button>
+                                                            <div className='flex justify-center items-center w-1/3'>
+                                                                <button
+                                                                    type='button'
+                                                                    title='Reduce Quantity'
+                                                                    onClick={() =>
+                                                                        updateQuantity(
+                                                                            item.id,
+                                                                            "increase"
+                                                                        )
+                                                                    }
+                                                                    className='rounded-r-xl  leading-none'
+                                                                >
+                                                                    +
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -113,16 +119,28 @@ const MiniCart = () => {
                                 )}
                             </ul>
                         </div>
-                        <div class='pl-5 pr-6 relative my-2 flex items-baseline justify-between'>
-                            <span class='text-base'>Totale carrello:</span>
-                            <span class='text-base font-semibold'>
+                        <div className='pl-5 pr-6 relative mt-2 mb-4 flex items-baseline justify-between'>
+                            <span className='text-base'>Totale carrello:</span>
+                            <span className='text-base font-semibold'>
                                 €{totalPrice}
                             </span>
+                        </div>
+                        <div className='flex justify-between gap-x-2 text-base px-5'>
+                            <button
+                                className={`h-11 items-center justify-center flex w-full font-light bg-zinc-800 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer  text-zinc-200`}
+                            >
+                                Checkout
+                            </button>
+                            <button
+                                className={`h-11 items-center justify-center flex w-full font-light  bg-zinc-800 relative overflow-hidden text-center rounded-full px-4 py-2 cursor-pointer  text-zinc-200`}
+                            >
+                                Carrello
+                            </button>
                         </div>
                     </>
                 )}
             </div>
-        </div>
+        </>
     );
 };
 

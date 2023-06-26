@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import useRipple from "@/app/lib/hooks/useRipple";
 
 const RippleButton = ({ label }) => {
