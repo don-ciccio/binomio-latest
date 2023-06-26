@@ -4,9 +4,13 @@ import useMeasure from "react-use-measure";
 import { useSpring, config, animated } from "@react-spring/web";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
+import dynamic from "next/dynamic";
 
 /* components */
-import MiniCart from "./ShopMenuComponents/MiniCart";
+const MiniCart = dynamic(() => import("./ShopMenuComponents/MiniCart"), {
+    ssr: false,
+});
+
 import MiniWishList from "./ShopMenuComponents/MiniWishList";
 import MiniSearch from "./ShopMenuComponents/MiniSearch";
 import ContentAnimated from "./ShopMenuComponents/ContentAnimated";
@@ -16,7 +20,7 @@ import MiniSearchInput from "./ShopMenuComponents/MiniSearchInput";
 import useComponentVisible from "@/app/lib/hooks/useComponentVisible";
 import { ThemeContext } from "@/app/lib/context/theme";
 import { setToggle } from "@/app/lib/context/reducer";
-import { useCartStore } from "@/app/lib/store";
+
 import { useCart } from "@/app/lib/hooks/useCart";
 
 const array = [
@@ -26,9 +30,7 @@ const array = [
 ];
 
 const ShopMenu = () => {
-    const { cart, removeFromCart, updateQuantity } = useCartStore();
-
-    const { cartData, totalPrice, totalQuantity, isLoading } = useCart();
+    const { totalQuantity } = useCart();
 
     const defaultHeight = 48;
     const [contentHeight, setContentHeight] = useState(defaultHeight);

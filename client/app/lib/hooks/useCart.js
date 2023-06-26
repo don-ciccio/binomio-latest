@@ -45,8 +45,8 @@ export const useCart = () => {
                 name: item.name,
                 price: item.price,
                 image: item.images[0],
-                quantity: qtyMap.get(item.id) || 1,
-                timestamp: timestampMap.get(item.id) || 1,
+                quantity: qtyMap.get(item._id) || 1,
+                timestamp: timestampMap.get(item._id) || 1,
             };
         })
         .sort((a, b) => b.timestamp - a.timestamp);
