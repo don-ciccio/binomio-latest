@@ -21,14 +21,13 @@ const ProductRow = ({ filterCategory }) => {
     return (
         <div className='flex flex-row gap-5'>
             {data?.products.map((product, index) => (
-                <div key={index}>
-                    <ProductCard
-                        id={product._id}
-                        name={product.name}
-                        price={product.price}
-                        images={product.images}
-                    />
-                </div>
+                <ProductCard
+                    key={index}
+                    id={product._id}
+                    name={product.name}
+                    price={product.price}
+                    images={product.images}
+                />
             ))}
         </div>
     );

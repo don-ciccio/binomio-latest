@@ -15,9 +15,32 @@ module.exports = {
                     "0%, 100%": { transform: "rotate(-3deg)" },
                     "50%": { transform: "rotate(3deg)" },
                 },
+                hide: {
+                    from: { opacity: 1 },
+                    to: { opacity: 0 },
+                },
+                slideIn: {
+                    from: {
+                        transform:
+                            "translateX(calc(100% + var(--viewport-padding)))",
+                    },
+                    to: { transform: "translateX(0))" },
+                },
+                swipeOut: {
+                    from: {
+                        transform: "translateX(var(--radix-toast-swipe-end-x))",
+                    },
+                    to: {
+                        transform:
+                            "translateX(calc(100% + var(--viewport-padding)))",
+                    },
+                },
             },
             animation: {
                 wiggle: "wiggle 200ms ease-in-out",
+                hide: "hide 100ms ease-in",
+                slideIn: "slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+                swipeOut: "swipeOut 100ms ease-out",
             },
             objectPosition: {
                 "top-center": "top center",
@@ -43,6 +66,7 @@ module.exports = {
             },
             maxWidth: {
                 "1/3": "33.33333%",
+                "2/3": "66.66667%",
                 "5/12": "41.66667%",
                 "7/12": "66.66667%",
                 "2/12": "16.66667%",
@@ -117,6 +141,13 @@ module.exports = {
             colors: {
                 gray: {
                     150: "#f1f1f1",
+                },
+                skin: {
+                    accent: { DEFAULT: "#53CAB5", dark: "#3CAF9A" },
+                    base: "#F9FFFF",
+                    muted: "#EDF4F4",
+                    dark: "#27272A",
+                    gray: "#D1DBD9",
                 },
             },
         },

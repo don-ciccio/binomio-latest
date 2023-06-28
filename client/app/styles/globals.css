@@ -28,6 +28,23 @@ Footer input:not(:placeholder-shown)~button {
         scrollbar-width: none;
         /* Firefox */
     }
+
+
+  .successo {
+      @apply border-zinc-800 stroke-zinc-800 text-zinc-800;
+  }
+
+  .info {
+      @apply border-orange-600 text-orange-600;
+  }
+
+  .warning {
+      @apply border-amber-500 text-amber-500;
+  }
+
+  .error {
+      @apply border-rose-600 stroke-rose-600 text-rose-600;
+  }
 }
 
 .page-content {

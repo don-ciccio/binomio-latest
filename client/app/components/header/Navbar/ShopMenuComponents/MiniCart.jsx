@@ -1,4 +1,3 @@
-import RippleButton from "@/app/components/ui/Button";
 import { useCart } from "@/app/lib/hooks/useCart";
 import { useCartStore } from "@/app/lib/store";
 import { Icon } from "@iconify/react";
@@ -10,7 +9,7 @@ const MiniCart = () => {
     return (
         <>
             <div className='px-5'>
-                <h4 className='uppercase mb-5'>Carrello</h4>
+                <h4 className='uppercase mb-4'>Carrello</h4>
             </div>
             <div className='relative'>
                 {cart.length < 1 ? (
@@ -21,7 +20,7 @@ const MiniCart = () => {
                     </div>
                 ) : (
                     <>
-                        <div className='pr-5 pl-3 relative  mb-4 max-h-80 overflow-y-auto'>
+                        <div className='pr-5 pl-3 relative  mb-4 max-h-84 overflow-y-auto'>
                             <ul>
                                 {isLoading ? (
                                     <p>Loading...</p>
@@ -119,7 +118,7 @@ const MiniCart = () => {
                                 )}
                             </ul>
                         </div>
-                        <div className='pl-5 pr-6 relative mt-2 mb-4 flex items-baseline justify-between'>
+                        <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between'>
                             <span className='text-base'>Totale carrello:</span>
                             <span className='text-base font-semibold'>
                                 €{totalPrice}

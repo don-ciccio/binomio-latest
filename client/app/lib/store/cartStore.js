@@ -5,8 +5,8 @@ export const useCartStore = create()(
     persist(
         (set) => ({
             cart: [],
-            addToCart: (bookObj) =>
-                set((state) => addCartItem(state.cart, bookObj)),
+            addToCart: (itemObj) =>
+                set((state) => addCartItem(state.cart, itemObj)),
             removeFromCart: (id) =>
                 set((state) => removeCartItem(state.cart, id)),
             updateQuantity: (id, action) =>
@@ -19,9 +19,9 @@ export const useCartStore = create()(
 );
 
 /* ===== Cart Store Util Functions ===== */
-function addCartItem(state, bookObj) {
-    const cartArray = state.filter((item) => item.id !== bookObj.id);
-    const newItem = { ...bookObj, timestamp: Date.now() };
+function addCartItem(state, itemObj) {
+    const cartArray = state.filter((item) => item.id !== itemObj.id);
+    const newItem = { ...itemObj, timestamp: Date.now() };
     return { cart: [...cartArray, newItem] };
 }
 

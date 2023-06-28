@@ -15,3 +15,8 @@ export const clamp = (value, clampAt = 30) => {
         return value < -clampAt ? -clampAt : value;
     }
 };
+
+export const defaultStroke = (className) =>
+    new RegExp("stroke-*", "g").test(className)
+        ? ""
+        : "stroke-2 stroke-skin-dark";
