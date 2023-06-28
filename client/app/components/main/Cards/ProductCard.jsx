@@ -99,7 +99,7 @@ const ProductCard = ({ name, price, images, id, index }) => {
                                     <button
                                         type='button'
                                         className='cursor-pointer'
-                                        title='Add To Wishlist'
+                                        title='Aggiungi alla Wishlist'
                                         onClick={handleAddToWishlist}
                                     >
                                         <HeartIcon
