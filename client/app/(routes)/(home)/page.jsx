@@ -3,7 +3,7 @@ import HeroSection from "./layouts/HeroSection";
 import ProductsSection from "./layouts/ProductsSection";
 
 export default async function Home() {
-    const initialCategories = await getCategories("");
+    const initialCategories = await getCategories();
     const initialContent = await getContent();
     const initialProducts = await getProducts();
 

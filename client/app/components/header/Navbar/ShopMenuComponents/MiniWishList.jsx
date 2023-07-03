@@ -130,8 +130,8 @@ const MiniWishList = () => {
                                                             />
                                                             <span className='absolute -right-3 -top-2 w-4 h-4'>
                                                                 <Icon
-                                                                    className='w-2 h-2 cursor-pointer'
-                                                                    icon='el:plus'
+                                                                    className='w-3 h-3 cursor-pointer'
+                                                                    icon='el:plus-sign'
                                                                 />
                                                             </span>
                                                         </button>

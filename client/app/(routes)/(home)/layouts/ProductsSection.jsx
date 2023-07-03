@@ -21,7 +21,7 @@ const ProductsSection = () => {
                                     </h2>
                                     <a
                                         className='hidden md:flex items-center font-medium text-base'
-                                        href='/'
+                                        href={`/categories/${cat._id}`}
                                     >
                                         Esplora
                                         <svg
