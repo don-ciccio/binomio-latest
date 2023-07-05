@@ -29,6 +29,13 @@ export const getCategories = async (search) => {
     return data;
 };
 
+export const getProductsByCategory = async (cat) => {
+    const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/${cat}`
+    );
+    return data;
+};
+
 export const getContent = async () => {
     return await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/content`
@@ -41,6 +48,16 @@ export const getProductsByIds = async (ids) => {
 
     return await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/cart?${query}`
+    );
+};
+
+export const useProductsByCategory = ({ cat, initialData }) => {
+    return useQuery(
+        ["products", "category", { cat, initialData }],
+        () => getProductsByCategory(cat),
+        {
+            initialData: initialData,
+        }
     );
 };
 

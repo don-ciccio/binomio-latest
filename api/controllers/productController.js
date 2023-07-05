@@ -82,7 +82,6 @@ exports.getAutocomplete = catchAsyncErrors(async (req, res, next) => {
                 $limit: 10,
             },
         ]);
-        console.log(results);
 
         if (results) return res.send(results);
     }
@@ -150,6 +149,19 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
     };
 
     res.status(200).json(response);
+});
+
+exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
+    const products = await Product.find({ category: req.params.cat });
+
+    if (!products) {
+        return next(new ErrorHandler("Products not found", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        products,
+    });
 });
 
 // Get single product detail => /api/v1/product/:id

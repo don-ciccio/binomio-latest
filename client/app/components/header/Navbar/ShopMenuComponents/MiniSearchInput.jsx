@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { animated, useSpring } from "@react-spring/web";
 
 import Image from "next/image";
+import SearchIcon from "@/app/components/icons/SearchIcon";
 
 const MiniSearchInput = ({ onClick, state, show }) => {
     const defaultWidth = "160px";
@@ -33,12 +34,7 @@ const MiniSearchInput = ({ onClick, state, show }) => {
                             className='w-8 h-10 absolute top-0 right-1 opacity-20'
                             disabled
                         >
-                            <Image
-                                width='20'
-                                height='20'
-                                src='./images/search.svg'
-                                alt='search'
-                            />
+                            <SearchIcon />
                         </button>
                     </div>
                 </form>

@@ -11,6 +11,7 @@ const {
     deleteProduct,
     getAutocomplete,
     getProductsbyId,
+    getProductsByCategory,
 } = require("../controllers/productController");
 
 const {
@@ -21,6 +22,7 @@ const {
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
 router.route("/products").get(getProducts);
+router.route("/product/:cat").get(getProductsByCategory);
 router.route("/product/:id").get(getSingleProduct);
 router.route("/products/cart").get(getProductsbyId);
 

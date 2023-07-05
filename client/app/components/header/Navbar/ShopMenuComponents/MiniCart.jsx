@@ -20,7 +20,7 @@ const MiniCart = () => {
                     </div>
                 ) : (
                     <>
-                        <div className='pr-5 pl-3 relative  mb-4 max-h-84 overflow-y-auto'>
+                        <div className='pr-5 pl-3 relative  mb-4 max-h-96 overflow-y-auto'>
                             <ul>
                                 {isLoading ? (
                                     <p>Loading...</p>

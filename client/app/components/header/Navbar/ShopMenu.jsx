@@ -22,6 +22,9 @@ import { ThemeContext } from "@/app/lib/context/theme";
 import { setToggle } from "@/app/lib/context/reducer";
 
 import { useCart } from "@/app/lib/hooks/useCart";
+import AccountIcon from "../../icons/AccountIcon";
+import HeartIcon from "../../icons/HeartIcon";
+import CartIcon from "../../icons/CartIcon";
 
 const array = [
     { id: 1, component: <MiniCart />, isVisible: true },
@@ -138,16 +141,7 @@ const ShopMenu = () => {
                         href='/#'
                         className='p-2.5 block hover:bg-gray-150 hover:rounded-full'
                     >
-                        <Image
-                            width={20}
-                            height={20}
-                            style={{
-                                width: 20,
-                                height: 20,
-                            }}
-                            src='./images/account.svg'
-                            alt='account'
-                        />
+                        <AccountIcon />
                         <span className='hidden'>Sign In</span>
                     </a>
                 </animated.li>
@@ -159,18 +153,9 @@ const ShopMenu = () => {
                 >
                     <a
                         href='/#'
-                        className='p-2.5 block hover:bg-gray-150 hover:rounded-full'
+                        className='p-2 block hover:bg-gray-150 hover:rounded-full'
                     >
-                        <Image
-                            width={20}
-                            height={20}
-                            style={{
-                                width: 20,
-                                height: 20,
-                            }}
-                            src='./images/wish-off.svg'
-                            alt='wishlist'
-                        />
+                        <HeartIcon className='w-7 h-7' />
                     </a>
                 </animated.li>
 
@@ -183,7 +168,7 @@ const ShopMenu = () => {
                         type='button'
                         className='p-2.5 block bg-gray-100 rounded-full hover:bg-gray-150'
                     >
-                        <Icon className='w-5 h-5' icon='el:shopping-cart' />
+                        <CartIcon />
                     </button>
                     {totalQuantity > 0 && (
                         <span className='absolute -top-3 -right-2 w-5	h-5 object-contain	bg-zinc-800 shadow-sm shadow-zinc-400 rounded-xl justify-center items-center flex'>
