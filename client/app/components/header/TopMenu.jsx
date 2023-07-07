@@ -8,8 +8,8 @@ const TopMenu = ({ message }) => {
     const { data } = useGetContent({ message });
     const transitions = useTransition(!state.active, {
         from: {
-            opacity: state.active ? 1 : 0,
-            transform: state.active ? "translateY(0px)" : "translateY(-100%)",
+            opacity: state.active ? 0 : 1,
+            transform: state.active ? "translateY(-100px)" : "translateY(0px)",
         },
         enter: {
             opacity: 1,

@@ -1,6 +1,7 @@
 "use client";
 import ProductRow from "@/app/components/main/ProductRow";
 import { useGetCategories } from "@/app/lib/api";
+import Link from "next/link";
 import { useState } from "react";
 
 const ProductsSection = () => {
@@ -19,13 +20,13 @@ const ProductsSection = () => {
                                     <h2 className='text-2xl font-medium tracking-wide uppercase'>
                                         {cat.name}
                                     </h2>
-                                    <a
+                                    <Link
                                         className='hidden md:flex items-center font-medium text-base'
                                         href={`/categories/${cat._id}`}
                                     >
                                         Esplora
                                         <svg
-                                            className='-rotate-90 scale-75 inline-block h-6 w-6 stroke-black stroke-2 stroke-skin-dark'
+                                            className='-rotate-90 scale-75 inline-block h-6 w-6 stroke-black stroke-2'
                                             viewBox='0 0 24 24'
                                             fill='none'
                                             xmlns='http://www.w3.org/2000/svg'
@@ -36,7 +37,7 @@ const ProductsSection = () => {
                                                 strokeLinejoin='round'
                                             ></path>
                                         </svg>
-                                    </a>
+                                    </Link>
                                 </div>
                                 <ProductRow filterCategory={cat._id} />
                             </div>

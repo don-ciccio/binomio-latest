@@ -6,6 +6,7 @@ import {
     getProductsByCategory,
 } from "@/app/lib/api";
 import ProductsByCatSection from "./layouts/ProductsByCatSection";
+import Breadcrumb from "@/app/components/ui/BreadCrumb";
 
 export default async function Home({ params }) {
     const initialCategories = await getCategories("");
@@ -13,7 +14,7 @@ export default async function Home({ params }) {
     const initialProducts = await getProductsByCategory(params.category);
 
     return (
-        <div className='flex'>
+        <div className='flex min-h-screen'>
             <div className='bg-gray-150 h-full w-full'>
                 <Header
                     categories={initialCategories}
@@ -26,6 +27,10 @@ export default async function Home({ params }) {
                     id='maincontent'
                     className='mt-36 flex-basis-1 relative z-2'
                 >
+                    <div className='sm:px-11 px-3'>
+                        <Breadcrumb />
+                    </div>
+
                     <div className='xs:px-5 px-3'>
                         <ProductsByCatSection initialData={initialProducts} />
                     </div>

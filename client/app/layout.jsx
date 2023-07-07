@@ -15,7 +15,7 @@ const font = Karla({
 export default function RootLayout({ children }) {
     return (
         <html lang='it'>
-            <body className={font.className}>
+            <body className={`${font.className} bg-gray-150`}>
                 <Providers>
                     {children}
                     <Toast />

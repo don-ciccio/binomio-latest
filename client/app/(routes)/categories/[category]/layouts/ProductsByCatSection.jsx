@@ -14,7 +14,7 @@ const ProductsByCatSection = ({ initialData }) => {
     });
 
     return (
-        <div className='md:px-8 xxs:px-4 md:pb-0 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'>
+        <div className='md:px-6 xxs:px-4 md:pb-0 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8'>
                 {mounted &&
                     data?.products.map((product, index) => (
