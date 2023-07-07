@@ -15,11 +15,13 @@ const font = Karla({
 export default function RootLayout({ children }) {
     return (
         <html lang='it'>
-            <body className={`${font.className} bg-gray-150`}>
-                <Providers>
-                    {children}
-                    <Toast />
-                </Providers>
+            <body className={`${font.className}`}>
+                <div className='flex min-h-screen flex-col bg-gray-150'>
+                    <Providers>
+                        {children}
+                        <Toast />
+                    </Providers>
+                </div>
             </body>
         </html>
     );

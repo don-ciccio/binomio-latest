@@ -9,6 +9,7 @@ import ShopMenu from "./ShopMenu";
 import { useSpring, config } from "@react-spring/web";
 import MobileCart from "../MobileNavbar/MobileCart";
 import MobileNav from "../MobileNavbar/MobileNav";
+import Link from "next/link";
 
 const animationConfig = {
     mass: 1,
@@ -128,25 +129,31 @@ const Navbar = forwardRef((props, ref) => {
                                 show={show}
                             />
                         </div>
-                        <div
-                            className={`${
-                                open
-                                    ? "hidden"
-                                    : "flex-basis-66 md:max-w-2/12 md:flex-basis-16 flex  justify-center -z-5 top-0 relative px-0 items-center"
-                            } `}
-                        >
-                            <Logo
-                                {...props}
-                                id={props.id}
-                                ref={ref}
-                                style={props.style}
-                                className={props.className}
+
+                        <>
+                            <div
+                                className={`${
+                                    open
+                                        ? "hidden"
+                                        : "flex-basis-66 md:flex-basis-16 flex justify-center relative px-0 items-center"
+                                } `}
                             >
-                                {props.children}
-                            </Logo>
-                        </div>
+                                <Link href='/'>
+                                    <Logo
+                                        {...props}
+                                        id={props.id}
+                                        ref={ref}
+                                        style={props.style}
+                                        className={props.className}
+                                    >
+                                        {props.children}
+                                    </Logo>
+                                </Link>
+                            </div>
+                        </>
+
                         <div
-                            className={` flex ${
+                            className={`flex ${
                                 open
                                     ? "xxs:flex-basis-80 xxs:max-w-4/5 sm:flex-basis-89 sm:max-w-89"
                                     : "md:max-w-5/12 md:flex-basis-41 w-2/12 xxs:flex-basis-16"

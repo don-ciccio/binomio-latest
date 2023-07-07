@@ -51,6 +51,7 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
                         images: 1,
                         description: 1,
                         properties: 1,
+                        slug: 1,
                         number_of_product: { $size: "$products" },
                     },
                 },

@@ -20,7 +20,7 @@ export const getProducts = async (
 };
 
 export const getProduct = async (id) => {
-    return await axios.get(`${API_URL}/api/product/${id}`);
+    return await axios.get(`${API_URL}/api/product/edit/${id}`);
 };
 
 export const getStores = async () => {

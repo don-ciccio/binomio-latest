@@ -22,7 +22,7 @@ const ProductsSection = () => {
                                     </h2>
                                     <Link
                                         className='hidden md:flex items-center font-medium text-base'
-                                        href={`/categories/${cat._id}`}
+                                        href={`/categorie/${cat.slug}`}
                                     >
                                         Esplora
                                         <svg

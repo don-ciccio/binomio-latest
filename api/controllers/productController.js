@@ -152,8 +152,9 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
-    const products = await Product.find({ category: req.params.cat });
+    const slugs = await Category.find({ slug: req.params.cat });
 
+    const products = await Product.find({ category: slugs });
     if (!products) {
         return next(new ErrorHandler("Products not found", 404));
     }
