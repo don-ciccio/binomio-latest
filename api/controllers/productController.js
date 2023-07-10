@@ -81,6 +81,12 @@ exports.getAutocomplete = catchAsyncErrors(async (req, res, next) => {
             {
                 $limit: 10,
             },
+            {
+                $group: {
+                    _id: "$seller",
+                    seller: { $addToSet: "$seller" },
+                },
+            },
         ]);
 
         if (results) return res.send(results);

@@ -9,7 +9,7 @@ const Edit = () => {
     const { id } = useParams();
 
     const { data: product, isLoading } = useGetProductById(id);
-    console.log(product);
+
     if (isLoading)
         return (
             <div className='flex items-center justify-center h-screen'>

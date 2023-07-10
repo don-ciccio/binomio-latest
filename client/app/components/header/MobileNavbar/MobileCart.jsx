@@ -7,7 +7,7 @@ import {
     config,
 } from "@react-spring/web";
 import Image from "next/image";
-import { Icon } from "@iconify/react";
+import CartIcon from "../../icons/CartIcon";
 
 const MobileCart = ({ open, contentWidth, show, toggle }) => {
     const springRef = useSpringRef();
@@ -36,8 +36,8 @@ const MobileCart = ({ open, contentWidth, show, toggle }) => {
     const transitions = useTransition(show, {
         keys: null,
         from: {
-            opacity: 0,
-            transformSlide: !show ? "translateY(0px)" : "translateY(-35%)",
+            opacity: 1,
+            transformSlide: !show ? "translateY(-35%)" : "translateY(0px)",
         },
         enter: {
             opacity: 1,
@@ -47,6 +47,7 @@ const MobileCart = ({ open, contentWidth, show, toggle }) => {
             opacity: 0,
             transformSlide: !show ? "translateY(-35%)" : "translateY(0px)",
         },
+
         config: { tension: 170, friction: 27, duration: 200 },
     });
 
@@ -120,17 +121,14 @@ const MobileCart = ({ open, contentWidth, show, toggle }) => {
                     item && (
                         <animated.div
                             style={{ transform: transformSlide, opacity }}
-                            className='bg-white shadow-md rounded-full block relative'
+                            className='bg-white shadow-md rounded-full flex items-center justify-center h-[52px]'
                         >
                             <animated.a
                                 style={scale}
-                                className='py-3.5 pr-4 pl-3 block items-center justify-center'
+                                className='py-2.5 px-2.5 flex relative items-center justify-center'
                                 href='/#'
                             >
-                                <Icon
-                                    className='w-6 h-6'
-                                    icon='el:shopping-cart'
-                                />
+                                <CartIcon className='w-6 h-6' />
                             </animated.a>
                             {open && (
                                 <li className='w-full p-0 absolute top-0 list-none'>
@@ -179,7 +177,7 @@ const MobileCart = ({ open, contentWidth, show, toggle }) => {
             )}
             <animated.span
                 style={scale}
-                className='absolute top-6 -right-0.5 w-5 h-5 object-contain	bg-zinc-800 rounded-xl justify-center items-center flex'
+                className='absolute top-5 -right-1.5 w-5 h-5 object-contain	bg-zinc-800 rounded-xl justify-center items-center flex'
             >
                 <span className='text-xs text-zinc-200'>0</span>
             </animated.span>

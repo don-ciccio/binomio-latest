@@ -92,7 +92,7 @@ const Navbar = forwardRef((props, ref) => {
     return (
         <>
             <div>
-                <div className='md:px-10 xxs:px-4'>
+                <div className='md:px-6 px-3'>
                     <div
                         ref={refWidth}
                         className='
@@ -114,7 +114,7 @@ const Navbar = forwardRef((props, ref) => {
                             justify-start 
                             items-center 
                             relative 
-                            w-full 
+                      
                             h-inherit 
                             px-0
                             `}
@@ -135,7 +135,7 @@ const Navbar = forwardRef((props, ref) => {
                                 className={`${
                                     open
                                         ? "hidden"
-                                        : "flex-basis-66 md:flex-basis-16 flex justify-center relative px-0 items-center"
+                                        : "flex-basis-66 md:flex-basis-16 flex justify-center relative px-0 items-center md:max-w-2/12"
                                 } `}
                             >
                                 <Link href='/'>
@@ -156,7 +156,7 @@ const Navbar = forwardRef((props, ref) => {
                             className={`flex ${
                                 open
                                     ? "xxs:flex-basis-80 xxs:max-w-4/5 sm:flex-basis-89 sm:max-w-89"
-                                    : "md:max-w-5/12 md:flex-basis-41 w-2/12 xxs:flex-basis-16"
+                                    : "md:max-w-5/12 md:flex-basis-41 w-13 xxs:flex-basis-16"
                             }  justify-end items-center static px-0 h-inherit`}
                         >
                             <ShopMenu />

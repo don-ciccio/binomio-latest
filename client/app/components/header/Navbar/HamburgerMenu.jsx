@@ -8,7 +8,8 @@ const HamburgerMenu = ({
     animationConfig,
     show,
 }) => {
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.preventDefault();
         api.start({
             config: config.molasses,
             to:
@@ -83,7 +84,7 @@ const HamburgerMenu = ({
         toggle((prev) => !prev);
     };
     return (
-        <button className='md:block lg:hidden' onClick={() => handleClick()}>
+        <button className='md:block lg:hidden' onClick={(e) => handleClick(e)}>
             <div className='bg-white shadow-md rounded-full block relative'>
                 <animated.div
                     style={{ transform: styles.scale }}
