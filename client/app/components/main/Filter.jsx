@@ -4,6 +4,7 @@ import { useSpring, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
 import ContentAnimated from "../header/Navbar/ShopMenuComponents/ContentAnimated";
 import Modal from "../ui/Modal";
+import MenuAccordion from "../ui/Accordion";
 
 const Filter = ({ data, show }) => {
     const [refWidth, { width }] = useMeasure();
@@ -19,27 +20,29 @@ const Filter = ({ data, show }) => {
             <div className='flex' ref={refWidth}>
                 <animated.div
                     style={props}
-                    className='flex justify-end fixed rounded-3xl shadow-md shadow-zinc-400/25 bg-white top-5 right-0 z-50 max-w-xl w-1/2'
+                    className='flex justify-end overflow-y-scroll h-screen fixed  shadow-md shadow-zinc-400/25 bg-white top-5 right-0 z-50 max-w-xl w-1/2'
                 >
                     <div className='px-6 p-6 flex flex-col gap-6 w-full'>
                         {data?.properties.map((property, i) => (
                             <ContentAnimated key={i} state={show}>
-                                <div className='flex flex-col justify-center'>
-                                    <div className='flex w-full text-lg font-semibold justify-center'>
-                                        {property.name}
-                                    </div>
-                                    <hr class='my-3'></hr>
-                                    <div className='grid grid-cols-1 gap-4 min-w-200'>
-                                        {property.values &&
-                                            property?.values.map((value, i) => (
-                                                <button
-                                                    className='disabled:cursor-not-allowed disabled:opacity-50 font-semibold hover:opacity-75 transition rounded-md text-sm text-gray-800 p-2 bg-white border border-gray-300 w-auto'
-                                                    key={i}
-                                                >
-                                                    {value}
-                                                </button>
-                                            ))}
-                                    </div>
+                                <div className='flex flex-col justify-center w-full'>
+                                    <MenuAccordion title={property.name}>
+                                        <div className='mb-2'>
+                                            {property.values &&
+                                                property?.values.map(
+                                                    (value, i) => (
+                                                        <li
+                                                            className='inline-block mr-2 mb-4'
+                                                            key={i}
+                                                        >
+                                                            <label className='p-5 inline-flex justify-center items-center align-top h-10 border rounded-3xl cursor-pointer'>
+                                                                {value}
+                                                            </label>
+                                                        </li>
+                                                    )
+                                                )}
+                                        </div>
+                                    </MenuAccordion>
                                 </div>
                             </ContentAnimated>
                         ))}
