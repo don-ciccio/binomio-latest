@@ -168,6 +168,7 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({
         success: true,
         products,
+        properties: slugs[0].properties,
     });
 });
 

@@ -1,11 +1,17 @@
 "use client";
 
 import ProductCard from "@/app/components/main/Cards/ProductCard";
+import Filter from "@/app/components/main/Filter";
 import { useProductsByCategory } from "@/app/lib/api";
 import { useMounted } from "@/app/lib/hooks/useMounted";
+import { Icon } from "@iconify/react";
+
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 const ProductsByCatSection = ({ initialData }) => {
+    const [show, setShow] = useState(false);
+
     const params = useParams();
     const mounted = useMounted();
     const { data, isLoading, isError } = useProductsByCategory({
@@ -15,6 +21,21 @@ const ProductsByCatSection = ({ initialData }) => {
 
     return (
         <div className='md:px-6 xxs:px-4 md:pb-0 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'>
+            <div className='flex justify-start items-center mb-4'>
+                <button type='button' onClick={() => setShow(!show)}>
+                    <div className='flex flex-basis-11 justify-center'>
+                        <div className='z-2 flex flex-row gap-1 items-center justify-center'>
+                            <div className='flex'>
+                                <Icon icon='mi:filter' className='w-5 h-5' />
+                            </div>
+                            <div className='flex uppercase'>Filtra</div>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <Filter data={data} show={show} />
+
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8'>
                 {mounted &&
                     data?.products.map((product, index) => (

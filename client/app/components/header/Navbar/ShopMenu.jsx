@@ -2,8 +2,7 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import useMeasure from "react-use-measure";
 import { useSpring, config, animated } from "@react-spring/web";
-import Image from "next/image";
-import { Icon } from "@iconify/react";
+
 import dynamic from "next/dynamic";
 
 /* components */
