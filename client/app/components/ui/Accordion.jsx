@@ -53,7 +53,7 @@ const MenuAccordion = ({ title, children, icon }) => {
                         className='mt-0.5 block float-right'
                     >
                         <Icon
-                            icon='mdi:chevron-up'
+                            icon='mdi:chevron-down'
                             className='align-middle text-2xl font-semibold'
                         />
                     </animated.span>

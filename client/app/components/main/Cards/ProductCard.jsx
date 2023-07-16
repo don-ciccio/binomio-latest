@@ -63,7 +63,7 @@ const ProductCard = ({ name, price, images, id }) => {
                                 className='text-white items-center justify-center py-2 px-5'
                             >
                                 <Icon
-                                    className='w-9 h-9'
+                                    className='w-10 h-10'
                                     icon='el:shopping-cart-sign'
                                 />
                             </button>
@@ -71,7 +71,10 @@ const ProductCard = ({ name, price, images, id }) => {
                                 onClick={handleClick}
                                 className='text-white items-center justify-center py-2 px-5'
                             >
-                                <Icon className='w-9 h-9' icon='el:plus-sign' />
+                                <Icon
+                                    className='w-10 h-10'
+                                    icon='el:plus-sign'
+                                />
                             </button>
                         </ReactCardFlip>
                     </div>

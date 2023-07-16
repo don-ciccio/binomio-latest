@@ -10,6 +10,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                sans: ["var(--font-bauziet)"],
+            },
             keyframes: {
                 wiggle: {
                     "0%, 100%": { transform: "rotate(-3deg)" },
