@@ -5,6 +5,8 @@ import useMeasure from "react-use-measure";
 import ContentAnimated from "../header/Navbar/ShopMenuComponents/ContentAnimated";
 import Modal from "../ui/Modal";
 import MenuAccordion from "../ui/Accordion";
+import { useRouter, useSearchParams } from "next/navigation";
+import qs from "query-string";
 
 const Filter = ({ data, show }) => {
     const [refWidth, { width }] = useMeasure();
@@ -14,6 +16,36 @@ const Filter = ({ data, show }) => {
 
         config: { duration: 650, mass: 5, tension: 1500, friction: 100 },
     });
+
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
+    const selectedValue = (valueKey) => {
+        return searchParams.get(valueKey);
+    };
+
+    const onClick = (id, valueKey) => {
+        const current = qs.parse(searchParams.toString());
+
+        const query = {
+            ...current,
+            [valueKey]: id,
+        };
+
+        if (current[valueKey] === id) {
+            query[valueKey] = null;
+        }
+
+        const url = qs.stringifyUrl(
+            {
+                url: window.location.href,
+                query,
+            },
+            { skipNull: true }
+        );
+
+        router.push(url);
+    };
 
     return (
         <Modal>
@@ -34,8 +66,22 @@ const Filter = ({ data, show }) => {
                                                         <li
                                                             className='inline-block mr-2 mb-4'
                                                             key={i}
+                                                            onClick={() =>
+                                                                onClick(
+                                                                    value,
+                                                                    property.name
+                                                                )
+                                                            }
                                                         >
-                                                            <label className='p-5 inline-flex justify-center items-center align-top h-10 border rounded-3xl cursor-pointer'>
+                                                            <label
+                                                                className={`${
+                                                                    selectedValue(
+                                                                        property.name
+                                                                    ) === value
+                                                                        ? "bg-black text-white"
+                                                                        : ""
+                                                                } p-5 inline-flex justify-center items-center align-top h-10 border rounded-3xl cursor-pointer`}
+                                                            >
                                                                 {value}
                                                             </label>
                                                         </li>

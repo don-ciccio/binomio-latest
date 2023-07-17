@@ -159,12 +159,20 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
 
 exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
     const slugs = await Category.find({ slug: req.params.cat });
+    const searchParams = req.query;
+    const pre = `properties.`;
 
-    const products = await Product.find({ category: slugs });
+    const nObj = Object.keys(searchParams).reduce(
+        (a, c) => ((a[`${pre}${c}`] = searchParams[c]), a),
+        {}
+    );
+
+    const products = await Product.find({
+        $and: [{ category: slugs }, nObj],
+    });
     if (!products) {
         return next(new ErrorHandler("Products not found", 404));
     }
-
     res.status(200).json({
         success: true,
         products,

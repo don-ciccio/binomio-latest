@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import querystring from "querystring";
+import qs from "query-string";
 
 axios.defaults.withCredentials = true;
 
@@ -29,10 +29,12 @@ export const getCategories = async (search) => {
     return data;
 };
 
-export const getProductsByCategory = async (cat) => {
-    const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/${cat}`
-    );
+export const getProductsByCategory = async (cat, query) => {
+    const url = qs.stringifyUrl({
+        url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/${cat}`,
+        query: query,
+    });
+    const { data } = await axios.get(url);
     return data;
 };
 
@@ -44,17 +46,17 @@ export const getContent = async () => {
 
 export const getProductsByIds = async (ids) => {
     const idArray = ids.length < 1 ? null : ids;
-    const query = querystring.stringify({ filterBy: idArray });
+    const query = qs.stringify({ filterBy: idArray });
 
     return await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/cart?${query}`
     );
 };
 
-export const useProductsByCategory = ({ cat, initialData }) => {
+export const useProductsByCategory = ({ cat, query, initialData }) => {
     return useQuery(
-        ["products", "category", { cat, initialData }],
-        () => getProductsByCategory(cat),
+        ["products", "category", { cat, query, initialData }],
+        () => getProductsByCategory(cat, query),
         {
             initialData: initialData,
         }

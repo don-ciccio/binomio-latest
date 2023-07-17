@@ -8,10 +8,13 @@ import {
 import ProductsByCatSection from "./layouts/ProductsByCatSection";
 import Breadcrumb from "@/app/components/ui/Breadcrumb";
 
-export default async function Home({ params }) {
+export default async function Home({ params, searchParams }) {
     const initialCategories = await getCategories("");
     const initialContent = await getContent();
-    const initialProducts = await getProductsByCategory(params.category);
+    const initialProducts = await getProductsByCategory(
+        params.category,
+        searchParams
+    );
 
     return (
         <div className='h-full w-full'>

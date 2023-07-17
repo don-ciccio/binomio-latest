@@ -5,17 +5,22 @@ import Filter from "@/app/components/main/Filter";
 import { useProductsByCategory } from "@/app/lib/api";
 import { useMounted } from "@/app/lib/hooks/useMounted";
 import { Icon } from "@iconify/react";
+import qs from "query-string";
 
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const ProductsByCatSection = ({ initialData }) => {
     const [show, setShow] = useState(false);
 
     const params = useParams();
+    const searchParams = useSearchParams();
+    const current = qs.parse(searchParams.toString());
+
     const mounted = useMounted();
     const { data, isLoading, isError } = useProductsByCategory({
         cat: params.category,
+        query: current,
         initialData,
     });
 
