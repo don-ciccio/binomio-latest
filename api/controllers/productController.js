@@ -161,23 +161,46 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
     const slugs = await Category.find({ slug: req.params.cat });
     const searchParams = req.query;
     const pre = `properties.`;
+    const seller = req.query.seller;
 
-    const nObj = Object.keys(searchParams).reduce(
-        (a, c) => ((a[`${pre}${c}`] = searchParams[c]), a),
-        {}
-    );
+    const nObj = Object.keys(searchParams)
+        .filter((key) => key !== "seller")
+        .reduce((a, c) => ((a[`${pre}${c}`] = searchParams[c]), a), {});
 
-    const products = await Product.find({
-        $and: [{ category: slugs }, nObj],
-    });
-    if (!products) {
-        return next(new ErrorHandler("Products not found", 404));
+    const sellers = await Product.find({ category: slugs }).distinct("seller");
+
+    const query = {
+        ...nObj,
+        seller: seller,
+    };
+
+    if (seller !== undefined) {
+        const products = await Product.find({
+            $and: [{ category: slugs }, query],
+        });
+        if (!products) {
+            return next(new ErrorHandler("Products not found", 404));
+        }
+        res.status(200).json({
+            success: true,
+            products,
+            properties: slugs[0].properties,
+            sellers: sellers,
+        });
+    } else {
+        const products = await Product.find({
+            $and: [{ category: slugs }, nObj],
+        });
+        if (!products) {
+            return next(new ErrorHandler("Products not found", 404));
+        }
+        res.status(200).json({
+            success: true,
+            products,
+            properties: slugs[0].properties,
+            sellers: sellers,
+        });
     }
-    res.status(200).json({
-        success: true,
-        products,
-        properties: slugs[0].properties,
-    });
 });
 
 // Get single product detail => /api/v1/product/:id

@@ -92,6 +92,35 @@ const Filter = ({ data, show }) => {
                                 </div>
                             </ContentAnimated>
                         ))}
+                        <ContentAnimated state={show}>
+                            <div className='flex flex-col justify-center w-full'>
+                                <MenuAccordion title='Produttore'>
+                                    <div className='mb-2'>
+                                        {data.sellers?.map((property, i) => (
+                                            <li
+                                                className='inline-block mr-2 mb-4'
+                                                key={i}
+                                                onClick={() =>
+                                                    onClick(property, "seller")
+                                                }
+                                            >
+                                                <label
+                                                    className={`${
+                                                        selectedValue(
+                                                            "seller"
+                                                        ) === property
+                                                            ? "bg-black text-white"
+                                                            : ""
+                                                    } p-5 inline-flex justify-center items-center align-top h-10 border rounded-3xl cursor-pointer`}
+                                                >
+                                                    {property}
+                                                </label>
+                                            </li>
+                                        ))}
+                                    </div>
+                                </MenuAccordion>
+                            </div>
+                        </ContentAnimated>
                     </div>
                 </animated.div>
             </div>
