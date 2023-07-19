@@ -163,6 +163,33 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
     const pre = `properties.`;
     const seller = req.query.seller;
 
+    let data = await Category.aggregate([
+        {
+            $match: { slug: { $eq: req.params.cat } },
+        },
+        {
+            $lookup: {
+                from: "products",
+                localField: "_id",
+                foreignField: "category",
+                as: "products",
+            },
+        },
+        { $unwind: "$products" },
+        {
+            $project: {
+                _id: 0,
+                filters: { $objectToArray: "$products.properties" },
+            },
+        },
+        { $unwind: "$filters" },
+        { $group: { _id: "$filters.k", values: { $addToSet: "$filters.v" } } },
+        { $unwind: "$values" },
+        { $sort: { values: 1 } },
+        { $group: { _id: "$_id", values: { $push: "$values" } } },
+        { $sort: { _id: 1 } },
+    ]);
+
     const nObj = Object.keys(searchParams)
         .filter((key) => key !== "seller")
         .reduce((a, c) => ((a[`${pre}${c}`] = searchParams[c]), a), {});
@@ -184,7 +211,7 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
         res.status(200).json({
             success: true,
             products,
-            properties: slugs[0].properties,
+            properties: data,
             sellers: sellers,
         });
     } else {
@@ -197,7 +224,7 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
         res.status(200).json({
             success: true,
             products,
-            properties: slugs[0].properties,
+            properties: data,
             sellers: sellers,
         });
     }

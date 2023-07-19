@@ -58,7 +58,7 @@ const Filter = ({ data, show }) => {
                         {data?.properties.map((property, i) => (
                             <ContentAnimated key={i} state={show}>
                                 <div className='flex flex-col justify-center w-full'>
-                                    <MenuAccordion title={property.name}>
+                                    <MenuAccordion title={property._id}>
                                         <div className='mb-2'>
                                             {property.values &&
                                                 property?.values.map(
@@ -69,14 +69,14 @@ const Filter = ({ data, show }) => {
                                                             onClick={() =>
                                                                 onClick(
                                                                     value,
-                                                                    property.name
+                                                                    property._id
                                                                 )
                                                             }
                                                         >
                                                             <label
                                                                 className={`${
                                                                     selectedValue(
-                                                                        property.name
+                                                                        property._id
                                                                     ) === value
                                                                         ? "bg-black text-white"
                                                                         : ""
