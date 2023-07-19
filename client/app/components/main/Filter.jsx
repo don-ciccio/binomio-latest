@@ -2,17 +2,20 @@
 
 import { useSpring, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
-import ContentAnimated from "../header/Navbar/ShopMenuComponents/ContentAnimated";
 import Modal from "../ui/Modal";
 import MenuAccordion from "../ui/Accordion";
 import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
+import { useToggle } from "@/app/lib/store";
+import ContentAnimatedModal from "../ui/ContentAnimatedModal";
 
-const Filter = ({ data, show }) => {
+const Filter = ({ data }) => {
     const [refWidth, { width }] = useMeasure();
 
+    const open = useToggle((state) => state.open);
+
     const props = useSpring({
-        width: show ? width : 0,
+        width: open ? width : 0,
 
         config: { duration: 650, mass: 5, tension: 1500, friction: 100 },
     });
@@ -55,8 +58,13 @@ const Filter = ({ data, show }) => {
                     className='flex justify-end overflow-y-scroll h-screen fixed  shadow-md shadow-zinc-400/25 bg-white top-5 right-0 z-50 max-w-xl w-1/2'
                 >
                     <div className='px-6 p-6 flex flex-col gap-6 w-full'>
+                        <div className='flex flex-col justify-center w-full px-4 py-2'>
+                            <h2 className='font-semibold text-xl'>
+                                Filtra per:
+                            </h2>
+                        </div>
                         {data?.properties.map((property, i) => (
-                            <ContentAnimated key={i} state={show}>
+                            <ContentAnimatedModal key={i}>
                                 <div className='flex flex-col justify-center w-full'>
                                     <MenuAccordion title={property._id}>
                                         <div className='mb-2'>
@@ -90,9 +98,9 @@ const Filter = ({ data, show }) => {
                                         </div>
                                     </MenuAccordion>
                                 </div>
-                            </ContentAnimated>
+                            </ContentAnimatedModal>
                         ))}
-                        <ContentAnimated state={show}>
+                        <ContentAnimatedModal>
                             <div className='flex flex-col justify-center w-full'>
                                 <MenuAccordion title='Produttore'>
                                     <div className='mb-2'>
@@ -120,7 +128,7 @@ const Filter = ({ data, show }) => {
                                     </div>
                                 </MenuAccordion>
                             </div>
-                        </ContentAnimated>
+                        </ContentAnimatedModal>
                     </div>
                 </animated.div>
             </div>

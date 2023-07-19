@@ -163,7 +163,7 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
     const pre = `properties.`;
     const seller = req.query.seller;
 
-    let data = await Category.aggregate([
+    const properties = await Category.aggregate([
         {
             $match: { slug: { $eq: req.params.cat } },
         },
@@ -211,7 +211,7 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
         res.status(200).json({
             success: true,
             products,
-            properties: data,
+            properties: properties,
             sellers: sellers,
         });
     } else {
@@ -224,7 +224,7 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
         res.status(200).json({
             success: true,
             products,
-            properties: data,
+            properties: properties,
             sellers: sellers,
         });
     }

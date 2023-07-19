@@ -8,11 +8,12 @@ import { Icon } from "@iconify/react";
 import qs from "query-string";
 
 import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
+
+import { useToggle } from "@/app/lib/store";
 
 const ProductsByCatSection = ({ initialData }) => {
-    const [show, setShow] = useState(false);
-
+    const open = useToggle((state) => state.open);
+    const setOpen = useToggle((state) => state.setOpen);
     const params = useParams();
     const searchParams = useSearchParams();
     const current = qs.parse(searchParams.toString());
@@ -27,7 +28,7 @@ const ProductsByCatSection = ({ initialData }) => {
     return (
         <div className='md:px-6 xxs:px-4 md:pb-0 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'>
             <div className='flex justify-start items-center mb-4'>
-                <button type='button' onClick={() => setShow(!show)}>
+                <button onClick={() => setOpen(!open)}>
                     <div className='flex flex-basis-11 justify-center'>
                         <div className='z-2 flex flex-row gap-1 items-center justify-center'>
                             <div className='flex'>
@@ -39,7 +40,7 @@ const ProductsByCatSection = ({ initialData }) => {
                 </button>
             </div>
 
-            <Filter data={data} show={show} />
+            <Filter data={data} />
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8'>
                 {mounted &&
