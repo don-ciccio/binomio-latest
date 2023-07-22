@@ -38,6 +38,13 @@ export const getProductsByCategory = async (cat, query) => {
     return data;
 };
 
+export const getProductsBySlug = async (slug) => {
+    const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/single/${slug}`
+    );
+    return data;
+};
+
 export const getContent = async () => {
     return await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/content`
@@ -92,6 +99,16 @@ export const useGetCategories = ({ search, categories }) => {
         () => getCategories(search),
         {
             initialData: categories,
+        }
+    );
+};
+
+export const useGetProduct = ({ slug, productInitial }) => {
+    return useQuery(
+        ["products", "detail", { slug }],
+        () => getProductsBySlug(slug),
+        {
+            initialData: productInitial,
         }
     );
 };

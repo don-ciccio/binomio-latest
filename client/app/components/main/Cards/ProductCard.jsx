@@ -4,16 +4,19 @@ import { useState } from "react";
 import ReactCardFlip from "react-card-flip";
 import { useCartStore, useWishlistStore, useToastStore } from "@/app/lib/store";
 import HeartIcon from "../../icons/HeartIcon";
+import Link from "next/link";
+import { slugify } from "@/app/lib/utils/utilFuncs";
+import { useRouter } from "next/navigation";
 
 const ProductCard = ({ name, price, images, id }) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const { cart, addToCart } = useCartStore();
     const { wishlist, toggleWishlist } = useWishlistStore();
     const { setToast } = useToastStore();
+    const router = useRouter();
 
     async function handleClick(e) {
-        e.preventDefault();
-
+        e.stopPropagation();
         const alreadyAdded = cart.find((item) => item.id === id);
         if (alreadyAdded) {
             setToast({
@@ -34,7 +37,8 @@ const ProductCard = ({ name, price, images, id }) => {
     }
 
     const hasWished = wishlist.some((item) => item.id === id);
-    const handleAddToWishlist = () => {
+    const handleAddToWishlist = (e) => {
+        e.stopPropagation();
         setToast({
             status: hasWished ? "info" : "successo",
             message: `Il prodotto è stato ${
@@ -44,8 +48,11 @@ const ProductCard = ({ name, price, images, id }) => {
         toggleWishlist(id);
     };
 
+    const handleClickRoute = () => {
+        router.push(`/prodotti/${slugify(name)}`);
+    };
     return (
-        <div>
+        <div onClick={handleClickRoute} className='cursor-pointer'>
             <div className='group'>
                 <div className='relative overflow-hidden'>
                     <img

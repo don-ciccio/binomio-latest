@@ -2,7 +2,10 @@
 
 import { useSpring, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
-import Modal from "../ui/Modal";
+import dynamic from "next/dynamic";
+const Modal = dynamic(() => import("../ui/Modal"), {
+    ssr: false,
+});
 import MenuAccordion from "../ui/Accordion";
 import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
@@ -13,6 +16,7 @@ const Filter = ({ data }) => {
     const [refWidth, { width }] = useMeasure();
 
     const open = useToggle((state) => state.open);
+    const setOpen = useToggle((state) => state.setOpen);
 
     const props = useSpring({
         width: open ? width : 0,
@@ -57,8 +61,23 @@ const Filter = ({ data }) => {
                     style={props}
                     className='flex justify-end overflow-y-scroll h-screen fixed  shadow-md shadow-zinc-400/25 bg-white top-5 right-0 z-50 max-w-xl w-1/2'
                 >
-                    <div className='px-6 p-6 flex flex-col gap-6 w-full'>
-                        <div className='flex flex-col justify-center w-full px-4 py-2'>
+                    <div className='px-6 p-6 flex flex-col gap-4 w-full'>
+                        <div className='flex  justify-end  px-4'>
+                            <button onClick={() => setOpen(!open)}>
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    width='28'
+                                    height='28'
+                                    viewBox='0 0 24 24'
+                                >
+                                    <path
+                                        fill='currentColor'
+                                        d='M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6L6.4 19Z'
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className='flex flex-col justify-center w-full px-4 pb-2'>
                             <h2 className='font-semibold text-xl'>
                                 Filtra per:
                             </h2>

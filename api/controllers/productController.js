@@ -187,7 +187,7 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
         { $unwind: "$values" },
         { $sort: { values: 1 } },
         { $group: { _id: "$_id", values: { $push: "$values" } } },
-        { $sort: { _id: 1 } },
+        { $sort: { _id: -1 } },
     ]);
 
     const nObj = Object.keys(searchParams)
@@ -233,6 +233,19 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
 // Get single product detail => /api/v1/product/:id
 exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
+
+    if (!product) {
+        return next(new ErrorHandler("Product not found", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        product,
+    });
+});
+
+exports.getSingleProductbySlug = catchAsyncErrors(async (req, res, next) => {
+    const product = await Product.find({ slug: req.params.slug });
 
     if (!product) {
         return next(new ErrorHandler("Product not found", 404));

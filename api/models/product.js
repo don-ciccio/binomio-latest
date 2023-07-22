@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
+const mongooseSlugPlugin = require("mongoose-slug-plugin");
 
 const productSchema = new mongoose.Schema({
     name: {
@@ -85,5 +86,7 @@ const productSchema = new mongoose.Schema({
 productSchema.pre("find", function () {
     this.populate("category");
 });
+
+productSchema.plugin(mongooseSlugPlugin, { tmpl: "<%=name%>" });
 
 module.exports = mongoose.model("Product", productSchema);

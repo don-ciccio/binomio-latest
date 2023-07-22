@@ -1,20 +1,14 @@
 import Header from "@/app/components/header/Header";
 import SVGLogo from "@/app/components/icons/SVGLogo";
-import {
-    getCategories,
-    getContent,
-    getProductsByCategory,
-} from "@/app/lib/api";
-import ProductsByCatSection from "./layouts/ProductsByCatSection";
-import Breadcrumb from "@/app/components/ui/Breadcrumb";
+import { getCategories, getContent, getProductsBySlug } from "@/app/lib/api";
 
-export default async function Home({ params, searchParams }) {
+import Breadcrumb from "@/app/components/ui/Breadcrumb";
+import ProductDetails from "./layouts/ProductDetails";
+
+export default async function Home({ params }) {
     const initialCategories = await getCategories("");
     const initialContent = await getContent();
-    const initialProducts = await getProductsByCategory(
-        params.category,
-        searchParams
-    );
+    const initialProduct = await getProductsBySlug(params.slug);
 
     return (
         <div className='h-full w-full'>
@@ -31,7 +25,7 @@ export default async function Home({ params, searchParams }) {
                 </div>
 
                 <div className='xs:px-5 px-3'>
-                    <ProductsByCatSection initialData={initialProducts} />
+                    <ProductDetails initialProduct={initialProduct} />
                 </div>
             </div>
         </div>

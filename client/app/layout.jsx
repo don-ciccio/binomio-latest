@@ -1,7 +1,7 @@
 import "@/app/styles/globals.css";
 import Providers from "./providers";
 import Toast from "@/app/components/ui/Toast";
-import localFont from "@next/font/local";
+import localFont from "next/font/local";
 
 const bauziet = localFont({
     src: [

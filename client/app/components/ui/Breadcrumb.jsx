@@ -1,5 +1,6 @@
 "use client";
 
+import { unslugify } from "@/app/lib/utils/utilFuncs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -22,7 +23,7 @@ const Breadcrumb = () => {
                             aria-current='page'
                             className='capitalize opacity-100'
                         >
-                            {breadcrumb}
+                            {unslugify(breadcrumb)}
                         </li>
                     ) : (
                         <li
