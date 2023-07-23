@@ -32,3 +32,13 @@ export function slugify(str) {
 export function unslugify(str) {
     return str.replace(/-/g, " ");
 }
+
+export const generateUniqueArray = (num) => {
+    let numbers = new Set();
+    while (numbers.size < num) {
+        let randomNum = Math.floor(Math.random() * (num - 1 + 1)) + 1;
+        numbers.add(randomNum);
+    }
+
+    return Array.from(numbers);
+};

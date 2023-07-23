@@ -1,5 +1,6 @@
 "use client";
 
+import ProductSkeleton from "@/app/components/ui/ProductSkeleton";
 import { useGetProduct } from "@/app/lib/api";
 import { useParams } from "next/navigation";
 
@@ -10,6 +11,8 @@ const ProductDetails = ({ initialProduct }) => {
         slug: params.slug,
         initialProduct,
     });
+
+    if (isLoading || isError) return <ProductSkeleton />;
 
     return (
         <div className='mx-auto max-w-7xl'>
@@ -31,11 +34,31 @@ const ProductDetails = ({ initialProduct }) => {
                                 {data?.product[0].name}
                             </h1>
                             <div className='mt-3 flex items-end justify-between'>
-                                <p className='text-2xl text-gray-900'>
-                                    <div className='font-semibold'>
+                                <div className='text-2xl text-gray-900'>
+                                    <p className='font-semibold'>
                                         €{data?.product[0].price}
-                                    </div>
-                                </p>
+                                    </p>
+                                </div>
+                            </div>
+                            <div className='mt-3 flex items-end justify-between'>
+                                <p>{data?.product[0].description}</p>
+                            </div>
+                            <div className='mt-5 flex items-end justify-between'>
+                                <ul>
+                                    {data &&
+                                        Object.entries(
+                                            data?.product[0].properties
+                                        ).map(([key, value]) => (
+                                            <li className='mb-2 relative font-light'>
+                                                <p>
+                                                    <strong className='font-semibold'>
+                                                        {key}:&nbsp;&nbsp;
+                                                    </strong>
+                                                    {value}
+                                                </p>
+                                            </li>
+                                        ))}
+                                </ul>
                             </div>
                         </div>
                     </div>
