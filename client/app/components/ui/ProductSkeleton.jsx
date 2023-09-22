@@ -14,7 +14,6 @@ const ProductSkeleton = () => {
                     <div className='flex gap-3 mt-auto'>
                         <div className='w-20 h-12 bg-zinc-200 rounded-full animate-pulse'></div>
                         <div className='w-20 h-12 bg-zinc-200 rounded-full animate-pulse'></div>
-                        <div className='w-20 h-12 ml-auto bg-zinc-200 rounded-full animate-pulse'></div>
                     </div>
                 </div>
             </div>

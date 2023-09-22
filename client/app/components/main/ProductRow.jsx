@@ -1,4 +1,5 @@
 "use client";
+import ProductCardSkeleton from "@/app/components/ui/ProductCardSkeleton";
 import ProductCard from "@/app/components/main/Cards/ProductCard";
 import { useGetProducts } from "@/app/lib/api";
 import { useState } from "react";
@@ -9,7 +10,7 @@ const ProductRow = ({ filterCategory }) => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(4);
     const [search, setSearch] = useState("");
-    const { data } = useGetProducts({
+    const { data, status: state } = useGetProducts({
         page,
         sort,
         filterCategory,
@@ -20,6 +21,7 @@ const ProductRow = ({ filterCategory }) => {
 
     return (
         <div className='flex flex-row gap-5'>
+            {state === "loading" && <ProductCardSkeleton number={4} />}
             {data?.products.map((product, index) => (
                 <div
                     key={index}

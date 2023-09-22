@@ -1,5 +1,6 @@
 "use client";
 
+import RippleButton from "@/app/components/ui/Button";
 import ProductSkeleton from "@/app/components/ui/ProductSkeleton";
 import { useGetProduct } from "@/app/lib/api";
 import { useParams } from "next/navigation";
@@ -40,6 +41,55 @@ const ProductDetails = ({ initialProduct }) => {
                                     </p>
                                 </div>
                             </div>
+                            <div className='my-5 flex items-center gap-x-3'>
+                                <div className='flex w-1/4 bg-zinc-300 rounded-full  px-5 py-3'>
+                                    <div className='flex justify-center items-center w-1/3'>
+                                        <button
+                                            type='button'
+                                            title='Reduce Quantity'
+                                            className='rounded-l-xl leading-none cursor-not-allowed  opacity-75'
+                                            tabIndex='-1'
+                                        >
+                                            <svg
+                                                className={`inline-block h-3 w-3 text-zinc-800`}
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                width='1200'
+                                                height='1200'
+                                                viewBox='0 0 1200 1200'
+                                            >
+                                                <path
+                                                    fill='currentColor'
+                                                    d='M0 430.078h1200v339.844H0V430.078z'
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <span className='flex justify-center w-1/3 text-center text-lg'>
+                                        1
+                                    </span>
+                                    <div className='flex justify-center items-center w-1/3'>
+                                        <button
+                                            type='button'
+                                            title='Reduce Quantity'
+                                            className='rounded-r-xl  leading-none'
+                                        >
+                                            <svg
+                                                className={`inline-block h-3 w-3 text-zinc-800`}
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                width='1200'
+                                                height='1200'
+                                                viewBox='0 0 1200 1200'
+                                            >
+                                                <path
+                                                    fill='currentColor'
+                                                    d='M430.078 0v430.078H0v339.844h430.078V1200h339.844V769.922H1200V430.078H769.922V0H430.078z'
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <RippleButton label='Aggiungi al carrello' />
+                            </div>
                             <div className='mt-3 flex items-end justify-between'>
                                 <p>{data?.product[0].description}</p>
                             </div>
@@ -49,7 +99,10 @@ const ProductDetails = ({ initialProduct }) => {
                                         Object.entries(
                                             data?.product[0].properties
                                         ).map(([key, value]) => (
-                                            <li className='mb-2 relative font-light'>
+                                            <li
+                                                key={key}
+                                                className='mb-2 relative font-light'
+                                            >
                                                 <p>
                                                     <strong className='font-semibold'>
                                                         {key}:&nbsp;&nbsp;
