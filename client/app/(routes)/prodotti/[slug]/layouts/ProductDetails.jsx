@@ -21,7 +21,7 @@ const ProductDetails = ({ initialProduct }) => {
                 <div className='lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8'>
                     <div className='flex flex-col-reverse'>
                         <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'></div>
-                        <div className='aspect-square relative h-full w-full sm:rounded-lg overflow-hidden'>
+                        <div className='aspect-square relative h-full w-full rounded-lg overflow-hidden'>
                             <img
                                 src={data?.product[0].images[0]}
                                 alt={data?.product[0].name}
@@ -29,7 +29,7 @@ const ProductDetails = ({ initialProduct }) => {
                             />
                         </div>
                     </div>
-                    <div className='mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0'>
+                    <div className='mt-5 px-4 sm:px-0 lg:mt-0'>
                         <div>
                             <h1 className='text-3xl font-bold text-gray-900'>
                                 {data?.product[0].name}
@@ -42,7 +42,7 @@ const ProductDetails = ({ initialProduct }) => {
                                 </div>
                             </div>
                             <div className='my-5 flex items-center gap-x-3'>
-                                <div className='flex w-1/4 bg-zinc-300 rounded-full  px-5 py-3'>
+                                <div className='flex md:w-1/4 w-2/4 bg-zinc-300 rounded-full  px-5 py-3'>
                                     <div className='flex justify-center items-center w-1/3'>
                                         <button
                                             type='button'
@@ -64,7 +64,7 @@ const ProductDetails = ({ initialProduct }) => {
                                             </svg>
                                         </button>
                                     </div>
-                                    <span className='flex justify-center w-1/3 text-center text-lg'>
+                                    <span className='flex justify-center w-1/3 text-center'>
                                         1
                                     </span>
                                     <div className='flex justify-center items-center w-1/3'>
