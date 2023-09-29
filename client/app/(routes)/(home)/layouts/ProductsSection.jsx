@@ -10,7 +10,7 @@ const ProductsSection = () => {
 
     return (
         <div className='relative z-2'>
-            <div className='md:px-10 xxs:px-4 md:pb-0 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'>
+            <div className='md:px-10 xxs:px-4 lg:pb-14 py-8  relative z-1 text-center bg-gray-150 block'>
                 {data.map(
                     (cat) =>
                         cat.number_of_product > 0 &&

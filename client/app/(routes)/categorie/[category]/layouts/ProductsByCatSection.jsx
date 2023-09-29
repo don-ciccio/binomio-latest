@@ -46,7 +46,7 @@ const ProductsByCatSection = ({ initialData }) => {
         router.replace(`${pathname}?${newUrlParams}`);
     };
     return (
-        <div className='md:px-6 xxs:px-4 md:pb-0 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'>
+        <div className='md:px-6 xxs:px-4 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'>
             <div className='flex justify-between items-center mb-6 h-8'>
                 <div className='flex flex-row gap-2 basis-2/3'>
                     {existingParams.map(([key, value]) => (
