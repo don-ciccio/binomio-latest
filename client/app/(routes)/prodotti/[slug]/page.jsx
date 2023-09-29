@@ -15,7 +15,7 @@ export default async function Home({ params }) {
     }
 
     return (
-        <div className='h-full w-full'>
+        <div className='pb-24'>
             <Header
                 categories={initialCategories}
                 message={initialContent.data?.content.topbar}

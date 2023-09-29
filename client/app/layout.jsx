@@ -2,6 +2,7 @@ import "@/app/styles/globals.css";
 import Providers from "./providers";
 import Toast from "@/app/components/ui/Toast";
 import localFont from "next/font/local";
+import Footer from "./components/Footer/Footer";
 
 const bauziet = localFont({
     src: [
@@ -43,10 +44,16 @@ export default function RootLayout({ children }) {
         <html lang='it'>
             <body className={`${bauziet.variable} font-sans`}>
                 <div className='flex min-h-screen flex-col bg-gray-150'>
-                    <Providers>
-                        {children}
-                        <Toast />
-                    </Providers>
+                    <div
+                        id='maincontent'
+                        className='block flex-basis-1 relative z-2'
+                    >
+                        <Providers>
+                            {children}
+                            <Footer />
+                            <Toast />
+                        </Providers>
+                    </div>
                 </div>
             </body>
         </html>

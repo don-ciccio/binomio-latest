@@ -41,10 +41,12 @@ const products = require("./routes/product");
 const categories = require("./routes/category");
 const stores = require("./routes/store");
 const content = require("./routes/content");
+const orders = require("./routes/order");
 
 app.use("/api", auth);
 app.use("/api", products);
 app.use("/api", categories);
+app.use("/api", orders);
 app.use("/api", stores);
 app.use("/api", content);
 

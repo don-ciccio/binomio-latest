@@ -89,7 +89,7 @@ const Main = React.forwardRef((props, ref) => {
         <>
             <div id='home-top' className='relative h-screen	bg-gray-150'>
                 <div className='opacity-100 block fixed overflow-hidden'>
-                    <div className='relative block h-full w-full'>
+                    <div className='relative block'>
                         <picture>
                             <source
                                 media='(min-width: 768px)'
