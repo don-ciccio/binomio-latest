@@ -6,6 +6,7 @@ const {
     registerUser,
     loginUser,
     getUserProfile,
+    googleController,
     logout,
 } = require("../controllers/authController");
 
@@ -17,5 +18,8 @@ router.route("/login").post(loginUser);
 router.route("/logout").get(logout);
 
 router.route("/me").get(isAuthenticatedUser, getUserProfile);
+
+// Google and Facebook Login
+router.route("/auth/google").post(googleController);
 
 module.exports = router;

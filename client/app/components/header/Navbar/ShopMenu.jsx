@@ -10,8 +10,10 @@ const MiniCart = dynamic(() => import("./ShopMenuComponents/MiniCart"), {
     ssr: false,
 });
 
+import MiniLogin from "./ShopMenuComponents/MiniLogin";
 import MiniWishList from "./ShopMenuComponents/MiniWishList";
 import MiniSearch from "./ShopMenuComponents/MiniSearch";
+
 import ContentAnimated from "./ShopMenuComponents/ContentAnimated";
 import MiniSearchInput from "./ShopMenuComponents/MiniSearchInput";
 
@@ -26,6 +28,7 @@ import HeartIcon from "../../icons/HeartIcon";
 import CartIcon from "../../icons/CartIcon";
 
 const array = [
+    { id: 0, component: <MiniLogin />, isVisible: true },
     { id: 1, component: <MiniCart />, isVisible: true },
     { id: 2, component: <MiniWishList />, isVisible: true },
     { id: 3, component: <MiniSearch />, isVisible: true },
@@ -134,6 +137,7 @@ const ShopMenu = () => {
 
                 <animated.li
                     style={rightMenuAnimation}
+                    onClick={(e) => handleClickLink(e, 0)}
                     className='px-2.5 md:inline'
                 >
                     <a
