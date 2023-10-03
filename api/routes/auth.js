@@ -7,6 +7,7 @@ const {
     loginUser,
     getUserProfile,
     googleController,
+    refreshToken,
     logout,
 } = require("../controllers/authController");
 
@@ -21,5 +22,6 @@ router.route("/me").get(isAuthenticatedUser, getUserProfile);
 
 // Google and Facebook Login
 router.route("/auth/google").post(googleController);
+router.route("/auth/google/refresh").post(refreshToken);
 
 module.exports = router;

@@ -6,7 +6,7 @@ const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const jwt = require("jsonwebtoken");
 
-const { OAuth2Client } = require("google-auth-library");
+const { OAuth2Client, UserRefreshClient } = require("google-auth-library");
 
 const oAuth2Client = new OAuth2Client(
     process.env.GOOGLE_CLIENT,
@@ -98,18 +98,28 @@ exports.googleController = catchAsyncErrors(async (req, res) => {
             if (email_verified) {
                 User.findOne({ email }).exec((err, user) => {
                     if (user) {
-                        const token = jwt.sign(
-                            { _id: user._id },
-                            process.env.JWT_SECRET,
-                            {
-                                expiresIn: "7d",
-                            }
-                        );
-                        const { _id, email, name } = user;
-                        return res.json({
-                            token,
-                            user: { _id, email, name },
-                        });
+                        const options = {
+                            expires: new Date(
+                                Date.now() +
+                                    process.env.COOKIE_EXPIRATION_TIME *
+                                        24 *
+                                        60 *
+                                        60 *
+                                        1000
+                            ),
+                            httpOnly: true,
+                            secure: true,
+                            sameSite: "none",
+                        };
+
+                        res.status(200)
+                            .cookie("user_token", tokens.id_token, options)
+                            .cookie("ref_token", tokens.refresh_token, options)
+                            .json({
+                                success: true,
+                                user,
+                                message: "Login Successfully",
+                            });
                     } else {
                         let password = email + process.env.JWT_SECRET;
                         user = new User({ name, email, password });
@@ -123,17 +133,93 @@ exports.googleController = catchAsyncErrors(async (req, res) => {
                                     error: "User signup failed with google",
                                 });
                             }
-                            const token = jwt.sign(
-                                { _id: data._id },
-                                process.env.JWT_SECRET,
-                                { expiresIn: "7d" }
-                            );
-                            const { _id, email, name } = data;
-                            return res.json({
-                                token,
-                                user: { _id, email, name },
-                            });
+
+                            const options = {
+                                expires: new Date(
+                                    Date.now() +
+                                        process.env.COOKIE_EXPIRATION_TIME *
+                                            24 *
+                                            60 *
+                                            60 *
+                                            1000
+                                ),
+                                httpOnly: true,
+                                secure: true,
+                                sameSite: "none",
+                            };
+
+                            res.status(200)
+                                .cookie("user_token", tokens.id_token, options)
+                                .cookie(
+                                    "ref_token",
+                                    tokens.refresh_token,
+                                    options
+                                )
+                                .json({
+                                    success: true,
+                                    user,
+                                    message: "Login Successfully",
+                                });
                         });
+                    }
+                });
+            } else {
+                return res.status(400).json({
+                    error: "Google login failed. Try again",
+                });
+            }
+        });
+});
+
+exports.refreshToken = catchAsyncErrors(async (req, res, next) => {
+    const ref_token = req.cookies.ref_token;
+
+    if (!ref_token) {
+        next(new ErrorHandler("User not login", 403));
+    }
+
+    const user = new UserRefreshClient(
+        process.env.GOOGLE_CLIENT,
+        process.env.GOOGLE_SECRET,
+        ref_token
+    );
+    const { credentials } = await user.refreshAccessToken(); // optain new tokens
+    oAuth2Client
+        .verifyIdToken({
+            idToken: credentials.id_token,
+            audience: process.env.GOOGLE_CLIENT,
+        })
+        .then((response) => {
+            const { email_verified, name, email } = response.payload;
+            if (email_verified) {
+                User.findOne({ email }).exec((err, user) => {
+                    if (user) {
+                        const options = {
+                            expires: new Date(
+                                Date.now() +
+                                    process.env.COOKIE_EXPIRATION_TIME *
+                                        24 *
+                                        60 *
+                                        60 *
+                                        1000
+                            ),
+                            httpOnly: true,
+                            secure: true,
+                            sameSite: "none",
+                        };
+
+                        res.status(200)
+                            .cookie("user_token", credentials.id_token, options)
+                            .cookie(
+                                "ref_token",
+                                credentials.refresh_token,
+                                options
+                            )
+                            .json({
+                                success: true,
+                                user,
+                                message: "Welcome Back!",
+                            });
                     }
                 });
             } else {

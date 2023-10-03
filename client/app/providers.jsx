@@ -1,9 +1,7 @@
 "use client";
-
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export default function Providers({ children }) {
