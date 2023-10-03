@@ -24,7 +24,7 @@ export default async function Home({ params }) {
                 <SVGLogo className='overflow-hidden align-middle h-full w-full' />
             </Header>
             <div id='maincontent' className='mt-36 flex-basis-1 relative z-2'>
-                <div className='md:px-6 xxs:px-4 relative z-1'>
+                <div className='px-6 sm:px-14 relative z-1'>
                     <Breadcrumb />
                 </div>
 

@@ -4,14 +4,51 @@ import RippleButton from "@/app/components/ui/Button";
 import ProductSkeleton from "@/app/components/ui/ProductSkeleton";
 import { useGetProduct } from "@/app/lib/api";
 import { useParams } from "next/navigation";
-
+import { useCartStore, useToastStore } from "@/app/lib/store";
+import { useState } from "react";
 const ProductDetails = ({ initialProduct }) => {
     const params = useParams();
+    const { cart, addToCart } = useCartStore();
+    const { setToast } = useToastStore();
+    const [quantity, setQuantity] = useState(1);
 
     const { data, isLoading, isError } = useGetProduct({
         slug: params.slug,
         initialProduct,
     });
+
+    async function handleClick(productId, e) {
+        e.stopPropagation();
+        const alreadyAdded = cart.find((item) => item.id === productId);
+        if (alreadyAdded) {
+            setToast({
+                status: "info",
+                message: "Il prodotto è già stato aggiunto!",
+            });
+        } else {
+            addToCart({ id: productId, quantity: quantity });
+            setToast({
+                status: "successo",
+                message: "Il prodotto è stato aggiunto al carrello!",
+            });
+        }
+    }
+
+    const increaseQty = () => {
+        const count = document.querySelector(".count");
+
+        const qty = count.valueAsNumber + 1;
+        setQuantity(qty);
+    };
+
+    const decreaseQty = () => {
+        const count = document.querySelector(".count");
+
+        if (count.valueAsNumber <= 1) return;
+
+        const qty = count.valueAsNumber - 1;
+        setQuantity(qty);
+    };
 
     if (isLoading || isError) return <ProductSkeleton />;
 
@@ -46,8 +83,13 @@ const ProductDetails = ({ initialProduct }) => {
                                         <button
                                             type='button'
                                             title='Reduce Quantity'
-                                            className='rounded-l-xl leading-none cursor-not-allowed  opacity-75'
-                                            tabIndex='-1'
+                                            onClick={decreaseQty}
+                                            className={` rounded-l-xl leading-none ${
+                                                quantity < 2
+                                                    ? "cursor-not-allowed  opacity-75"
+                                                    : ""
+                                            }`}
+                                            tabIndex={quantity < 2 ? -1 : 0}
                                         >
                                             <svg
                                                 className={`inline-block h-3 w-3 text-zinc-800`}
@@ -63,13 +105,19 @@ const ProductDetails = ({ initialProduct }) => {
                                             </svg>
                                         </button>
                                     </div>
-                                    <span className='flex justify-center w-1/3 text-center'>
-                                        1
+                                    <span className='text-center  w-1/3 '>
+                                        <input
+                                            type='number'
+                                            className='count w-full outline-none text-right bg-zinc-300'
+                                            value={quantity}
+                                            readOnly
+                                        />
                                     </span>
                                     <div className='flex justify-center items-center w-1/3'>
                                         <button
                                             type='button'
-                                            title='Reduce Quantity'
+                                            title='Increase Quantity'
+                                            onClick={increaseQty}
                                             className='rounded-r-xl  leading-none'
                                         >
                                             <svg
@@ -87,7 +135,12 @@ const ProductDetails = ({ initialProduct }) => {
                                         </button>
                                     </div>
                                 </div>
-                                <RippleButton label='Aggiungi al carrello' />
+                                <RippleButton
+                                    onClick={(e) =>
+                                        handleClick(data?.product[0]._id, e)
+                                    }
+                                    label='Aggiungi al carrello'
+                                />
                             </div>
                             <div className='mt-3 flex items-end justify-between'>
                                 <p>{data?.product[0].description}</p>

@@ -10,7 +10,7 @@ const Accordion = ({ data }) => {
 
     useEffect(() => {
         const calcContentMaxHeight = () => {
-            ref && setContentMaxHeight(ref.current.scrollHeight);
+            ref && setContentMaxHeight(ref.current?.scrollHeight);
         };
 
         calcContentMaxHeight();
