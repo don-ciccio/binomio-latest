@@ -21,13 +21,12 @@ const ProductDetails = ({ initialProduct }) => {
                 <div className='lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8'>
                     <div className='flex flex-col-reverse'>
                         <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'></div>
-                        <div className='aspect-square relative h-full w-full rounded-lg overflow-hidden'>
-                            <img
-                                src={data?.product[0].images[0]}
-                                alt={data?.product[0].name}
-                                className='object-cover p-3 object-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-400 via-zinc-300 to-zinc-200 shadow-sm'
-                            />
-                        </div>
+
+                        <img
+                            src={data?.product[0].images[0]}
+                            alt={data?.product[0].name}
+                            className='rounded-lg object-cover p-3 object-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-400 via-zinc-300 to-zinc-200 shadow-sm'
+                        />
                     </div>
                     <div className='mt-5 px-4 sm:px-0 lg:mt-0'>
                         <div>
@@ -41,8 +40,8 @@ const ProductDetails = ({ initialProduct }) => {
                                     </p>
                                 </div>
                             </div>
-                            <div className='my-5 flex items-center gap-x-3'>
-                                <div className='flex md:w-1/4 w-2/4 bg-zinc-300 rounded-full  px-5 py-3'>
+                            <div className='my-5 flex items-center sm:gap-x-3 gap-y-3 flex-col sm:flex-row'>
+                                <div className='min-w-200 sm:min-w-[150px] flex md:w-1/4 w-2/4 bg-zinc-300 rounded-full px-5 py-3'>
                                     <div className='flex justify-center items-center w-1/3'>
                                         <button
                                             type='button'

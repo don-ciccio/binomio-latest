@@ -67,13 +67,13 @@ const MiniLogin = () => {
                     <div className='flex mt-4 space-x-3 md:mt-6'>
                         <a
                             href='#'
-                            className='inline-flex font-semibold items-center px-5 py-2 text-sm text-center text-white bg-zinc-700 rounded-full hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800'
+                            className='inline-flex font-semibold items-center px-7 py-2 text-sm text-center text-white bg-zinc-700 rounded-full hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800'
                         >
                             Ordini
                         </a>
                         <a
                             href='#'
-                            className='inline-flex items-center px-5 py-2 text-sm font-semibold text-center text-gray-900 bg-white border border-gray-300 rounded-full hover:bg-zinc-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700'
+                            className='inline-flex items-center px-7 py-2 text-sm font-semibold text-center text-gray-900 bg-white border border-gray-300 rounded-full hover:bg-zinc-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700'
                         >
                             Profilo
                         </a>

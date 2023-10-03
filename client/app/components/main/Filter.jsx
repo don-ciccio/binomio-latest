@@ -84,7 +84,7 @@ const Filter = ({ data }) => {
                         </div>
                         {data?.properties.map((property, i) => (
                             <ContentAnimatedModal key={i}>
-                                <div className='flex flex-col justify-center w-full'>
+                                <div className='flex flex-col justify-center w-full border-b-[1px] border-zinc-300'>
                                     <MenuAccordion title={property._id}>
                                         <div className='mb-2'>
                                             {property.values &&

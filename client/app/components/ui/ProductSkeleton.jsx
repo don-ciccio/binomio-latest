@@ -1,6 +1,6 @@
 const ProductSkeleton = () => {
     return (
-        <div className='mx-auto max-w-7xl'>
+        <div className='mx-auto max-w-7xl pt-8'>
             <div className='w-full gap-5 p-2 mx-auto  select-none sm:p-4 sm:h-100 rounded-2xl sm:flex-row lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8'>
                 <div className='bg-zinc-200 sm:h-100 rounded-xl animate-pulse'></div>
                 <div className='flex flex-col flex-1 gap-5 sm:p-2'>
