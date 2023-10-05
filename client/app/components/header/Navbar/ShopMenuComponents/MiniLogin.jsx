@@ -67,7 +67,7 @@ const MiniLogin = () => {
                     <div className='flex mt-4 space-x-3 md:mt-6'>
                         <a
                             href='#'
-                            className='inline-flex font-semibold items-center px-7 py-2 text-sm text-center text-white bg-zinc-800 rounded-full hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800'
+                            className='inline-flex font-semibold items-center px-7 py-2 text-sm text-center text-zinc-200 bg-zinc-800 rounded-full hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800'
                         >
                             Ordini
                         </a>

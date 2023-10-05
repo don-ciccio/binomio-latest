@@ -1,0 +1,149 @@
+import { useCart } from "@/app/lib/hooks/useCart";
+import { useCartStore } from "@/app/lib/store";
+import { Icon } from "@iconify/react";
+
+const OrderSummary = () => {
+    const { cart, removeFromCart, updateQuantity } = useCartStore();
+    const { cartData, totalPrice, isLoading } = useCart();
+
+    function IvaTax(totale, aliquotaIVA) {
+        const imponibile = totale / ((100 + aliquotaIVA) / 100);
+        const importoIVA = totale - imponibile;
+        return importoIVA;
+    }
+
+    return (
+        <div className='pt-[35px] pb-[25px] rounded-md bg-gray-200'>
+            <div className='lg:w-[421px] grid lg:justify-start justify-center items-center'>
+                <p className='font-medium text-[20px] pl-6 mb-4'>
+                    Riepilogo ordine
+                </p>
+
+                <div className='px-5 relative  mb-4 max-h-[380px] h-[380px] overflow-y-auto'>
+                    <ul>
+                        {isLoading ? (
+                            <p>Loading...</p>
+                        ) : (
+                            cartData.map((item) => (
+                                <li key={item.id} className='pb-5'>
+                                    <div className='flex flex-row gap-1.5'>
+                                        <div className='flex flex-basis-25 max-w-1/4 px-2.5 h-full'>
+                                            <div className='flex flex-col gap-1'>
+                                                <div className='flex'>
+                                                    <img
+                                                        src={item.image}
+                                                        className='rounded-full w-full p-1.5 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-400 via-zinc-300 to-zinc-200'
+                                                        alt={item.name}
+                                                    />
+                                                </div>
+                                                <div className='flex flex-grow w-full bg-zinc-300 rounded-xl'>
+                                                    <div className='flex justify-center items-center w-1/3'>
+                                                        <button
+                                                            type='button'
+                                                            title='Reduce Quantity'
+                                                            onClick={() =>
+                                                                updateQuantity(
+                                                                    item.id,
+                                                                    "decrease"
+                                                                )
+                                                            }
+                                                            className={` rounded-l-xl leading-none ${
+                                                                item.quantity <
+                                                                2
+                                                                    ? "cursor-not-allowed  opacity-75"
+                                                                    : ""
+                                                            }`}
+                                                            tabIndex={
+                                                                item.quantity <
+                                                                2
+                                                                    ? -1
+                                                                    : 0
+                                                            }
+                                                        >
+                                                            -
+                                                        </button>
+                                                    </div>
+
+                                                    <span className=' inline-block w-1/3 text-center'>
+                                                        {item.quantity}
+                                                    </span>
+                                                    <div className='flex justify-center items-center w-1/3'>
+                                                        <button
+                                                            type='button'
+                                                            title='Reduce Quantity'
+                                                            onClick={() =>
+                                                                updateQuantity(
+                                                                    item.id,
+                                                                    "increase"
+                                                                )
+                                                            }
+                                                            className='rounded-r-xl  leading-none'
+                                                        >
+                                                            +
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='flex flex-basis-58 max-w-2/4 font-medium'>
+                                            <div className='flex flex-col justify-between'>
+                                                <div className='flex justify-start pt-2'>
+                                                    {item.name}
+                                                </div>
+                                                <div className='flex font-light items-baseline'>
+                                                    €{item.price}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='flex flex-basis-16 items-center justify-center'>
+                                            <button
+                                                title='Elimina'
+                                                type='button'
+                                                onClick={() =>
+                                                    removeFromCart(item.id)
+                                                }
+                                            >
+                                                <Icon
+                                                    className='w-6 h-6 cursor-pointer'
+                                                    icon='ion:trash-sharp'
+                                                />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))
+                        )}
+                    </ul>
+                </div>
+                <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between'>
+                    <div className='flex flex-col gap-2 w-full'>
+                        <div className='flex justify-between'>
+                            <span className='text-base'>Subtotale:</span>
+                            <span className='text-base font-semibold'>
+                                €
+                                {Number(
+                                    parseFloat(totalPrice) -
+                                        IvaTax(parseFloat(totalPrice), 10)
+                                ).toFixed(2)}
+                            </span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span className='text-base'>Tasse:</span>
+                            <span className='text-base font-semibold'>
+                                €{IvaTax(parseFloat(totalPrice), 10).toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between'>
+                    <span className='text-base'>Totale carrello:</span>
+                    <span className='text-base font-semibold'>
+                        €{totalPrice}
+                    </span>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default OrderSummary;

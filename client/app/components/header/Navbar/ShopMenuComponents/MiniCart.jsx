@@ -1,6 +1,7 @@
 import { useCart } from "@/app/lib/hooks/useCart";
 import { useCartStore } from "@/app/lib/store";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 const MiniCart = () => {
     const { cart, removeFromCart, updateQuantity } = useCartStore();
@@ -125,11 +126,12 @@ const MiniCart = () => {
                             </span>
                         </div>
                         <div className='flex justify-between gap-x-2 text-sm font-semibold px-5'>
-                            <button
+                            <Link
+                                href={`/checkout`}
                                 className={`h-11 items-center justify-center flex w-full  bg-zinc-800 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer  text-zinc-200`}
                             >
                                 Checkout
-                            </button>
+                            </Link>
                             <button
                                 className={`h-11 items-center justify-center flex w-full   bg-zinc-800 relative overflow-hidden text-center rounded-full px-4 py-2 cursor-pointer  text-zinc-200`}
                             >

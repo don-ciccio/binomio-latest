@@ -105,6 +105,7 @@ const ProductDetails = ({ initialProduct }) => {
                                             </svg>
                                         </button>
                                     </div>
+
                                     <span className='text-center  w-1/3 '>
                                         <input
                                             type='number'

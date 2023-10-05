@@ -8,7 +8,7 @@ const RippleButton = ({ label, onClick }) => {
     return (
         <button
             onClick={onClick}
-            className={` min-w-200 inline-block font-semibold bg-zinc-800 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer text-sm text-zinc-200`}
+            className={` min-w-200 inline-block font-medium bg-zinc-800 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer text-zinc-200`}
             ref={ref}
         >
             {ripples}
