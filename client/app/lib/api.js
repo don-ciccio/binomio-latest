@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import api from "./utils/axiosInterceptor";
 import qs from "query-string";
-
+import axios from "axios";
 axios.defaults.withCredentials = true;
 
 export const getProducts = async (
@@ -126,4 +126,14 @@ export const useGetContentHero = (props) => {
     return useQuery(["content"], () => getContent(), {
         initialData: props,
     });
+};
+
+export const getUser = async () => {
+    try {
+        const response = await api.get("/api/me");
+        return response.data.user;
+    } catch (err) {
+        console.log(err.response.data);
+        return null;
+    }
 };

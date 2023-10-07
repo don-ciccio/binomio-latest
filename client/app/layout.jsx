@@ -39,7 +39,7 @@ export const metadata = {
     description: "Template for NextJs  Ecommerce",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
     return (
         <html lang='it'>
             <body className={`${bauziet.variable} font-sans`}>

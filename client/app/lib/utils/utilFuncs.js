@@ -42,3 +42,9 @@ export const generateUniqueArray = (num) => {
 
     return Array.from(numbers);
 };
+
+export function IvaTax(totale, aliquotaIVA) {
+    const imponibile = totale / ((100 + aliquotaIVA) / 100);
+    const importoIVA = totale - imponibile;
+    return importoIVA;
+}

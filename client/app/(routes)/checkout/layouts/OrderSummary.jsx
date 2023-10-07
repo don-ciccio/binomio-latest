@@ -1,16 +1,11 @@
 import { useCart } from "@/app/lib/hooks/useCart";
 import { useCartStore } from "@/app/lib/store";
 import { Icon } from "@iconify/react";
+import { IvaTax } from "@/app/lib/utils/utilFuncs";
 
 const OrderSummary = () => {
-    const { cart, removeFromCart, updateQuantity } = useCartStore();
+    const { removeFromCart, updateQuantity } = useCartStore();
     const { cartData, totalPrice, isLoading } = useCart();
-
-    function IvaTax(totale, aliquotaIVA) {
-        const imponibile = totale / ((100 + aliquotaIVA) / 100);
-        const importoIVA = totale - imponibile;
-        return importoIVA;
-    }
 
     return (
         <div className='pt-[35px] pb-[25px] rounded-md bg-gray-200'>

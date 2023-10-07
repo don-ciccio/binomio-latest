@@ -2,8 +2,10 @@ import { create } from "zustand";
 
 // create our store
 export const useAuthStore = create((set) => ({
-    authenticated: false,
     authUser: null,
+    requestLoading: false,
     setAuthUser: (user) => set((state) => ({ ...state, authUser: user })),
-    setAuthentication: (val) => set((state) => ({ authenticated: val })),
+    setRequestLoading: (isLoading) =>
+        set((state) => ({ ...state, requestLoading: isLoading })),
+    reset: () => set({ authUser: null, requestLoading: false }),
 }));

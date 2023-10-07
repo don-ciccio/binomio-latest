@@ -1,45 +1,100 @@
 import RippleButton from "@/app/components/ui/Button";
+import { useState } from "react";
+import axios from "axios";
+import { useAuthStore } from "@/app/lib/store";
 
 function AccountDetails({ setActiveStep }) {
+    const { setAuthUser, authUser, setAuthentication, authenticated } =
+        useAuthStore();
+
+    const [loginData, setLoginData] = useState({
+        email: "",
+        password: "",
+    });
+
+    const onLoginChange = (event) => {
+        const { name, value } = event.target;
+        setLoginData((preData) => ({
+            ...preData,
+            [name]: value,
+        }));
+    };
+
+    const loginSubmit = async (e) => {
+        e.preventDefault();
+        const config = {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+            credentials: "same-origin",
+        };
+        const { data } = await axios.post(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/login`,
+            loginData,
+            config
+        );
+
+        setAuthUser(data.user);
+        setAuthentication(true);
+        console.log(data.user);
+    };
+
     return (
         <div className='lg:w-[694px] grid justify-start items-center lg:px-[50px]'>
             <p className='font-medium text-[20px]'>Profilo</p>
-
-            <div className='py-[11px]'>
-                <p className='text-zinc-500 text-[15px] mb-2'>
-                    Indirizzo email
+            {authenticated ? (
+                <p>
+                    Benvenuto <strong>{authUser.name}!</strong>
                 </p>
+            ) : (
+                <form onSubmit={loginSubmit}>
+                    <div className='py-[11px]'>
+                        <p className='text-zinc-500 text-[15px] mb-2'>
+                            Indirizzo email
+                        </p>
 
-                <div className='relative flex flex-wrap items-stretch w-full'>
-                    <input
-                        placeholder='INDIRIZZO EMAIL'
-                        type='text'
-                        width='w-[534px]'
-                        className='border rounded-r-none relative flex-auto mb-0 rounded-3xl h-12 text-sm focus:outline-none leading-5 block px-5 py-4 w-1% !bg-white border-white'
-                    />
-                    <div className='ml-0 flex bg-white rounded-l-none items-center px-5 rounded-3xl border-0 whitespace-nowrap'></div>
-                </div>
-            </div>
-            <div className='py-[11px]'>
-                <p className='text-zinc-500 text-[15px] mb-2'>Password</p>
-                <div className='relative flex flex-wrap items-stretch w-full'>
-                    <input
-                        placeholder='PASSWORD'
-                        type='password'
-                        width='w-[534px]'
-                        className='border rounded-r-none relative flex-auto mb-0 rounded-3xl h-12 text-sm focus:outline-none leading-5 block px-5 py-4 w-1%   border-white'
-                    />
-                    <div className='ml-0 flex bg-white rounded-l-none items-center px-5 rounded-3xl border-0 whitespace-nowrap'></div>
-                </div>
-            </div>
+                        <div className='relative flex flex-wrap items-stretch w-full'>
+                            <input
+                                placeholder='INDIRIZZO EMAIL'
+                                type='text'
+                                name='email'
+                                value={loginData.email}
+                                onChange={(e) => onLoginChange(e)}
+                                width='w-[534px]'
+                                className='border rounded-r-none relative flex-auto mb-0 rounded-3xl h-12 text-sm focus:outline-none leading-5 block px-5 py-4 w-1% !bg-white border-white'
+                            />
+                            <div className='ml-0 flex bg-white rounded-l-none items-center px-5 rounded-3xl border-0 whitespace-nowrap'></div>
+                        </div>
+                    </div>
+                    <div className='py-[11px]'>
+                        <p className='text-zinc-500 text-[15px] mb-2'>
+                            Password
+                        </p>
+                        <div className='relative flex flex-wrap items-stretch w-full'>
+                            <input
+                                placeholder='PASSWORD'
+                                type='password'
+                                name='password'
+                                value={loginData.password}
+                                onChange={(e) => onLoginChange(e)}
+                                width='w-[534px]'
+                                className='border rounded-r-none relative flex-auto mb-0 rounded-3xl h-12 text-sm focus:outline-none leading-5 block px-5 py-4 w-1%   border-white'
+                            />
+                            <div className='ml-0 flex bg-white rounded-l-none items-center px-5 rounded-3xl border-0 whitespace-nowrap'></div>
+                        </div>
+                    </div>
+                    <div className='grid grid-flow-col gap-[50px] w-[534px] justify-end items-center mt-3'>
+                        <p className='text-[#2D3748] text-[16px] cursor-pointer font-medium'>
+                            Registrati
+                        </p>
 
-            <div className='grid grid-flow-col gap-[50px] w-[534px] justify-end items-center mt-3'>
-                <p className='text-[#2D3748] text-[16px] cursor-pointer font-medium'>
-                    Registrati
-                </p>
-
-                <RippleButton label='Login' width='w-[150px]' />
-            </div>
+                        <RippleButton
+                            type='submit'
+                            label='Login'
+                            width='w-[150px]'
+                        />
+                    </div>
+                </form>
+            )}
 
             <div className=' border-b border-zinc-300 pt-[100px]' />
 

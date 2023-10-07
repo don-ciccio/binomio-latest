@@ -3,11 +3,12 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { Icon } from "@iconify/react";
 import { useAuthStore } from "@/app/lib/store";
-import { useEffect } from "react";
-const MiniLogin = () => {
-    const { setAuthUser, authUser, setAuthentication, authenticated } =
-        useAuthStore();
+import useSession from "@/app/lib/hooks/useSession";
 
+const MiniLogin = () => {
+    const { setAuthUser, authUser } = useAuthStore();
+    const user = useSession();
+    console.log(user);
     const googleLogin = useGoogleLogin({
         onSuccess: async ({ code }) => {
             const resp = await axios.post(
@@ -20,28 +21,13 @@ const MiniLogin = () => {
             );
             console.log(resp.data);
             setAuthUser(resp.data.user);
-            setAuthentication(true);
         },
         flow: "auth-code",
     });
 
-    const fetchAuth = async () => {
-        const { data } = await axios.post(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/google/refresh`
-        );
-        setAuthUser(data.user);
-        setAuthentication(true);
-    };
-
-    useEffect(() => {
-        if (!authenticated) {
-            fetchAuth();
-        }
-    }, []);
-
     return (
         <div className='px-5'>
-            {!authUser ? (
+            {!user ? (
                 <button
                     onClick={() => googleLogin()}
                     className='w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-gray-200 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline'

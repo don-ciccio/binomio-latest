@@ -21,6 +21,7 @@
     "@tanstack/react-query-devtools": "^4.29.12",
     "@use-gesture/react": "^10.2.27",
     "axios": "^1.4.0",
+    "cookies-next": "^4.0.0",
     "debug": "^4.3.4",
     "eslint-config-next": "^13.5.4",
     "next": "^13.5.4",
