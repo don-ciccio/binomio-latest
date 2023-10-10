@@ -8,9 +8,9 @@ const OrderSummary = () => {
     const { cartData, totalPrice, isLoading } = useCart();
 
     return (
-        <div className='pt-[35px] pb-[25px] rounded-md bg-gray-200'>
-            <div className='lg:w-[421px] grid lg:justify-start justify-center items-center'>
-                <p className='font-medium text-[20px] pl-6 mb-4'>
+        <div className='flex-auto pt-[35px] pb-[25px] rounded-md bg-gray-200'>
+            <div className='grid lg:justify-start justify-center items-center'>
+                <p className='text-left font-medium text-[20px] pl-6 py-4'>
                     Riepilogo ordine
                 </p>
 
@@ -21,7 +21,7 @@ const OrderSummary = () => {
                         ) : (
                             cartData.map((item) => (
                                 <li key={item.id} className='pb-5'>
-                                    <div className='flex flex-row gap-1.5'>
+                                    <div className='flex flex-row gap-1.5 w-11/12'>
                                         <div className='flex flex-basis-25 max-w-1/4 px-2.5 h-full'>
                                             <div className='flex flex-col gap-1'>
                                                 <div className='flex'>
@@ -110,7 +110,7 @@ const OrderSummary = () => {
                         )}
                     </ul>
                 </div>
-                <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between'>
+                <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between w-11/12'>
                     <div className='flex flex-col gap-2 w-full pt-8'>
                         <div className='flex justify-between'>
                             <span className='text-base'>Subtotale:</span>
@@ -130,7 +130,7 @@ const OrderSummary = () => {
                         </div>
                     </div>
                 </div>
-                <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between'>
+                <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between w-11/12'>
                     <span className='text-base'>Totale carrello:</span>
                     <span className='text-base font-semibold'>
                         €{totalPrice}

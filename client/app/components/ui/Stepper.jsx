@@ -8,7 +8,7 @@ const steps = [
 
 const Stepper = ({ activeStep }) => {
     return (
-        <div className='p-4 w-full'>
+        <div className='p-4'>
             <div className='flex flex-row items-center'>
                 {steps.map(({ label, number, component }) => (
                     <Fragment key={number}>

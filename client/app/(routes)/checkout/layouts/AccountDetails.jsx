@@ -39,7 +39,7 @@ function AccountDetails({ setActiveStep }) {
     };
 
     return (
-        <div className='lg:w-[694px] grid justify-start items-center lg:px-[50px]'>
+        <div className='flex-auto lg:px-[50px]'>
             <p className='font-medium text-[20px]'>Profilo</p>
             {user ? (
                 <div className='min-h-[315px]'>
@@ -84,7 +84,7 @@ function AccountDetails({ setActiveStep }) {
                             <div className='ml-0 flex bg-white rounded-l-none items-center px-5 rounded-3xl border-0 whitespace-nowrap'></div>
                         </div>
                     </div>
-                    <div className='grid grid-flow-col gap-[50px] w-[534px] justify-end items-center mt-3'>
+                    <div className='grid grid-flow-col gap-[50px] justify-end items-center mt-3'>
                         <p className='text-[#2D3748] text-[16px] cursor-pointer font-medium'>
                             Registrati
                         </p>
@@ -100,7 +100,7 @@ function AccountDetails({ setActiveStep }) {
 
             <div className=' border-b border-zinc-300 pt-[100px]' />
 
-            <div className='grid grid-flow-col gap-[50px] w-[534px] justify-end items-center py-2'>
+            <div className='grid grid-flow-col gap-[50px]  justify-end items-center py-2'>
                 <p className='text-[#2D3748] text-[16px] cursor-pointer font-medium'>
                     Annulla ordine
                 </p>

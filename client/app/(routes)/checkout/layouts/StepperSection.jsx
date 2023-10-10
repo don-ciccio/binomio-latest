@@ -7,8 +7,8 @@ import OrderSummary from "./OrderSummary";
 const StepperSection = () => {
     const [activeStep, setActiveStep] = useState(0);
     return (
-        <div className='grid lg:grid-flow-col grid-flow-row gap-[40px] p-5 justify-center'>
-            <div className='lg:w-[694px]  px-[35px] pt-[35px] p-10 rounded-md bg-gray-200 grid justify-center items-center'>
+        <div className='flex flex-row md:px-6 xxs:px-4 lg:pb-14 pt-8 relative z-1 text-left gap-4'>
+            <div className='flex-basis-66 px-[35px] pt-[35px] p-10 rounded-md bg-gray-200 justify-center items-center'>
                 <Stepper activeStep={activeStep} />
                 {activeStep === 0 && (
                     <div className='mt-2'>
