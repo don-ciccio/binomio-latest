@@ -137,3 +137,11 @@ export const getUser = async () => {
         return null;
     }
 };
+
+export const logOut = async () => {
+    try {
+        return await api.get("/api/logout");
+    } catch (err) {
+        console.log(err.res.data);
+    }
+};

@@ -128,15 +128,10 @@ const MiniCart = () => {
                         <div className='flex justify-between gap-x-2 text-sm font-semibold px-5'>
                             <Link
                                 href={`/checkout`}
-                                className={`h-11 items-center justify-center flex w-full  bg-zinc-800 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer  text-zinc-200`}
+                                className={`h-11 items-center justify-center flex w-full  bg-zinc-800 hover:bg-zinc-800/75 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer  text-zinc-200 hover:text-white`}
                             >
                                 Checkout
                             </Link>
-                            <button
-                                className={`h-11 items-center justify-center flex w-full   bg-zinc-800 relative overflow-hidden text-center rounded-full px-4 py-2 cursor-pointer  text-zinc-200`}
-                            >
-                                Carrello
-                            </button>
                         </div>
                     </>
                 )}

@@ -111,7 +111,7 @@ const OrderSummary = () => {
                     </ul>
                 </div>
                 <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between'>
-                    <div className='flex flex-col gap-2 w-full'>
+                    <div className='flex flex-col gap-2 w-full pt-8'>
                         <div className='flex justify-between'>
                             <span className='text-base'>Subtotale:</span>
                             <span className='text-base font-semibold'>

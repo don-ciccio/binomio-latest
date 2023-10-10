@@ -2,10 +2,12 @@ import RippleButton from "@/app/components/ui/Button";
 import { useState } from "react";
 import axios from "axios";
 import { useAuthStore } from "@/app/lib/store";
+import useSession from "@/app/lib/hooks/useSession";
 
 function AccountDetails({ setActiveStep }) {
     const { setAuthUser, authUser, setAuthentication, authenticated } =
         useAuthStore();
+    const user = useSession();
 
     const [loginData, setLoginData] = useState({
         email: "",
@@ -34,17 +36,17 @@ function AccountDetails({ setActiveStep }) {
         );
 
         setAuthUser(data.user);
-        setAuthentication(true);
-        console.log(data.user);
     };
 
     return (
         <div className='lg:w-[694px] grid justify-start items-center lg:px-[50px]'>
             <p className='font-medium text-[20px]'>Profilo</p>
-            {authenticated ? (
-                <p>
-                    Benvenuto <strong>{authUser.name}!</strong>
-                </p>
+            {user ? (
+                <div className='min-h-[315px]'>
+                    <p>
+                        Benvenuto <strong>{authUser.name}!</strong>
+                    </p>
+                </div>
             ) : (
                 <form onSubmit={loginSubmit}>
                     <div className='py-[11px]'>
@@ -107,6 +109,7 @@ function AccountDetails({ setActiveStep }) {
                     onClick={() => {
                         setActiveStep(1);
                     }}
+                    disabled={!user}
                     label='Dettagli consegna'
                     width='w-[200px]'
                 />
