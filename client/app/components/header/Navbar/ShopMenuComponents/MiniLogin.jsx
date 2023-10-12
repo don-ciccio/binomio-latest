@@ -5,7 +5,6 @@ import { Icon } from "@iconify/react";
 import { useAuthStore } from "@/app/lib/store";
 import useSession from "@/app/lib/hooks/useSession";
 import { logOut } from "@/app/lib/api";
-import RippleButton from "@/app/components/ui/Button";
 import { useState } from "react";
 
 const MiniLogin = () => {

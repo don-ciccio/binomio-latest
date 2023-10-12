@@ -40,7 +40,7 @@ function AccountDetails({ setActiveStep }) {
 
     return (
         <div className='flex-auto lg:px-[50px]'>
-            <p className='font-medium text-[20px]'>Profilo</p>
+            <p className='font-medium text-[20px] mb-6'>Profilo</p>
             {user ? (
                 <div className='min-h-[315px]'>
                     <p>

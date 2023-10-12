@@ -17,7 +17,7 @@ const Links = ({ categories }) => {
                     {withoutParent.map((category, index) => (
                         <li
                             key={index}
-                            className='cursor-pointer hover:bg-gray-150 lg:px-2 uppercase block rounded-3xl transition ease-in-out duration-300 bg-left-top py-2.5 last-of-type:text-orange-600'
+                            className='cursor-pointer hover:bg-gray-150 lg:px-2 text-lg block rounded-3xl transition ease-in-out duration-300 bg-left-top py-2.5 last-of-type:text-orange-600'
                         >
                             <span>{category.name}</span>
                         </li>

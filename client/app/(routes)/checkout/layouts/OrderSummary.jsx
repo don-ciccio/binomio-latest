@@ -10,7 +10,7 @@ const OrderSummary = () => {
     return (
         <div className='flex-auto pt-[35px] pb-[25px] rounded-md bg-gray-200'>
             <div className='grid lg:justify-start justify-center items-center'>
-                <p className='text-left font-medium text-[20px] pl-6 py-4'>
+                <p className='text-left font-medium text-[22px] pl-6 py-4'>
                     Riepilogo ordine
                 </p>
 

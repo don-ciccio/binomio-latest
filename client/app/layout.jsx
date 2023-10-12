@@ -3,6 +3,7 @@ import Providers from "./providers";
 import Toast from "@/app/components/ui/Toast";
 import localFont from "next/font/local";
 import Footer from "./components/Footer/Footer";
+import { Bricolage_Grotesque } from "next/font/google";
 
 const bauziet = localFont({
     src: [
@@ -34,6 +35,11 @@ const bauziet = localFont({
     variable: "--font-bauziet",
 });
 
+const Bricolage = Bricolage_Grotesque({
+    subsets: ["latin"],
+    display: "swap",
+});
+
 export const metadata = {
     title: "NextJs Ecommerce Template",
     description: "Template for NextJs  Ecommerce",
@@ -42,7 +48,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
     return (
         <html lang='it'>
-            <body className={`${bauziet.variable} font-sans`}>
+            <body className={`${Bricolage.className} font-sans`}>
                 <div className='flex min-h-screen flex-col bg-gray-150'>
                     <div
                         id='maincontent'
