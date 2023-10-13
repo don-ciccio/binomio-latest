@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const Category = require("../models/category");
+const mongoose = require("mongoose");
 
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
@@ -15,9 +16,18 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
         properties,
         seller,
         status,
+        store,
     } = req.body;
 
-    if (!name || !description || !price || !images || !category || !status) {
+    if (
+        !name ||
+        !description ||
+        !price ||
+        !images ||
+        !category ||
+        !status ||
+        !store
+    ) {
         return next(new ErrorHandler("Field required", 400));
     }
 
@@ -29,6 +39,7 @@ exports.newProduct = catchAsyncErrors(async (req, res, next) => {
         category,
         seller,
         status,
+        store,
         properties,
     });
 
@@ -288,9 +299,10 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
         category,
         properties,
         seller,
+        store,
         status,
     } = req.body;
-
+    console.log(req.body);
     const product = await Product.updateOne(
         { _id },
         {
@@ -301,6 +313,7 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
             category,
             properties,
             seller,
+            store,
             status,
         }
     );

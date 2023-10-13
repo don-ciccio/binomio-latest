@@ -1,18 +1,23 @@
 import RippleButton from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
+import { useCart } from "@/app/lib/hooks/useCart";
+import { useAddressStore } from "@/app/lib/store";
 import api from "@/app/lib/utils/axiosInterceptor";
+import { useState } from "react";
 
 const ShippingDetails = ({ setActiveStep }) => {
+    const { cartData } = useCart();
+    const completed = useAddressStore((state) => state.completed);
+
+    const [verificationResult, setVerificationResult] = useState(null);
+
     const checkRadiusFn = async () => {
         try {
             let res;
 
-            const shippingInfo = JSON.parse(
-                localStorage.getItem("shipping-storage")
-            );
-
+            const shippingInfo = useAddressStore.getState().shippingInfo;
             const checkRadius = {
-                orderItems: cartItems,
+                orderItems: cartData,
                 shippingInfo,
             };
             const config = {
@@ -20,8 +25,11 @@ const ShippingDetails = ({ setActiveStep }) => {
                     "Content-Type": "application/json",
                 },
             };
-            res = await api.post("/api/checkRadius", checkRadius, config);
+            if (completed) {
+                res = await api.post("/api/checkRadius", checkRadius, config);
+            }
 
+            setVerificationResult(res.data.success);
             if (res.error) {
                 console.log(res.error.errMessage);
             }
@@ -29,6 +37,11 @@ const ShippingDetails = ({ setActiveStep }) => {
             console.log(error.response.data.errMessage);
         }
     };
+
+    const handleSubmit = () => {
+        setActiveStep(2);
+    };
+
     return (
         <div className='flex-auto grid items-center lg:px-[50px]'>
             <p className='font-medium text-[20px] mb-6'>Dettagli consegna</p>
@@ -41,7 +54,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                 </div>
 
                 <div className='py-[11px]'>
-                    <p className='text-[#718096] text-[16px] mb-2'>Indirizzo</p>
+                    <p className='text-[#718096] text-[15px] mb-2'>Indirizzo</p>
 
                     <Input
                         name='address'
@@ -50,9 +63,9 @@ const ShippingDetails = ({ setActiveStep }) => {
                     />
                 </div>
 
-                <div className='py-[11px] grid grid-flow-col gap-[40px]'>
+                <div className='py-[11px] grid grid-flow-col gap-[40px] mb-5'>
                     <div>
-                        <p className='text-[#718096] text-[16px] mb-2'>Città</p>
+                        <p className='text-[#718096] text-[15px] mb-2'>Città</p>
 
                         <Input
                             placeholder='Città'
@@ -62,7 +75,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                         />
                     </div>
                     <div>
-                        <p className='text-[#718096] text-[16px] mb-2'>
+                        <p className='text-[#718096] text-[15px] mb-2'>
                             Codice postale
                         </p>
 
@@ -74,8 +87,17 @@ const ShippingDetails = ({ setActiveStep }) => {
                         />
                     </div>
                 </div>
+                <div className='inline-flex'>
+                    <button
+                        disabled={!completed}
+                        onClick={() => checkRadiusFn()}
+                        className='disabled:opacity-25 disabled:cursor-not-allowed font-semibold items-center px-7 py-2 text-sm text-center text-zinc-200 bg-zinc-800 rounded-full hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800'
+                    >
+                        Verifica
+                    </button>
+                </div>
             </div>
-
+            {verificationResult && <p>Component</p>}
             <div className=' border-b border-[#dfdfdf] pt-[50px]' />
 
             <div className='grid grid-flow-col gap-[50px]  justify-end items-center py-2'>
@@ -89,9 +111,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                 </p>
 
                 <RippleButton
-                    onClick={() => {
-                        setActiveStep(2);
-                    }}
+                    onClick={handleSubmit}
                     label='Pagamento'
                     width='w-[200px]'
                 />

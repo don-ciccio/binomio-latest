@@ -68,7 +68,7 @@ function AccountDetails({ setActiveStep }) {
                         </div>
                     </div>
                     <div className='py-[11px]'>
-                        <p className='text-zinc-500 text-[15px] mb-2'>
+                        <p className='text-[#718096] text-[15px] mb-2'>
                             Password
                         </p>
                         <div className='relative flex flex-wrap items-stretch w-full'>

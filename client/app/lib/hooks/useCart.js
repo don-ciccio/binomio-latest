@@ -45,6 +45,7 @@ export const useCart = () => {
                 name: item.name,
                 price: item.price,
                 image: item.images[0],
+                store: item.store,
                 quantity: qtyMap.get(item._id) || 1,
                 timestamp: timestampMap.get(item._id) || 1,
             };

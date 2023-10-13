@@ -9,13 +9,15 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 
 //route POST /api/v1/checkRadius
 exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
-    const { orderItems, shippingInfo } = req.fields;
+    const { orderItems, shippingInfo } = req.body;
     const API_KEY = process.env.GOOGLE_API_KEY;
 
     if (orderItems && orderItems.length === 0) {
         return next(new ErrorHandler("Cannot create order", 400));
     } else {
         let stores = [];
+        let storeId = "";
+
         orderItems.forEach(async (item) => {
             storeId = item.store;
             stores.push(storeId);
@@ -46,11 +48,11 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
                     stores.map((store) => objects[store]);
                 }
             }
-        );
+        ).clone();
 
         const isOpen = orderStores[0].isOpen;
 
-        const shopCoord = orderStores[0].coordinates;
+        const shopCoord = orderStores[0].location.coordinates;
         const deliveryRadius = orderStores[0].deliveryRadius;
 
         // create a new empty object
@@ -74,9 +76,9 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
                     success: true,
                 });
             } else {
-                return next(
-                    new ErrorHandler("Outside order delivery radius", 400)
-                );
+                res.status(200).json({
+                    success: false,
+                });
             }
         } else {
             return next(new ErrorHandler("Store is closed", 400));
