@@ -1,4 +1,5 @@
 import RippleButton from "@/app/components/ui/Button";
+import CustomDatePicker from "@/app/components/ui/CustomDatePicker";
 import Input from "@/app/components/ui/Input";
 import { useCart } from "@/app/lib/hooks/useCart";
 import { useAddressStore } from "@/app/lib/store";
@@ -63,7 +64,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                     />
                 </div>
 
-                <div className='py-[11px] grid grid-flow-col gap-[40px] mb-5'>
+                <div className='py-[11px] grid grid-flow-col gap-[40px]'>
                     <div>
                         <p className='text-[#718096] text-[15px] mb-2'>Città</p>
 
@@ -87,7 +88,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                         />
                     </div>
                 </div>
-                <div className='inline-flex'>
+                <div className='py-[11px] inline-flex'>
                     <button
                         disabled={!completed}
                         onClick={() => checkRadiusFn()}
@@ -96,8 +97,9 @@ const ShippingDetails = ({ setActiveStep }) => {
                         Verifica
                     </button>
                 </div>
+                {verificationResult && <CustomDatePicker />}
             </div>
-            {verificationResult && <p>Component</p>}
+
             <div className=' border-b border-[#dfdfdf] pt-[50px]' />
 
             <div className='grid grid-flow-col gap-[50px]  justify-end items-center py-2'>
