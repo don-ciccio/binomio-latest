@@ -6,8 +6,11 @@ import { useAddressStore } from "@/app/lib/store";
 import { useWeekdaysStore } from "@/app/lib/store/weekdaysStore";
 import api from "@/app/lib/utils/axiosInterceptor";
 import { useState } from "react";
+import { format } from "date-fns";
 
 const ShippingDetails = ({ setActiveStep }) => {
+    const [startDate, setStartDate] = useState(new Date());
+
     const { cartData } = useCart();
     const completed = useAddressStore((state) => state.completed);
 
@@ -16,6 +19,7 @@ const ShippingDetails = ({ setActiveStep }) => {
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
     const weekdays = useWeekdaysStore((state) => state.days);
     const blackoutDays = useWeekdaysStore((state) => state.blackOutDays);
+    const slotTime = useWeekdaysStore((state) => state.slotList);
 
     const checkRadiusFn = async () => {
         try {
@@ -134,10 +138,68 @@ const ShippingDetails = ({ setActiveStep }) => {
                         <span className='flex font-medium text-[20px] mb-6'>
                             Giorno e orario di consegna
                         </span>
-                        <CustomDatePicker
-                            filterDate={isWeekday}
-                            excludeDates={blackDays}
-                        />
+                        <div className='flex flex-row gap-4'>
+                            <CustomDatePicker
+                                filterDate={isWeekday}
+                                excludeDates={blackDays}
+                                selected={startDate}
+                                onChange={(date) => setStartDate(date)}
+                            />
+                            <div className='relative z-20 bg-transparent dark:bg-form-input'>
+                                <select className='w-44 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'>
+                                    <option disabled selected value=''>
+                                        Orario
+                                    </option>
+                                    {slotTime?.map(
+                                        (slot, idx) =>
+                                            slot.weekday ===
+                                                startDate.getDay() - 1 &&
+                                            slot.slotTime
+                                                .slice(0, -1)
+                                                .map((s, i) => (
+                                                    <option
+                                                        disabled={
+                                                            s.active
+                                                                ? null
+                                                                : true
+                                                        }
+                                                        key={i}
+                                                        value={s.time}
+                                                    >
+                                                        {format(
+                                                            s.time,
+                                                            "HH:mm"
+                                                        )}{" "}
+                                                        -{" "}
+                                                        {format(
+                                                            s.time + 1800000,
+                                                            "HH:mm"
+                                                        )}
+                                                    </option>
+                                                ))
+                                    )}
+                                </select>
+                                <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2'>
+                                    <svg
+                                        className='fill-current'
+                                        width='24'
+                                        height='24'
+                                        viewBox='0 0 24 24'
+                                        fill='none'
+                                        xmlns='http://www.w3.org/2000/svg'
+                                    >
+                                        <g opacity='0.8'>
+                                            <path
+                                                fillRule='evenodd'
+                                                clipRule='evenodd'
+                                                d='M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z'
+                                                fill=''
+                                            ></path>
+                                        </g>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

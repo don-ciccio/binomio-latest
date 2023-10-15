@@ -25,6 +25,10 @@ export const useWeekdaysStore = create((set) => ({
                 blackOutDays: (state.data = response.data.blackOutDays),
                 loading: false,
             }));
+            set((state) => ({
+                slotList: (state.data = response.data.slotList),
+                loading: false,
+            }));
         } catch (err) {
             set(() => ({ hasErrors: true, loading: false }));
         }

@@ -1,5 +1,5 @@
 import DatePicker from "react-datepicker";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef } from "react";
 import { addDays, format } from "date-fns";
 import { Icon } from "@iconify/react";
 import { registerLocale } from "react-datepicker";
@@ -8,18 +8,7 @@ import it from "date-fns/locale/it";
 const CustomDatePicker = (props) => {
     registerLocale("it", it);
 
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(
-        new Date().setMonth(startDate.getMonth() + 1)
-    );
     const maxDate = addDays(new Date(), 15);
-    useEffect(() => {
-        if (startDate > endDate) setStartDate(endDate);
-    }, [endDate]);
-
-    useEffect(() => {
-        if (startDate > endDate) setEndDate(startDate);
-    }, [startDate]);
 
     return (
         <div className='relative w-48'>
@@ -28,8 +17,6 @@ const CustomDatePicker = (props) => {
                 locale={it}
                 minDate={new Date()}
                 maxDate={maxDate}
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
                 nextMonthButtonLabel='>'
                 previousMonthButtonLabel='<'
                 popperClassName='react-datepicker-left'
@@ -112,7 +99,7 @@ const ButtonInput = forwardRef(({ value, onClick }, ref) => (
             onClick={onClick}
             ref={ref}
             type='text'
-            className='bg-gray-50 border pt-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block w-full pl-8 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
+            className='bg-gray-50 border pt-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block w-full pl-5 p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
         >
             {format(new Date(value), "dd MMMM yyyy", { locale: it })}
         </button>

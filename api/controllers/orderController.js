@@ -84,6 +84,31 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
             .select("-__v -slotTime")
             .clone();
 
+        const slotList = await Days.aggregate([
+            {
+                $match: {
+                    owner: orderStores[0]._id,
+                    available: true,
+                },
+            },
+            {
+                $addFields: {
+                    slotTime: {
+                        $filter: {
+                            input: "$slotTime",
+                            as: "slotTime",
+                            cond: {
+                                $and: [
+                                    { $gte: ["$$slotTime.time", "$startHour"] },
+                                    { $lte: ["$$slotTime.time", "$endHour"] },
+                                ],
+                            },
+                        },
+                    },
+                },
+            },
+        ]);
+
         const isOpen = orderStores[0].isOpen;
 
         const shopCoord = orderStores[0].location.coordinates;
@@ -102,7 +127,6 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
 
         // calculate distance from the store
         let distance = getDistance(center, coordinates, 3);
-        console.log(distance);
 
         if (isOpen) {
             if (distance <= deliveryRadius) {
@@ -110,6 +134,7 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
                     success: true,
                     days: days,
                     blackOutDays: blackOutDays,
+                    slotList: slotList,
                 });
             } else {
                 res.status(200).json({
