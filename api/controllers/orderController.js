@@ -51,6 +51,10 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
             }
         ).clone();
 
+        const blackOutDays = await Store.findById(orderStores[0]._id).select(
+            "blackOutDays -_id"
+        );
+
         const days = await Days.find(
             { owner: orderStores[0]._id },
             (err, calendar) => {
@@ -79,7 +83,7 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
 
             .select("-__v -slotTime")
             .clone();
-        console.log(days);
+
         const isOpen = orderStores[0].isOpen;
 
         const shopCoord = orderStores[0].location.coordinates;
@@ -105,6 +109,7 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
                 res.status(200).json({
                     success: true,
                     days: days,
+                    blackOutDays: blackOutDays,
                 });
             } else {
                 res.status(200).json({

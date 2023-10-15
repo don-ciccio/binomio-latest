@@ -18,7 +18,11 @@ export const useWeekdaysStore = create((set) => ({
                 config
             );
             set((state) => ({
-                data: (state.data = response.data.days),
+                days: (state.data = response.data.days),
+                loading: false,
+            }));
+            set((state) => ({
+                blackOutDays: (state.data = response.data.blackOutDays),
                 loading: false,
             }));
         } catch (err) {

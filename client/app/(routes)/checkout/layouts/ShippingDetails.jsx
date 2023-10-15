@@ -14,7 +14,8 @@ const ShippingDetails = ({ setActiveStep }) => {
     const [verificationResult, setVerificationResult] = useState(null);
 
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
-    const weekdays = useWeekdaysStore((state) => state.data);
+    const weekdays = useWeekdaysStore((state) => state.days);
+    const blackoutDays = useWeekdaysStore((state) => state.blackOutDays);
 
     const checkRadiusFn = async () => {
         try {
@@ -59,6 +60,15 @@ const ShippingDetails = ({ setActiveStep }) => {
 
         return offDay.includes(day);
     };
+
+    const blackDays = blackoutDays?.blackOutDays.map(
+        (day) =>
+            new Date(
+                new Date(day).getTime() -
+                    new Date(day).getTimezoneOffset() * -6000
+            )
+    );
+
     const handleSubmit = () => {
         setActiveStep(2);
     };
@@ -124,7 +134,10 @@ const ShippingDetails = ({ setActiveStep }) => {
                         <span className='flex font-medium text-[20px] mb-6'>
                             Giorno e orario di consegna
                         </span>
-                        <CustomDatePicker filterDate={isWeekday} />
+                        <CustomDatePicker
+                            filterDate={isWeekday}
+                            excludeDates={blackDays}
+                        />
                     </div>
                 )}
             </div>
