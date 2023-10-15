@@ -1,18 +1,18 @@
 import DatePicker from "react-datepicker";
 import { forwardRef, useEffect, useState } from "react";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import { Icon } from "@iconify/react";
 import { registerLocale } from "react-datepicker";
 import it from "date-fns/locale/it";
 
-const CustomDatePicker = () => {
+const CustomDatePicker = (props) => {
     registerLocale("it", it);
 
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(
         new Date().setMonth(startDate.getMonth() + 1)
     );
-
+    const maxDate = addDays(new Date(), 15);
     useEffect(() => {
         if (startDate > endDate) setStartDate(endDate);
     }, [endDate]);
@@ -22,14 +22,14 @@ const CustomDatePicker = () => {
     }, [startDate]);
 
     return (
-        <div className='relative w-40'>
+        <div className='relative w-48'>
             <DatePicker
+                {...props}
                 locale={it}
                 minDate={new Date()}
+                maxDate={maxDate}
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
-                startDate={startDate}
-                endDate={endDate}
                 nextMonthButtonLabel='>'
                 previousMonthButtonLabel='<'
                 popperClassName='react-datepicker-left'
@@ -92,12 +92,29 @@ const CustomDatePicker = () => {
 export default CustomDatePicker;
 
 const ButtonInput = forwardRef(({ value, onClick }, ref) => (
-    <button
-        onClick={onClick}
-        ref={ref}
-        type='button'
-        className='rounded-3xl inline-flex justify-start w-full pl-4 pr-3 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300  shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-slate-700'
-    >
-        {format(new Date(value), "dd MMMM yyyy", { locale: it })}
-    </button>
+    <div className='relative'>
+        <div className='flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none'>
+            <svg
+                aria-hidden='true'
+                className='w-5 h-5 text-slate-800 dark:text-gray-400'
+                fill='currentColor'
+                viewBox='0 0 20 20'
+                xmlns='http://www.w3.org/2000/svg'
+            >
+                <path
+                    fillRule='evenodd'
+                    d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z'
+                    clipRule='evenodd'
+                ></path>
+            </svg>
+        </div>
+        <button
+            onClick={onClick}
+            ref={ref}
+            type='text'
+            className='bg-gray-50 border pt-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block w-full pl-8 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
+        >
+            {format(new Date(value), "dd MMMM yyyy", { locale: it })}
+        </button>
+    </div>
 ));

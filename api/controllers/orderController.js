@@ -6,6 +6,7 @@ const { getDistance, renameKey } = require("../utils/apiFunctions");
 
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const Days = require("../models/days");
 
 //route POST /api/v1/checkRadius
 exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
@@ -50,6 +51,35 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
             }
         ).clone();
 
+        const days = await Days.find(
+            { owner: orderStores[0]._id },
+            (err, calendar) => {
+                if (err) {
+                    res.json("Error while fetching data");
+                } else {
+                    calendar
+                        .map((date) => ({
+                            name: new Date(date.day).toLocaleDateString(
+                                "it-IT",
+                                {
+                                    weekday: "long",
+                                }
+                            ),
+                            available: date.available,
+                            weekday: date.weekday,
+                            startHour: date.startHour,
+                            endHour: date.endHour,
+                        }))
+                        .sort((a, b) => {
+                            return a.weekday - b.weekday;
+                        });
+                }
+            }
+        )
+
+            .select("-__v -slotTime")
+            .clone();
+        console.log(days);
         const isOpen = orderStores[0].isOpen;
 
         const shopCoord = orderStores[0].location.coordinates;
@@ -74,6 +104,7 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
             if (distance <= deliveryRadius) {
                 res.status(200).json({
                     success: true,
+                    days: days,
                 });
             } else {
                 res.status(200).json({

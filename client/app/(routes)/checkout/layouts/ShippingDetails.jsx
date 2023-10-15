@@ -3,6 +3,7 @@ import CustomDatePicker from "@/app/components/ui/CustomDatePicker";
 import Input from "@/app/components/ui/Input";
 import { useCart } from "@/app/lib/hooks/useCart";
 import { useAddressStore } from "@/app/lib/store";
+import { useWeekdaysStore } from "@/app/lib/store/weekdaysStore";
 import api from "@/app/lib/utils/axiosInterceptor";
 import { useState } from "react";
 
@@ -11,6 +12,9 @@ const ShippingDetails = ({ setActiveStep }) => {
     const completed = useAddressStore((state) => state.completed);
 
     const [verificationResult, setVerificationResult] = useState(null);
+
+    const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
+    const weekdays = useWeekdaysStore((state) => state.data);
 
     const checkRadiusFn = async () => {
         try {
@@ -31,6 +35,8 @@ const ShippingDetails = ({ setActiveStep }) => {
             }
 
             setVerificationResult(res.data.success);
+            fetchWeekdays(checkRadius);
+
             if (res.error) {
                 console.log(res.error.errMessage);
             }
@@ -39,14 +45,30 @@ const ShippingDetails = ({ setActiveStep }) => {
         }
     };
 
+    const offDay = weekdays
+        ?.filter((weekday) => {
+            return weekday.available !== false;
+        })
+        .map((weekday) => weekday.weekday);
+
+    const isWeekday = (date) => {
+        const day = new Date(
+            new Date(date).getTime() -
+                new Date(date).getTimezoneOffset() * -6000
+        ).getDay();
+
+        return offDay.includes(day);
+    };
     const handleSubmit = () => {
         setActiveStep(2);
     };
 
     return (
         <div className='flex-auto grid items-center lg:px-[50px]'>
-            <p className='font-medium text-[20px] mb-6'>Dettagli consegna</p>
-            <div className='min-h-[364px]'>
+            <p className='font-medium text-[20px] mb-6'>
+                Indirizzo di consegna
+            </p>
+            <div className='min-h-[427px]'>
                 <div className='flex flex-row justify-between items-center'>
                     <p className='text-[#2D3748] font-medium'>
                         Usa indirizzo salvato
@@ -92,12 +114,19 @@ const ShippingDetails = ({ setActiveStep }) => {
                     <button
                         disabled={!completed}
                         onClick={() => checkRadiusFn()}
-                        className='disabled:opacity-25 disabled:cursor-not-allowed font-semibold items-center px-7 py-2 text-sm text-center text-zinc-200 bg-zinc-800 rounded-full hover:bg-zinc-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800'
+                        className='disabled:opacity-25 disabled:cursor-not-allowed font-semibold items-center px-7 py-2 text-sm text-center text-white bg-orange-600 rounded-full hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-zinc-300 dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800'
                     >
                         Verifica
                     </button>
                 </div>
-                {verificationResult && <CustomDatePicker />}
+                {verificationResult && (
+                    <div className='py-[11px] flex flex-col'>
+                        <span className='flex font-medium text-[20px] mb-6'>
+                            Giorno e orario di consegna
+                        </span>
+                        <CustomDatePicker filterDate={isWeekday} />
+                    </div>
+                )}
             </div>
 
             <div className=' border-b border-[#dfdfdf] pt-[50px]' />
