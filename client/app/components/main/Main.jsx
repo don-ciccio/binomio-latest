@@ -20,7 +20,7 @@ const Main = React.forwardRef((props, ref) => {
     const [search, setSearch] = useState("");
     const { data: categories } = useGetCategories({ search, props });
 
-    const withoutParent = categories.filter((p) => !p.hasOwnProperty("parent"));
+    const withParent = categories.filter((p) => p.hasOwnProperty("parent"));
     const divScroll = useRef();
     const [scrollPosition, setScrollPosition] = useState(0);
     const [scrollRange, setScrollRange] = useState(0);
@@ -121,7 +121,7 @@ const Main = React.forwardRef((props, ref) => {
                         </p>
 
                         <div className='mt-8 block'>
-                            <RippleButton label={"Il nostro menu"} />
+                            <RippleButton label={"Prenota un tavolo"} />
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@ const Main = React.forwardRef((props, ref) => {
                         <div className='mx-auto block'>
                             <div className='w-screen'>
                                 <h2 className='tracking-wide uppercase font-medium text-2xl mb-8'>
-                                    La nostra offerta
+                                    Il nostro menu
                                 </h2>
                                 <div className='overflow-hidden'>
                                     <a.div
@@ -144,7 +144,7 @@ const Main = React.forwardRef((props, ref) => {
                                     >
                                         <div className='md:h-60 xxs:h-48 -mt-2.5 px-2.5 text-left flex'>
                                             <Cards
-                                                items={withoutParent}
+                                                items={withParent}
                                                 style={{ transform: t }}
                                             />
                                         </div>
