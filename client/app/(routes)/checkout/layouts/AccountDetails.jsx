@@ -5,8 +5,7 @@ import { useAuthStore } from "@/app/lib/store";
 import useSession from "@/app/lib/hooks/useSession";
 
 function AccountDetails({ setActiveStep }) {
-    const { setAuthUser, authUser, setAuthentication, authenticated } =
-        useAuthStore();
+    const { setAuthUser, authUser } = useAuthStore();
     const user = useSession();
 
     const [loginData, setLoginData] = useState({
@@ -41,13 +40,7 @@ function AccountDetails({ setActiveStep }) {
     return (
         <div className='flex-auto lg:px-[50px]'>
             <p className='font-medium text-[20px] mb-6'>Profilo</p>
-            {user ? (
-                <div className='min-h-[315px]'>
-                    <p>
-                        Benvenuto <strong>{authUser.name}!</strong>
-                    </p>
-                </div>
-            ) : (
+            {!user ? (
                 <form onSubmit={loginSubmit}>
                     <div className='py-[11px]'>
                         <p className='text-zinc-500 text-[15px] mb-2'>
@@ -96,6 +89,12 @@ function AccountDetails({ setActiveStep }) {
                         />
                     </div>
                 </form>
+            ) : (
+                <div className='min-h-[315px]'>
+                    <p>
+                        Benvenuto <strong>{authUser.name}!</strong>
+                    </p>
+                </div>
             )}
 
             <div className=' border-b border-zinc-300 pt-[100px]' />

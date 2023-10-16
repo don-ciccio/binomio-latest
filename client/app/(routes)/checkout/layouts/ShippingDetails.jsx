@@ -10,7 +10,7 @@ import { format } from "date-fns";
 
 const ShippingDetails = ({ setActiveStep }) => {
     const [startDate, setStartDate] = useState(new Date());
-
+    const [time, setTime] = useState("");
     const { cartData } = useCart();
     const completed = useAddressStore((state) => state.completed);
 
@@ -143,13 +143,22 @@ const ShippingDetails = ({ setActiveStep }) => {
                                 filterDate={isWeekday}
                                 excludeDates={blackDays}
                                 selected={startDate}
-                                onChange={(date) => setStartDate(date)}
+                                onChange={(date) => {
+                                    setStartDate(date);
+                                    setTime("");
+                                }}
                             />
                             <div className='relative z-20 bg-transparent dark:bg-form-input'>
-                                <select className='w-44 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'>
-                                    <option disabled selected value=''>
+                                <select
+                                    defaultValue={""}
+                                    value={time}
+                                    onChange={(e) => setTime(e.target.value)}
+                                    className='w-44 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
+                                >
+                                    <option disabled value=''>
                                         Orario
                                     </option>
+
                                     {slotTime?.map(
                                         (slot, idx) =>
                                             slot.weekday ===
@@ -217,6 +226,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                 </p>
 
                 <RippleButton
+                    disabled={!time}
                     onClick={handleSubmit}
                     label='Pagamento'
                     width='w-[200px]'

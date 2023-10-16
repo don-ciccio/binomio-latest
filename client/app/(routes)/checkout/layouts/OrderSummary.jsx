@@ -15,11 +15,9 @@ const OrderSummary = () => {
                 </p>
 
                 <div className='px-5 relative  mb-4 max-h-[380px] h-[380px] overflow-y-auto'>
-                    <ul>
-                        {isLoading ? (
-                            <p>Loading...</p>
-                        ) : (
-                            cartData.map((item) => (
+                    <div>
+                        <ul>
+                            {cartData.map((item) => (
                                 <li key={item.id} className='pb-5'>
                                     <div className='flex flex-row gap-1.5 w-11/12'>
                                         <div className='flex flex-basis-25 max-w-1/4 px-2.5 h-full'>
@@ -106,9 +104,9 @@ const OrderSummary = () => {
                                         </div>
                                     </div>
                                 </li>
-                            ))
-                        )}
-                    </ul>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
                 <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between w-11/12'>
                     <div className='flex flex-col gap-2 w-full pt-8'>

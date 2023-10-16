@@ -6,11 +6,13 @@ import { useAuthStore } from "@/app/lib/store";
 import useSession from "@/app/lib/hooks/useSession";
 import { logOut } from "@/app/lib/api";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const MiniLogin = () => {
     const { setAuthUser, authUser } = useAuthStore();
     const user = useSession();
     const store = useAuthStore();
+    const router = useRouter();
 
     const [loginData, setLoginData] = useState({
         email: "",
@@ -20,6 +22,7 @@ const MiniLogin = () => {
     const logoutHandler = () => {
         logOut();
         store.reset();
+        router.push("/");
     };
 
     const googleLogin = useGoogleLogin({
