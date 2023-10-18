@@ -61,28 +61,25 @@ const ProductCard = ({ name, price, images, id }) => {
                         className={`block rounded-3xl relative overflow-hidden py-2 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-400 via-zinc-300 to-zinc-200  shadow-sm`}
                     />
 
-                    <div className='rounded-3xl absolute h-full w-full bg-zinc-900/80 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300'>
+                    <div className='rounded-3xl absolute h-full w-full bg-white/50 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300'>
                         <ReactCardFlip
                             isFlipped={isFlipped}
                             flipDirection='horizontal'
                         >
                             <button
                                 onClick={handleClick}
-                                className='text-white items-center justify-center py-2 px-5'
+                                className='block bg-gray-200 rounded-full  text-zinc-800 items-center justify-center p-2'
                             >
                                 <Icon
-                                    className='w-10 h-10'
-                                    icon='el:shopping-cart-sign'
+                                    className='w-6 h-6'
+                                    icon='el:shopping-cart'
                                 />
                             </button>
                             <button
                                 onClick={handleClick}
-                                className='text-white items-center justify-center py-2 px-5'
+                                className='block bg-gray-200 rounded-full  text-zinc-800 items-center justify-center p-2'
                             >
-                                <Icon
-                                    className='w-10 h-10'
-                                    icon='el:plus-sign'
-                                />
+                                <Icon className='w-6 h-6' icon='el:plus' />
                             </button>
                         </ReactCardFlip>
                     </div>

@@ -13,6 +13,7 @@ const {
     getProductsbyId,
     getProductsByCategory,
     getSingleProductbySlug,
+    getMenuItems,
 } = require("../controllers/productController");
 
 const {
@@ -25,6 +26,7 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 router.route("/products").get(getProducts);
 
 router.route("/product/:cat").get(getProductsByCategory);
+router.route("/menu/:slug").get(getMenuItems);
 router.route("/product/single/:slug").get(getSingleProductbySlug);
 router.route("/product/edit/:id").get(getSingleProduct);
 

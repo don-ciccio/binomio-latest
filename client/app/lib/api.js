@@ -45,6 +45,13 @@ export const getProductsBySlug = async (slug) => {
     return data;
 };
 
+export const getMenuBySlug = async (slug) => {
+    const { data } = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/menu/${slug}`
+    );
+    return data;
+};
+
 export const getContent = async () => {
     return await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/content`

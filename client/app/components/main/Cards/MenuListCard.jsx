@@ -8,7 +8,7 @@ import Link from "next/link";
 import { slugify } from "@/app/lib/utils/utilFuncs";
 import { useRouter } from "next/navigation";
 
-const ProductListCard = ({ name, price, images, id, description }) => {
+const MenuListCard = ({ name, price, images, id, description }) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const { cart, addToCart } = useCartStore();
     const { wishlist, toggleWishlist } = useWishlistStore();
@@ -68,22 +68,24 @@ const ProductListCard = ({ name, price, images, id, description }) => {
                 </div>
             </div>
 
-            <div className={"flex flex-auto h-full items-center"}>
-                <div className='flex gap-4 flex-auto h-full mt-4'>
-                    <div className='flex flex-col  gap-5'>
-                        <div className={"text-left flex text-xl font-semibold"}>
+            <div className={"flex flex-auto h-full items-start"}>
+                <div className='grow mt-3'>
+                    <div className='flex mb-4'>
+                        <div className='inline-block text-left  text-xl font-semibold mr-1.5'>
                             {name}
                         </div>
-                        <div className={"text-left flex font-light"}>
-                            {description}
+                        <span
+                            className={
+                                "border-b-2 grow border-dashed border-zinc-700 inline-block mb-1.5 "
+                            }
+                        ></span>
+                        <div className='inline-block ml-1.5 text-xl font-semibold justify-center'>
+                            €{price}
                         </div>
                     </div>
-
-                    <div className={"flex  h-full flex-col flex-basis-20"}>
+                    <p className='text-left font-light'>{description}</p>
+                    {/* <div className={"flex  h-full flex-col flex-basis-20"}>
                         <div className='flex flex-col gap-3'>
-                            <div className='flex text-xl font-medium justify-center'>
-                                €{price}
-                            </div>
                             <div className='flex'>
                                 <button
                                     onClick={handleClick}
@@ -101,14 +103,14 @@ const ProductListCard = ({ name, price, images, id, description }) => {
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
     );
 };
 
-export default ProductListCard;
+export default MenuListCard;
 
 function delay(ms) {
     return new Promise((resolve) => {

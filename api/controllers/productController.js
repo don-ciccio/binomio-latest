@@ -241,6 +241,22 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
     }
 });
 
+exports.getMenuItems = catchAsyncErrors(async (req, res, next) => {
+    const slugs = req.params.slug;
+
+    const products = await Product.find({
+        category: { $in: slugs.split(",") },
+    });
+
+    if (!products) {
+        return next(new ErrorHandler("Products not found", 404));
+    }
+    res.status(200).json({
+        success: true,
+        products,
+    });
+});
+
 // Get single product detail => /api/v1/product/:id
 exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
