@@ -2,7 +2,15 @@
 
 import { useSpring, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
-import Modal from "../ui/Modal";
+import dynamic from "next/dynamic";
+
+const Modal = dynamic(
+    () => {
+        return import("../ui/Modal");
+    },
+    { ssr: false }
+);
+
 import MenuAccordion from "../ui/Accordion";
 import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";

@@ -32,6 +32,7 @@ const ProductRow = ({ filterCategory }) => {
                         name={product.name}
                         price={product.price}
                         images={product.images}
+                        toggleView={true}
                     />
                 </div>
             ))}

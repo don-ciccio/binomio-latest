@@ -52,14 +52,15 @@ const ProductCard = ({ name, price, images, id }) => {
         router.push(`/prodotti/${slugify(name)}`);
     };
     return (
-        <div onClick={handleClickRoute} className='cursor-pointer'>
-            <div className='group'>
+        <div onClick={handleClickRoute} className={"cursor-pointer"}>
+            <div className={"group"}>
                 <div className='relative overflow-hidden'>
                     <img
                         src={images[0]}
                         alt={name}
-                        className='block rounded-3xl relative overflow-hidden py-2 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-400 via-zinc-300 to-zinc-200  shadow-sm  w-50 h-50'
+                        className={`block rounded-3xl relative overflow-hidden py-2 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-400 via-zinc-300 to-zinc-200  shadow-sm`}
                     />
+
                     <div className='rounded-3xl absolute h-full w-full bg-zinc-900/80 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300'>
                         <ReactCardFlip
                             isFlipped={isFlipped}
@@ -88,12 +89,16 @@ const ProductCard = ({ name, price, images, id }) => {
                 </div>
             </div>
 
-            <div className='mt-5'>
-                <div className='flex justify-between gap-1'>
-                    <div className='items-start text-left flex-basis-66 max-w-2/3 '>
+            <div className={"mt-5"}>
+                <div className='flex gap-1 flex-auto'>
+                    <div
+                        className={
+                            "items-start text-left flex-basis-66 max-w-2/3"
+                        }
+                    >
                         {name}
                     </div>
-                    <div className='items-end flex-basis-33 max-w-1/3 pr-1.5'>
+                    <div className={"items-end flex-basis-33 max-w-1/3 pr-1.5"}>
                         <div className='flex font-medium flex-row gap-1 items-center justify-end'>
                             <div className='flex  max-w-2/3 justify-end'>
                                 €{price}
