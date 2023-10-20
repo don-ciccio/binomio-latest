@@ -18,9 +18,11 @@ const CategoryTableTop = ({
         <div className='rounded-sm border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
             <div className='p-4 sm:p-6 xl:p-10'>
                 <div className='flex flex-wrap items-center gap-2 sm:gap-4.5 font-medium'>
-                    {categories?.map(({ _id, name }) => (
+                    {categories?.map(({ _id, name, number_of_product }) => (
                         <div
-                            className='flex flex-wrap items-center gap-1 sm:gap-2'
+                            className={`${
+                                number_of_product > 0 ? "" : "hidden"
+                            } flex flex-wrap items-center gap-1 sm:gap-2`}
                             key={_id}
                         >
                             <input

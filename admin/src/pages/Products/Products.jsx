@@ -10,6 +10,7 @@ import { useState } from "react";
 import ProductsTableTop from "@/components/productTable/ProductsTableTop";
 import CategoryTableTop from "@/components/productTable/CategoryTableTop";
 import Pagination from "@/components/productTable/Pagination";
+import { useGetCategories } from "../../store/react-query/hooks/useQueries";
 
 const Products = () => {
     const [sort, setSort] = useState({ sort: "price", order: "asc" });
@@ -18,6 +19,7 @@ const Products = () => {
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
 
+    const { data: categories } = useGetCategories({ search });
     const { data: products, isLoading: fetchingProducts } = useGetProducts({
         page,
         sort,
@@ -54,9 +56,7 @@ const Products = () => {
                             status={status}
                         />
                         <CategoryTableTop
-                            categories={
-                                products?.category ? products.category : []
-                            }
+                            categories={categories}
                             filterCategory={filterCategory}
                             setFilterCategory={(filterCategory) =>
                                 setFilterCategory(filterCategory)

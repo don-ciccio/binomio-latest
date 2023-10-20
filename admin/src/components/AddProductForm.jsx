@@ -205,7 +205,7 @@ const AddProductForm = ({
 
         let catParent = categories.filter(({ _id }) => _id === category);
         propertiesToFill.push(...catInfo);
-        obj = propertiesToFill[0][0].values.map((str) => ({
+        obj = propertiesToFill[0][0]?.values.map((str) => ({
             value: str,
             label: str,
         }));
@@ -636,7 +636,7 @@ const AddProductForm = ({
                                                         (f) =>
                                                             productProperties[
                                                                 p.name
-                                                            ].indexOf(
+                                                            ]?.indexOf(
                                                                 f.value
                                                             ) !== -1
                                                     )}

@@ -25,6 +25,7 @@ const CategoryTable = ({ isLoading, categories }) => {
         },
         [categories, modal]
     );
+    console.log(categories);
 
     const deleteCategory = async (id) => {
         await axios.delete(`${API_URL}/api/admin/category/delete?_id=${id}`);
