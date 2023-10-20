@@ -4,7 +4,7 @@ import { useGetCategories } from "@/store/react-query/hooks/useQueries";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import Select from "react-select";
 import { ReactSortable } from "react-sortablejs";
 
 import axios from "axios";
@@ -52,7 +52,7 @@ const AddProductForm = ({
     const [description, setDescription] = useState(existingDescription || "");
     const [price, setPrice] = useState(existingPrice || "");
     const [images, setImages] = useState(existingImages || []);
-
+    const [multiProperty, setMultiProperty] = useState({});
     const [isButtonShown, setIsButtonShown] = useState(null);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [suggestions, setSuggestions] = useState([]);
@@ -98,24 +98,43 @@ const AddProductForm = ({
 
     const saveProduct = async (e) => {
         e.preventDefault();
-        const data = {
-            name,
-            description,
-            price,
-            images,
-            category,
-            seller,
-            status,
-            store,
-            properties: productProperties,
-        };
-
-        if (_id) {
-            mutationPut.mutate({ data: data, _id: _id });
+        if (Object.keys(multiProperty).length === 0) {
+            const data = {
+                name,
+                description,
+                price,
+                images,
+                category,
+                seller,
+                status,
+                store,
+                properties: productProperties,
+            };
+            if (_id) {
+                mutationPut.mutate({ data: data, _id: _id });
+            } else {
+                mutationPost.mutate({ data: data });
+            }
+            setIsFormSubmitted(true);
         } else {
-            mutationPost.mutate({ data: data });
+            const data = {
+                name,
+                description,
+                price,
+                images,
+                category,
+                seller,
+                status,
+                store,
+                properties: multiProperty,
+            };
+            if (_id) {
+                mutationPut.mutate({ data: data, _id: _id });
+            } else {
+                mutationPost.mutate({ data: data });
+            }
+            setIsFormSubmitted(true);
         }
-        setIsFormSubmitted(true);
     };
 
     const deleteImages = async (e) => {
@@ -168,7 +187,17 @@ const AddProductForm = ({
         });
     };
 
+    const setMultiProp = (e, name) => {
+        setMultiProperty((prev) => {
+            const newProductProps = { ...prev };
+
+            newProductProps[name] = e.map((a) => a.value);
+            return newProductProps;
+        });
+    };
+    console.log(multiProperty);
     const propertiesToFill = [];
+    let obj = [];
     if (isSuccess && category) {
         let catInfo = categories
             .filter(({ _id }) => _id === category)
@@ -176,6 +205,10 @@ const AddProductForm = ({
 
         let catParent = categories.filter(({ _id }) => _id === category);
         propertiesToFill.push(...catInfo);
+        obj = propertiesToFill[0][0].values.map((str) => ({
+            value: str,
+            label: str,
+        }));
 
         while (catParent?.parent?._id) {
             const parentCat = categories.filter(
@@ -548,7 +581,7 @@ const AddProductForm = ({
                                                 }
                                                 type='text'
                                             />
-                                        ) : (
+                                        ) : !p.multi ? (
                                             <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                                 <select
                                                     className='relative z-20 w-full appearance-none rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
@@ -592,6 +625,27 @@ const AddProductForm = ({
                                                         </g>
                                                     </svg>
                                                 </span>
+                                            </div>
+                                        ) : (
+                                            <div className='relative z-20 bg-transparent dark:bg-form-input'>
+                                                <Select
+                                                    className='relative z-20 w-full rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                                    isMulti
+                                                    unstyled
+                                                    defaultValue={obj.filter(
+                                                        (f) =>
+                                                            productProperties[
+                                                                p.name
+                                                            ].indexOf(
+                                                                f.value
+                                                            ) !== -1
+                                                    )}
+                                                    options={obj}
+                                                    placeholder='Seleziona...'
+                                                    onChange={(e) =>
+                                                        setMultiProp(e, p.name)
+                                                    }
+                                                />
                                             </div>
                                         )}
                                     </div>

@@ -68,11 +68,10 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
 
 exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
     const { name, parent, images, description, properties, _id } = req.body;
-
+    console.log(properties);
     if (!name || !_id) {
         return next(new ErrorHandler(error.message, 400));
     }
-    console.log(properties);
     const category = await Category.updateOne(
         { _id },
         {

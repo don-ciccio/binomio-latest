@@ -68,18 +68,21 @@ const ProductCard = ({ name, price, images, id }) => {
                         >
                             <button
                                 onClick={handleClick}
-                                className='block bg-gray-200 rounded-full  text-zinc-800 items-center justify-center p-2'
+                                className='block bg-zinc-800 rounded-full  text-zinc-800 items-center justify-center p-2'
                             >
                                 <Icon
-                                    className='w-6 h-6'
+                                    className='w-6 h-6 text-gray-200'
                                     icon='el:shopping-cart'
                                 />
                             </button>
                             <button
                                 onClick={handleClick}
-                                className='block bg-gray-200 rounded-full  text-zinc-800 items-center justify-center p-2'
+                                className='block bg-zinc-800 rounded-full  text-zinc-800 items-center justify-center p-2'
                             >
-                                <Icon className='w-6 h-6' icon='el:plus' />
+                                <Icon
+                                    className='w-6 h-6 text-gray-200'
+                                    icon='el:plus'
+                                />
                             </button>
                         </ReactCardFlip>
                     </div>

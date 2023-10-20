@@ -55,7 +55,7 @@ const MenuListCard = ({ name, price, images, id, description }) => {
         <div
             onClick={handleClickRoute}
             className={
-                "cursor-pointer w-full p-2 bg-white-200 hover:bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] to-gray-150 from-white/40 rounded-3xl flex flex-row mx-auto h-40"
+                "cursor-pointer w-full p-2 bg-white-200 hover:bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-200 to-white/30 rounded-3xl flex flex-row mx-auto h-40"
             }
         >
             <div className={"group flex flex-basis-140 h-full"}>
@@ -76,10 +76,10 @@ const MenuListCard = ({ name, price, images, id, description }) => {
                         </div>
                         <span
                             className={
-                                "border-b-2 grow border-dashed border-zinc-700 inline-block mb-1.5 "
+                                "border-b-2 grow border-dashed border-zinc-400 inline-block mb-1.5 "
                             }
                         ></span>
-                        <div className='inline-block ml-1.5 text-xl font-semibold justify-center'>
+                        <div className='inline-block ml-1.5 text-xl font-semibold justify-center mr-3'>
                             €{price}
                         </div>
                     </div>

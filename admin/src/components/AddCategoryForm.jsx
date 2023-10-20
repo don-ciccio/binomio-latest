@@ -28,7 +28,6 @@ const AddCategoryForm = ({
     const [properties, setProperties] = useState(existingProperties || []);
     const [images, setImages] = useState(existingImages || []);
     const [description, setDescription] = useState(existingDescription || "");
-
     const [isButtonShown, setIsButtonShown] = useState(null);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
@@ -112,7 +111,7 @@ const AddCategoryForm = ({
 
     const addProperty = () => {
         setProperties((prev) => {
-            return [...prev, { name: "", values: "" }];
+            return [...prev, { name: "", values: "", multi: false }];
         });
     };
 
@@ -120,6 +119,14 @@ const AddCategoryForm = ({
         setProperties((prev) => {
             const properties = [...prev];
             properties[index].name = newName;
+            return properties;
+        });
+    };
+
+    const handlePropertyMultiChange = (index, newMulti) => {
+        setProperties((prev) => {
+            const properties = [...prev];
+            properties[index].multi = newMulti;
             return properties;
         });
     };
@@ -151,6 +158,7 @@ const AddCategoryForm = ({
             properties: properties.map((p) => ({
                 name: p.name,
                 values: p.values,
+                multi: p.multi,
             })),
         };
 
@@ -161,6 +169,7 @@ const AddCategoryForm = ({
         }
         setIsFormSubmitted(true);
     };
+    console.log(properties);
     return (
         <form onSubmit={saveCategory}>
             <div className='grid grid-cols-1 gap-5'>
@@ -416,6 +425,20 @@ const AddCategoryForm = ({
                                                 }
                                                 value={property.values}
                                                 placeholder='valori, multipli con la virgola'
+                                            />
+                                            <label className='inline-flex items-center text-black dark:text-white'>
+                                                Multi
+                                            </label>
+                                            <input
+                                                type='checkbox'
+                                                value={property.multi}
+                                                onChange={(e) =>
+                                                    handlePropertyMultiChange(
+                                                        i,
+                                                        e.target.checked
+                                                    )
+                                                }
+                                                checked={property.multi}
                                             />
                                             <button
                                                 className='justify-center rounded bg-danger py-2 px-3.5 font-medium text-gray hover:bg-opacity-95'

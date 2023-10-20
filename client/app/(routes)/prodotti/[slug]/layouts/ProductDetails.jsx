@@ -148,7 +148,7 @@ const ProductDetails = ({ initialProduct }) => {
                             </div>
                             <div className='mt-5 flex items-end justify-between'>
                                 <ul>
-                                    {data &&
+                                    {data?.product[0].properties &&
                                         Object.entries(
                                             data?.product[0].properties
                                         ).map(([key, value]) => (
