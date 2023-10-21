@@ -26,6 +26,17 @@ const getSuggestion = async (seller) => {
     }
 };
 
+const merge = (a1, a2) => {
+    return a1
+        .map((x) => {
+            const y = a2.find((item) => x.name === item.name);
+            if (y) {
+                return Object.assign({}, x, y);
+            } else return x;
+        })
+        .concat(a2.filter((item) => a1.every((x) => x.name !== item.name)));
+};
+
 const AddProductForm = ({
     _id,
     name: existingTitle,
@@ -98,43 +109,24 @@ const AddProductForm = ({
 
     const saveProduct = async (e) => {
         e.preventDefault();
-        if (Object.keys(multiProperty).length === 0) {
-            const data = {
-                name,
-                description,
-                price,
-                images,
-                category,
-                seller,
-                status,
-                store,
-                properties: productProperties,
-            };
-            if (_id) {
-                mutationPut.mutate({ data: data, _id: _id });
-            } else {
-                mutationPost.mutate({ data: data });
-            }
-            setIsFormSubmitted(true);
+
+        const data = {
+            name,
+            description,
+            price,
+            images,
+            category,
+            seller,
+            status,
+            store,
+            properties: { ...productProperties, ...multiProperty },
+        };
+        if (_id) {
+            mutationPut.mutate({ data: data, _id: _id });
         } else {
-            const data = {
-                name,
-                description,
-                price,
-                images,
-                category,
-                seller,
-                status,
-                store,
-                properties: multiProperty,
-            };
-            if (_id) {
-                mutationPut.mutate({ data: data, _id: _id });
-            } else {
-                mutationPost.mutate({ data: data });
-            }
-            setIsFormSubmitted(true);
+            mutationPost.mutate({ data: data });
         }
+        setIsFormSubmitted(true);
     };
 
     const deleteImages = async (e) => {
@@ -190,13 +182,12 @@ const AddProductForm = ({
     const setMultiProp = (e, name) => {
         setMultiProperty((prev) => {
             const newProductProps = { ...prev };
-
             newProductProps[name] = e.map((a) => a.value);
             return newProductProps;
         });
     };
-    console.log(multiProperty);
-    const propertiesToFill = [];
+
+    let propertiesToFill = [];
     let obj = [];
     if (isSuccess && category) {
         let catInfo = categories
@@ -204,17 +195,22 @@ const AddProductForm = ({
             .map((c) => c.properties);
 
         let catParent = categories.filter(({ _id }) => _id === category);
-        propertiesToFill.push(...catInfo);
-        obj = propertiesToFill[0][0]?.values.map((str) => ({
-            value: str,
-            label: str,
-        }));
+        propertiesToFill = merge(...catInfo, []);
 
-        while (catParent?.parent?._id) {
+        if (propertiesToFill[0]?.values.constructor === Array) {
+            obj = propertiesToFill[0]?.values.map((str) => ({
+                value: str,
+                label: str,
+            }));
+        }
+
+        if (catParent[0]?.parent?._id) {
             const parentCat = categories.filter(
-                ({ _id }) => _id === catParent?.parent?._id
+                ({ _id }) => _id === catParent[0]?.parent?._id
             );
-            propertiesToFill.push(...parentCat);
+
+            propertiesToFill = merge(parentCat[0].properties, ...catInfo);
+
             catInfo = parentCat;
         }
     }
@@ -559,7 +555,7 @@ const AddProductForm = ({
                                 </span>
                             </div>
                             {propertiesToFill.length > 0 &&
-                                propertiesToFill[0].map((p, i) => (
+                                propertiesToFill.map((p, i) => (
                                     <div
                                         className='relative z-20 bg-transparent dark:bg-form-input'
                                         key={i}
