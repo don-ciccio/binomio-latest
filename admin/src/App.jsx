@@ -1,5 +1,5 @@
 import { useRoutes } from "react-router-dom";
-import routes from "./routes";
+import routes from "./routes/routes";
 import { useSelector, useDispatch } from "react-redux";
 
 import { LoadUser, clearErrors } from "@/store/redux/actions/authActions";
