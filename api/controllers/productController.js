@@ -110,17 +110,12 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 5;
     const search = req.query.search || "";
-    let sort = req.query.sort || "ratings";
+    let sort = req.query.sort || "All";
     let category = req.query.category || "All";
-    let status = req.query.status || "All";
 
     const query = {
         name: { $regex: search, $options: "i" },
     };
-
-    if (status !== "All") {
-        query.status = status;
-    }
 
     const categories = await Category.find();
 
@@ -131,8 +126,17 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
 
     req.query.sort ? (sort = req.query.sort.split(",")) : (sort = [sort]);
 
+    if (sort[0] === "status") {
+        query.status = sort[1];
+    } else if (sort[1] === "status-selling") {
+        query.stock = { $gt: 0 };
+    } else if (sort[1] === "status-out-of-stock") {
+        query.stock = { $lt: 1 };
+    }
+
     let sortBy = {};
-    if (sort[1]) {
+
+    if (sort[1] && sort[0] !== "status" && sort[0] !== "stock") {
         sortBy[sort[0]] = sort[1];
     } else {
         sortBy[sort[0]] = "asc";
@@ -147,10 +151,26 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
         .populate("category")
         .exec();
 
-    const total = await Product.countDocuments({
-        category: { $in: [...category] },
-        name: { $regex: search, $options: "i" },
-    });
+    let total;
+    if (query.status) {
+        total = await Product.countDocuments({
+            category: { $in: [...category] },
+            name: { $regex: search, $options: "i" },
+            status: query.status,
+        });
+    } else if (query.stock) {
+        total = await Product.countDocuments({
+            category: { $in: [...category] },
+            name: { $regex: search, $options: "i" },
+            stock: query.stock,
+        });
+    } else {
+        total = await Product.countDocuments({
+            category: { $in: [...category] },
+            name: { $regex: search, $options: "i" },
+        });
+    }
+
     const categoriesObj = await Category.find({ _id: { $in: newArray } });
 
     const pageCount = Math.ceil(total / limit);

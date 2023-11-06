@@ -1,19 +1,18 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import { Button, WindmillContext } from "@windmill/react-ui";
 import { IoLogOutOutline } from "react-icons/io5";
 
 //internal import
 import sidebar from "@/routes/sidebar";
-// import SidebarSubMenu from "SidebarSubMenu";
-import logoDark from "@/assets/img/logo/logo-color.png";
-import logoLight from "@/assets/img/logo/logo-dark.svg";
+
 import SidebarSubMenu from "@/components/sidebar/SidebarSubMenu";
 
 const SidebarContent = () => {
     const { mode } = useContext(WindmillContext);
-
+    const location = useLocation();
+    const { pathname } = location;
     const handleLogOut = () => {
         console.log("Logout");
     };
@@ -22,19 +21,13 @@ const SidebarContent = () => {
         <div className='py-4 text-gray-500 dark:text-gray-400'>
             <a className=' text-gray-900 dark:text-gray-200' href='/dashboard'>
                 {mode === "dark" ? (
-                    <img
-                        src={logoLight}
-                        alt='kachabazar'
-                        width='135'
-                        className='pl-6'
-                    />
+                    <span className='ml-6 text-lg font-bold text-gray-800 dark:text-gray-200'>
+                        E-Commerce
+                    </span>
                 ) : (
-                    <img
-                        src={logoDark}
-                        alt='kachabazar'
-                        width='135'
-                        className='pl-6'
-                    />
+                    <span className='ml-6 text-lg font-bold text-gray-800 dark:text-gray-200'>
+                        E-Commerce
+                    </span>
                 )}
             </a>
             <ul className='mt-8'>
@@ -50,12 +43,11 @@ const SidebarContent = () => {
                                     className='px-6 py-4 inline-flex items-center cursor-pointer w-full text-sm font-semibold transition-colors duration-150 hover:text-green-700 dark:hover:text-gray-200'
                                     rel='noreferrer'
                                 >
-                                    <NavLink path={route.path}>
-                                        <span
-                                            className='absolute inset-y-0 left-0 w-1 bg-green-500 rounded-tr-lg rounded-br-lg'
-                                            aria-hidden='true'
-                                        ></span>
-                                    </NavLink>
+                                    <span
+                                        className='absolute inset-y-0 left-0 w-1 bg-green-500 rounded-tr-lg rounded-br-lg'
+                                        aria-hidden='true'
+                                    ></span>
+
                                     <route.icon
                                         className='w-5 h-5'
                                         aria-hidden='true'
@@ -73,12 +65,13 @@ const SidebarContent = () => {
                                     }`}
                                     className='px-6 py-4 inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-green-700 dark:hover:text-gray-200'
                                 >
-                                    <NavLink path={route.path}>
+                                    {pathname.includes(route.path) && (
                                         <span
                                             className='absolute inset-y-0 left-0 w-1 bg-green-500 rounded-tr-lg rounded-br-lg'
                                             aria-hidden='true'
                                         ></span>
-                                    </NavLink>
+                                    )}
+
                                     <route.icon
                                         className='w-5 h-5'
                                         aria-hidden='true'

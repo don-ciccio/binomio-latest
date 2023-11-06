@@ -26,7 +26,7 @@ const DefaultLayout = () => {
                 </div>
             )}
             <div
-                className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${
+                className={`flex h-screen bg-gray-50 dark:bg-gray-900 font-serif ${
                     isSidebarOpen && "overflow-hidden"
                 }`}
             >

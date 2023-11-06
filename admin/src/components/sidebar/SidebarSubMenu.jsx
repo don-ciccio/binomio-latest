@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
     IoChevronDownOutline,
     IoChevronForwardOutline,
@@ -8,6 +8,8 @@ import {
 } from "react-icons/io5";
 
 const SidebarSubMenu = ({ route }) => {
+    const location = useLocation();
+    const { pathname } = location;
     const [open, setOpen] = useState(false);
     // console.log('route',route)
     const handleSubMenu = () => setOpen(!open);
@@ -42,15 +44,14 @@ const SidebarSubMenu = ({ route }) => {
                             <li key={i + 1}>
                                 <NavLink
                                     to={child.path}
-                                    // target={`${child.name === 'Sell' ? '_blank' : '_self'}`}
                                     className='flex items-center font-serif py-1 text-sm text-gray-600 hover:text-green-600 cursor-pointer'
                                 >
-                                    <NavLink path={child.path}>
+                                    {pathname.includes(child.path) && (
                                         <span
                                             className='absolute inset-y-0 left-0 w-1 bg-green-600 rounded-tr-lg rounded-br-lg'
                                             aria-hidden='true'
                                         ></span>
-                                    </NavLink>
+                                    )}
                                     <span className='text-xs text-gray-500 pr-1'>
                                         <IoRemoveSharp />
                                     </span>
