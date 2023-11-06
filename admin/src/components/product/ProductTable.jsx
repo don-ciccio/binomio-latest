@@ -15,6 +15,8 @@ import EditDeleteButton from "@/components/table/EditDeleteButton";
 import ShowHideButton from "@/components/table/ShowHideButton";
 import Tooltip from "@/components/tooltip/Tooltip";
 import useToggleDrawer from "@/hooks/useToggleDrawer";
+import ProductDrawer from "../drawer/ProductDrawer";
+import MainDrawer from "../drawer/MainDrawer";
 
 //internal import
 
@@ -34,6 +36,12 @@ const ProductTable = ({ products, isCheck, setIsCheck }) => {
 
     return (
         <>
+            {isCheck?.length < 2 && (
+                <MainDrawer>
+                    <ProductDrawer id={serviceId} />
+                </MainDrawer>
+            )}
+
             <TableBody>
                 {products?.map((product, i) => (
                     <TableRow key={i + 1}>

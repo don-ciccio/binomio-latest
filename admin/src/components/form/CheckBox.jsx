@@ -1,7 +1,9 @@
+import { Input } from "@windmill/react-ui";
+
 const CheckBox = ({ id, name, type, handleClick, isChecked }) => {
     return (
         <>
-            <input
+            <Input
                 id={id}
                 name={name}
                 type={type}

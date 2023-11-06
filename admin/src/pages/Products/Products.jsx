@@ -5,6 +5,9 @@ import { useGetProducts } from "@/store/react-query/hooks/useQueries";
 import ProductTable from "@/components/product/ProductTable";
 import NotFound from "@/components/table/NotFound";
 
+import MainDrawer from "@/components/drawer/MainDrawer";
+import ProductDrawer from "@/components/drawer/ProductDrawer";
+
 import { SidebarContext } from "@/context/SidebarContext";
 import SelectCategory from "@/components/form/SelectCategory";
 import CheckBox from "@/components/form/CheckBox";
@@ -29,9 +32,13 @@ import { useGetCategories } from "../../store/react-query/hooks/useQueries";
 import PageTitle from "../../components/typography/PageTitle";
 import UploadManyTwo from "../../components/common/UploadManyTwo";
 import TableLoading from "../../components/preloader/TableLoading";
+import useToggleDrawer from "@/hooks/useToggleDrawer";
 
 const Products = () => {
     const [sort, setSort] = useState({ sort: "name", order: "asc" });
+
+    const { title, allId, serviceId, handleDeleteMany, handleUpdateMany } =
+        useToggleDrawer();
 
     const {
         toggleDrawer,
@@ -71,7 +78,9 @@ const Products = () => {
     return (
         <>
             <PageTitle>{"Prodotti"}</PageTitle>
-
+            <MainDrawer>
+                <ProductDrawer id={serviceId} />
+            </MainDrawer>
             <Card className='min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5'>
                 <CardBody className=''>
                     <form className='py-3 md:pb-0 grid gap-4 lg:gap-6 xl:gap-6  xl:flex'>
