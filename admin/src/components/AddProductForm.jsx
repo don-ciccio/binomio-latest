@@ -211,6 +211,13 @@ const AddProductForm = ({
 
             propertiesToFill = merge(parentCat[0].properties, ...catInfo);
 
+            if (propertiesToFill[0]?.values.constructor === Array) {
+                obj = propertiesToFill[0]?.values.map((str) => ({
+                    value: str,
+                    label: str,
+                }));
+            }
+
             catInfo = parentCat;
         }
     }
