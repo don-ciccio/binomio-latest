@@ -55,7 +55,7 @@ const MenuListCard = ({ name, price, images, id, description }) => {
         <div
             onClick={handleClickRoute}
             className={
-                "cursor-pointer w-full p-2 bg-white-200 hover:bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-200 to-white/30 rounded-3xl flex flex-row mx-auto h-40"
+                "cursor-pointer w-full p-2 bg-white-200 hover:shadow-md hover:shadow-zinc-400/25 hover:bg-white from-gray-200 to-white/30 rounded-3xl flex flex-row mx-auto h-40"
             }
         >
             <div className={"group flex flex-basis-140 h-full"}>
