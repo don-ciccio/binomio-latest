@@ -3,7 +3,7 @@ import Sort from "./Sort";
 
 const ProductsTableTop = ({ setSearch, setStatus, status }) => {
     return (
-        <div className='datatable-top flex-row-reverse'>
+        <>
             <Sort status={status} setStatus={(status) => setStatus(status)} />
             <div className='datatable-search'>
                 <input
@@ -17,7 +17,7 @@ const ProductsTableTop = ({ setSearch, setStatus, status }) => {
                     aria-controls='dataTableOne'
                 />
             </div>
-        </div>
+        </>
     );
 };
 

@@ -11,7 +11,6 @@ import { store } from "@/store/redux/store";
 
 import App from "./App.jsx";
 import "./index.css";
-import "./satoshi.css";
 
 export const queryClient = new QueryClient({
     defaultOptions: {

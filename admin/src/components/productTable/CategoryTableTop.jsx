@@ -1,41 +1,43 @@
 import PropTypes from "prop-types";
+import {
+    MultiSelect,
+    MultiSelectItem,
+    Select,
+    SelectItem,
+} from "@tremor/react";
+
 const CategoryTableTop = ({
     categories,
     filterCategory,
     setFilterCategory,
+    setSelectedStatus,
 }) => {
-    const onChange = ({ currentTarget: input }) => {
-        if (input.checked) {
-            const state = [...filterCategory, input.value];
-            setFilterCategory(state);
-        } else {
-            const state = filterCategory.filter((val) => val !== input.value);
-            setFilterCategory(state);
-        }
-    };
-
     return (
-        <div className='rounded-sm border-b border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-            <div className='p-4 sm:p-6 xl:p-10'>
-                <div className='flex flex-wrap items-center gap-2 sm:gap-4.5 font-medium'>
-                    {categories?.map(({ _id, name, number_of_product }) => (
-                        <div
-                            className={`${
-                                number_of_product > 0 ? "" : "hidden"
-                            } flex flex-wrap items-center gap-1 sm:gap-2`}
-                            key={_id}
-                        >
-                            <input
-                                type='checkbox'
-                                value={_id}
-                                onChange={onChange}
-                            />
-                            <p>{name}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
+        <>
+            <MultiSelect
+                value={filterCategory}
+                onValueChange={(value) => setFilterCategory(value)}
+                placeholder='Scegli categoria...'
+            >
+                {categories?.map(
+                    ({ _id, name, number_of_product }) =>
+                        number_of_product > 0 && (
+                            <MultiSelectItem key={_id} value={_id}>
+                                {name}
+                            </MultiSelectItem>
+                        )
+                )}
+            </MultiSelect>
+            <Select
+                className='max-w-full sm:max-w-xs'
+                defaultValue='All'
+                onValueChange={setSelectedStatus}
+            >
+                <SelectItem value='All'>Tutti</SelectItem>
+                <SelectItem value='Attivo'>Attivo</SelectItem>
+                <SelectItem value='Bozza'>Bozza</SelectItem>
+            </Select>
+        </>
     );
 };
 
@@ -44,5 +46,6 @@ export default CategoryTableTop;
 CategoryTableTop.propTypes = {
     categories: PropTypes.array,
     filterCategory: PropTypes.array,
+    setSelectedStatus: PropTypes.func,
     setFilterCategory: PropTypes.func,
 };

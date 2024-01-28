@@ -1,200 +1,107 @@
 import PropTypes from "prop-types";
-import { useEffect, useRef } from "react";
-import Logo from "@/images/logo/logo.svg";
-import { Icon } from "@iconify/react";
+import {
+    HomeIcon,
+    QueueListIcon,
+    BuildingStorefrontIcon,
+    BuildingLibraryIcon,
+    TruckIcon,
+    CogIcon,
+} from "@heroicons/react/24/outline";
 
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-    const location = useLocation();
-    const { pathname } = location;
+const sidebarLinks = [
+    {
+        name: "Dashboard",
+        href: "/",
+        icon: HomeIcon,
+    },
+    {
+        name: "Prodotti",
+        href: "/products",
+        icon: BuildingStorefrontIcon,
+    },
+    {
+        name: "Categorie",
+        href: "/categories",
+        icon: QueueListIcon,
+    },
+    {
+        name: "Negozio",
+        href: "/stores",
+        icon: BuildingLibraryIcon,
+    },
+    {
+        name: "Delivery",
+        href: "/delivery",
+        icon: TruckIcon,
+    },
+    {
+        name: "Tema",
+        href: "/theme",
+        icon: CogIcon,
+    },
+];
 
-    const trigger = useRef(null);
-    const sidebar = useRef(null);
-
-    // close on click outside
-    useEffect(() => {
-        const clickHandler = ({ target }) => {
-            if (!sidebar.current || !trigger.current) return;
-            if (
-                !sidebarOpen ||
-                sidebar.current.contains(target) ||
-                trigger.current.contains(target)
-            )
-                return;
-            setSidebarOpen(false);
-        };
-        document.addEventListener("click", clickHandler);
-        return () => document.removeEventListener("click", clickHandler);
-    });
-
-    // close if the esc key is pressed
-    useEffect(() => {
-        const keyHandler = ({ keyCode }) => {
-            if (!sidebarOpen || keyCode !== 27) return;
-            setSidebarOpen(false);
-        };
-        document.addEventListener("keydown", keyHandler);
-        return () => document.removeEventListener("keydown", keyHandler);
-    });
-
+const Sidebar = () => {
     return (
-        <aside
-            ref={sidebar}
-            className={`absolute left-0 top-0 z-9999 flex h-screen w-60 flex-col overflow-y-hidden bg-[#1C2434] duration-300 ease-linear dark:bg-[#1A222C] lg:static lg:translate-x-0 ${
-                sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
+        <div
+            className={`sticky top-0 flex h-screen w-full flex-col justify-between border-r border-gray-200 bg-white px-1 py-5 xl:py-12 xl:px-2`}
         >
             {/* <!-- SIDEBAR HEADER --> */}
-            <div className='flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5'>
+            <div className='ie-logo px-3 py-0 text-center xl:text-left'>
                 <NavLink to='/'>
-                    <img src={Logo} alt='Logo' />
+                    <div className='text-xl font-medium text-gray-900 xl:px-3 xl:text-2xl'>
+                        <span className='block xl:hidden'>AD</span>
+                        <span className='hidden xl:block'>Admin</span>
+                    </div>
                 </NavLink>
-
-                <button
-                    ref={trigger}
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                    aria-controls='sidebar'
-                    aria-expanded={sidebarOpen}
-                    className='block lg:hidden'
-                >
-                    <svg
-                        className='fill-current'
-                        width='20'
-                        height='18'
-                        viewBox='0 0 20 18'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                    >
-                        <path
-                            d='M19 8.175H2.98748L9.36248 1.6875C9.69998 1.35 9.69998 0.825 9.36248 0.4875C9.02498 0.15 8.49998 0.15 8.16248 0.4875L0.399976 8.3625C0.0624756 8.7 0.0624756 9.225 0.399976 9.5625L8.16248 17.4375C8.31248 17.5875 8.53748 17.7 8.76248 17.7C8.98748 17.7 9.17498 17.625 9.36248 17.475C9.69998 17.1375 9.69998 16.6125 9.36248 16.275L3.02498 9.8625H19C19.45 9.8625 19.825 9.4875 19.825 9.0375C19.825 8.55 19.45 8.175 19 8.175Z'
-                            fill=''
-                        />
-                    </svg>
-                </button>
             </div>
             {/* <!-- SIDEBAR HEADER --> */}
-            <div className='no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear'>
+            <div className='ie-menu mt-8 h-full'>
                 {/* <!-- Sidebar Menu --> */}
-                <nav className='mt-5 py-4 px-4 lg:mt-9 lg:px-6'>
-                    <div>
-                        <h3 className='mb-4 ml-4 text-sm font-semibold text-[#8A99AF]'>
-                            MENU
-                        </h3>
-                        <ul className='mb-6 flex flex-col gap-1 5'>
-                            {/* <!-- Menu Item Dashboard --> */}
-
-                            <li>
-                                <NavLink
-                                    to='/'
-                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        (pathname === "/" ||
-                                            pathname.includes("dashboard")) &&
-                                        "bg-graydark dark:bg-meta-4"
-                                    }`}
-                                >
-                                    <Icon
-                                        className='w-5 h-5'
-                                        icon={"material-symbols:team-dashboard"}
-                                    />
-                                    Dashboard
-                                </NavLink>
-                            </li>
-                            {/* <!-- Menu Item Dashboard --> */}
-                            {/* <!-- Menu Item Products --> */}
-                            <li>
-                                <NavLink
-                                    to='/products'
-                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        pathname.includes("products") &&
-                                        "bg-graydark dark:bg-meta-4"
-                                    }`}
-                                >
-                                    <Icon
-                                        className='w-5 h-5'
-                                        icon={"ph:pizza-bold"}
-                                    />
-                                    Prodotti
-                                </NavLink>
-                            </li>
-                            {/* <!-- Menu Item Products --> */}
-                            <li>
-                                <NavLink
-                                    to='/categories'
-                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        pathname.includes("categories") &&
-                                        "bg-graydark dark:bg-meta-4"
-                                    }`}
-                                >
-                                    <svg
-                                        xmlns='http://www.w3.org/2000/svg'
-                                        className='h-5 w-5'
-                                        fill='none'
-                                        viewBox='0 0 24 24'
-                                        stroke='currentColor'
-                                        strokeWidth={2}
-                                    >
-                                        <path
-                                            strokeLinecap='round'
-                                            strokeLinejoin='round'
-                                            d='M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10'
-                                        />
-                                    </svg>
-                                    Categorie
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to='/stores'
-                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        pathname.includes("stores") &&
-                                        "bg-graydark dark:bg-meta-4"
-                                    }`}
-                                >
-                                    <Icon
-                                        className='w-5 h-5'
-                                        icon={"bx:store"}
-                                    />
-                                    Negozio
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to='/delivery'
-                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        pathname.includes("delivery") &&
-                                        "bg-graydark dark:bg-meta-4"
-                                    }`}
-                                >
-                                    <Icon
-                                        className='w-5 h-5'
-                                        icon={"nimbus:scooter"}
-                                    />
-                                    Delivery
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to='/theme'
-                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                                        pathname.includes("theme") &&
-                                        "bg-graydark dark:bg-meta-4"
-                                    }`}
-                                >
-                                    <Icon
-                                        className='w-5 h-5'
-                                        icon={
-                                            "material-symbols:home-work-outline-rounded"
-                                        }
-                                    />
-                                    Tema
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                <div className='flex flex-col items-center gap-3 p-1 xl:items-stretch xl:px-3'>
+                    {sidebarLinks.map((item) => {
+                        return (
+                            <NavLink
+                                to={item.href}
+                                key={item.name}
+                                className='group'
+                            >
+                                {({ isActive }) => {
+                                    return (
+                                        <span
+                                            className={`flex items-center gap-3 rounded-md px-3 py-2 transition-all ${
+                                                isActive
+                                                    ? "bg-gray-100"
+                                                    : "group-hover:bg-gray-50"
+                                            }`}
+                                        >
+                                            <item.icon
+                                                className={`h-5 stroke-2 ${
+                                                    isActive
+                                                        ? "stroke-blue-700"
+                                                        : "stroke-gray-500 group-hover:stroke-blue-700"
+                                                }`}
+                                            />
+                                            <span
+                                                className={`hidden text-base font-semibold xl:block ${
+                                                    isActive
+                                                        ? "text-gray-900"
+                                                        : "text-gray-500 group-hover:text-gray-900"
+                                                }`}
+                                            >
+                                                {item.name}
+                                            </span>
+                                        </span>
+                                    );
+                                }}
+                            </NavLink>
+                        );
+                    })}
+                </div>
             </div>
-        </aside>
+        </div>
     );
 };
 

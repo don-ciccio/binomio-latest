@@ -1,13 +1,15 @@
-import Breadcrumb from "@/components/common/BreadCrumb";
-
 import { useGetProducts } from "@/store/react-query/hooks/useQueries";
 
 import ProductsTable from "@/components/productTable/ProductsTable";
-import AddButton from "@/components/common/AddButton";
 
 import { useState } from "react";
 
-import ProductsTableTop from "@/components/productTable/ProductsTableTop";
+import { Card, Flex, Icon, TextInput } from "@tremor/react";
+import {
+    InformationCircleIcon,
+    MagnifyingGlassIcon,
+} from "@heroicons/react/20/solid";
+
 import CategoryTableTop from "@/components/productTable/CategoryTableTop";
 import Pagination from "@/components/productTable/Pagination";
 import { useGetCategories } from "../../store/react-query/hooks/useQueries";
@@ -45,44 +47,66 @@ const Products = () => {
 
     return (
         <>
-            <Breadcrumb pageName='Prodotti' />
-            <AddButton link={"/products/add"} label={"Aggiungi Prodotto"} />
-            <div className='flex flex-col gap-5 md:gap-7 2xl:gap-10'>
-                <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                    <div className='data-table-common data-table-one max-w-full overflow-x-auto'>
-                        <ProductsTableTop
-                            setSearch={(search) => setSearch(search)}
-                            setStatus={(status) => setStatus(status)}
-                            status={status}
+            <div className='h-full w-full bg-gray-50 px-3 py-5 xl:px-20 xl:py-12'>
+                <Flex
+                    className='w-full justify-between'
+                    justifyContent='start'
+                    alignItems='center'
+                >
+                    <div className='flex items-center'>
+                        <h3 className='text-xl font-semibold text-gray-900'>
+                            Prodotti
+                        </h3>
+                        <Icon
+                            icon={InformationCircleIcon}
+                            variant='simple'
+                            tooltip='Mostra prodotti'
                         />
+                    </div>
+
+                    <div className='flex gap-4'>
+                        <button className='hidden h-9 rounded border border-gray-300 bg-white px-8 text-base font-medium text-gray-700 transition-all hover:border-gray-800 hover:bg-gray-800 hover:text-white sm:block'>
+                            Esporta
+                        </button>
+                    </div>
+                </Flex>
+
+                <Card shadow={"false"} className='mt-6'>
+                    <div className='flex flex-col md:flex-row md:space-x-2 gap-2'>
+                        <TextInput
+                            onValueChange={(search) => setSearch(search)}
+                            icon={MagnifyingGlassIcon}
+                            placeholder='Cerca...'
+                        />
+
                         <CategoryTableTop
                             categories={categories}
                             filterCategory={filterCategory}
                             setFilterCategory={(filterCategory) =>
                                 setFilterCategory(filterCategory)
                             }
-                        />
-                        <div className='datatable-container'>
-                            <ProductsTable
-                                data={products}
-                                isLoading={fetchingProducts}
-                                setSort={(sort) => setSort(sort)}
-                                sort={sort}
-                            />
-                        </div>
-                        <Pagination
-                            page={page}
-                            limit={products?.limit ? products.limit : 0}
-                            total={products?.total ? products.total : 0}
-                            pageCount={
-                                products?.pageCount ? products.pageCount : 1
-                            }
-                            setPage={(page) => setPage(page)}
-                            handlePrevious={handlePrevious}
-                            handleNext={handleNext}
+                            setSelectedStatus={(status) => setStatus(status)}
                         />
                     </div>
-                </div>
+
+                    <div>
+                        <ProductsTable
+                            data={products}
+                            isLoading={fetchingProducts}
+                            setSort={(sort) => setSort(sort)}
+                            sort={sort}
+                        />
+                    </div>
+                    <Pagination
+                        page={page}
+                        limit={products?.limit ? products.limit : 0}
+                        total={products?.total ? products.total : 0}
+                        pageCount={products?.pageCount ? products.pageCount : 1}
+                        setPage={(page) => setPage(page)}
+                        handlePrevious={handlePrevious}
+                        handleNext={handleNext}
+                    />
+                </Card>
             </div>
         </>
     );

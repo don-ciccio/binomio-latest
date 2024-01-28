@@ -5,18 +5,17 @@ const ErrorHandler = require("../utils/errorHandler");
 
 // Check if user is authenticated or not
 exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
-    const authHeader = req.headers.cookie;
+    const token = req.cookies.token;
 
-    if (!authHeader) {
+    if (!token) {
         return next(
             new ErrorHandler("Login first to access this resource", 401)
         );
     }
-    if (authHeader) {
-        const token = authHeader.split(" ")[1].split("=")[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = await User.findById(decoded.id);
-    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.user = await User.findById(decoded.id);
 
     next();
 });
