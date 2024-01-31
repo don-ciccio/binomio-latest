@@ -13,7 +13,7 @@ import { NavLink } from "react-router-dom";
 const sidebarLinks = [
     {
         name: "Dashboard",
-        href: "/",
+        href: "/dashboard",
         icon: HomeIcon,
     },
     {

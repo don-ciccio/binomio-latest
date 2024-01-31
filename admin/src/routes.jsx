@@ -18,16 +18,22 @@ import { AddStore } from "@/pages/Store/Add";
 import Delivery from "@/pages/Delivery/Delivery";
 import DeliverySettings from "@/pages/Delivery/DeliverySettings";
 import Content from "@/pages/Theme/Content";
-
+import DefaultLayout from "./layout/DefaultLayout";
 const routes = (isAuthenticated) => [
     {
         path: "/",
         element: isAuthenticated ? (
-            <Ecommerce />
+            <DefaultLayout>
+                <Navigate replace to='/dashboard' />
+            </DefaultLayout>
         ) : (
             <Navigate replace to='/login' />
         ),
         children: [
+            {
+                path: "dashboard",
+                element: <Ecommerce />,
+            },
             {
                 path: "products",
                 element: <Products />,
@@ -59,7 +65,11 @@ const routes = (isAuthenticated) => [
     },
     {
         path: "login",
-        element: isAuthenticated ? <Navigate replace to='/' /> : <AdminLogin />,
+        element: isAuthenticated ? (
+            <Navigate replace to='/dashboard' />
+        ) : (
+            <AdminLogin />
+        ),
     },
 ];
 

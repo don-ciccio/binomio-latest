@@ -1,9 +1,15 @@
 import PropTypes from "prop-types";
 
-import DefaultLayout from "@/layout/DefaultLayout";
+import { Metric } from "@tremor/react";
+import Widgets from "../../components/ui/Widgets";
 
-const Ecommerce = ({ data }) => {
-    return <DefaultLayout>{data}</DefaultLayout>;
+const Ecommerce = () => {
+    return (
+        <div className='h-full w-full bg-gray-50 px-3 py-5 xl:px-20 xl:py-12'>
+            <Metric>Dashboard</Metric>
+            <Widgets />
+        </div>
+    );
 };
 
 export default Ecommerce;
