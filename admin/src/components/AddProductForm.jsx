@@ -4,15 +4,14 @@ import { useGetCategories } from "@/store/react-query/hooks/useQueries";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Select from "react-select";
 import {
     MultiSelect,
     MultiSelectItem,
-    Select as SelectTremor,
+    Select,
     SelectItem,
 } from "@tremor/react";
 import { ReactSortable } from "react-sortablejs";
-import { TextInput, Textarea } from "@tremor/react";
+import { TextInput, Textarea, Button } from "@tremor/react";
 import CurrencyInput from "react-currency-input-field";
 
 import axios from "axios";
@@ -190,7 +189,7 @@ const AddProductForm = ({
     const setMultiProp = (e, name) => {
         setMultiProperty((prev) => {
             const newProductProps = { ...prev };
-            newProductProps[name] = e.map((a) => a.value);
+            newProductProps[name] = e.map((a) => a);
             return newProductProps;
         });
     };
@@ -219,6 +218,13 @@ const AddProductForm = ({
 
             propertiesToFill = merge(parentCat[0].properties, ...catInfo);
 
+            if (propertiesToFill[0]?.values.constructor === Array) {
+                obj = propertiesToFill[0]?.values.map((str) => ({
+                    value: str,
+                    label: str,
+                }));
+                console.log(obj);
+            }
             catInfo = parentCat;
         }
     }
@@ -394,7 +400,7 @@ const AddProductForm = ({
                             <span className='text-lg font-medium'>Stato</span>
                         </div>
                         <div className='flex flex-col gap-6 p-6'>
-                            <SelectTremor
+                            <Select
                                 className='max-w-full sm:max-w-xs'
                                 value={status}
                                 onValueChange={handleStatus}
@@ -405,7 +411,7 @@ const AddProductForm = ({
                                 <SelectItem value={options[1]}>
                                     {options[1]}
                                 </SelectItem>
-                            </SelectTremor>
+                            </Select>
                         </div>
                     </div>
                     <div className='rounded-md border border-gray-200 bg-white'>
@@ -413,18 +419,17 @@ const AddProductForm = ({
                             <span className='text-lg font-medium'>Negozio</span>
                         </div>
                         <div className='flex flex-col gap-6 p-6'>
-                            <SelectTremor
+                            <Select
                                 className='max-w-full sm:max-w-xs'
                                 value={store}
                                 onChangeValue={setStore}
                             >
-                                <SelectItem value=''>Nessuno</SelectItem>
                                 {stores?.map((store, index) => (
                                     <SelectItem key={index} value={store._id}>
                                         {store.name}
                                     </SelectItem>
                                 ))}
-                            </SelectTremor>
+                            </Select>
                         </div>
                     </div>
                     <div className='rounded-md border border-gray-200 bg-white'>
@@ -473,22 +478,21 @@ const AddProductForm = ({
                             </span>
                         </div>
                         <div className='flex flex-col gap-6 p-6'>
-                            <SelectTremor
+                            <Select
                                 value={category}
                                 onValueChange={(e) => setCategory(e)}
                             >
-                                <SelectItem value=''>Nessuna</SelectItem>
                                 {categories?.map((category, i) => (
                                     <SelectItem key={i} value={category._id}>
                                         {category.name}
                                     </SelectItem>
                                 ))}
-                            </SelectTremor>
+                            </Select>
 
                             {propertiesToFill.length > 0 &&
                                 propertiesToFill.map((p, i) => (
                                     <div key={i}>
-                                        <label className='mb-3 block text-black dark:text-white'>
+                                        <label className='block text-sm font-medium text-gray-600 mb-2'>
                                             {p.name}
                                         </label>
                                         {p.values.includes("") ? (
@@ -503,7 +507,7 @@ const AddProductForm = ({
                                             />
                                         ) : !p.multi ? (
                                             <div>
-                                                <SelectTremor
+                                                <Select
                                                     value={
                                                         productProperties[
                                                             p.name
@@ -524,28 +528,35 @@ const AddProductForm = ({
                                                             {v}
                                                         </SelectItem>
                                                     ))}
-                                                </SelectTremor>
+                                                </Select>
                                             </div>
                                         ) : (
                                             <div>
-                                                <Select
-                                                    className='relative z-20 w-full rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                                    isMulti
-                                                    unstyled
-                                                    defaultValue={obj.filter(
-                                                        (f) =>
-                                                            productProperties[
-                                                                p.name
-                                                            ]?.indexOf(
-                                                                f.value
-                                                            ) !== -1
-                                                    )}
-                                                    options={obj}
+                                                <MultiSelect
+                                                    defaultValue={
+                                                        productProperties[
+                                                            p.name
+                                                        ]
+                                                    }
                                                     placeholder='Seleziona...'
-                                                    onChange={(e) =>
+                                                    onValueChange={(e) =>
                                                         setMultiProp(e, p.name)
                                                     }
-                                                />
+                                                >
+                                                    {obj.map(
+                                                        (
+                                                            { value, label },
+                                                            id
+                                                        ) => (
+                                                            <MultiSelectItem
+                                                                key={id}
+                                                                value={value}
+                                                            >
+                                                                {label}
+                                                            </MultiSelectItem>
+                                                        )
+                                                    )}
+                                                </MultiSelect>
                                             </div>
                                         )}
                                     </div>
@@ -554,21 +565,19 @@ const AddProductForm = ({
                     </div>
                 </div>
             </div>
-            <div className='flex justify-start gap-4.5 mt-6'>
-                <button
+            <div className='flex justify-start gap-4 mt-6'>
+                <Button
+                    size='lg'
+                    variant='secondary'
                     type='button'
                     onClick={() => history(-1)}
-                    className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
                 >
                     Annulla
-                </button>
+                </Button>
 
-                <button
-                    className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
-                    type='submit'
-                >
+                <Button size='lg' variant='primary' type='submit'>
                     Salva
-                </button>
+                </Button>
             </div>
         </form>
     );
