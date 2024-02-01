@@ -13,6 +13,7 @@ import {
 import CategoryTableTop from "@/components/productTable/CategoryTableTop";
 import Pagination from "@/components/productTable/Pagination";
 import { useGetCategories } from "../../store/react-query/hooks/useQueries";
+import { Link } from "react-router-dom";
 
 const Products = () => {
     const [sort, setSort] = useState({ sort: "price", order: "asc" });
@@ -63,10 +64,13 @@ const Products = () => {
                     />
                 </div>
 
-                <div className='flex gap-4'>
-                    <button className='hidden h-9 rounded border border-gray-300 bg-white px-8 text-base font-medium text-gray-700 transition-all hover:border-gray-800 hover:bg-gray-800 hover:text-white sm:block'>
-                        Esporta
-                    </button>
+                <div>
+                    <Link
+                        className='hidden p-2 rounded border border-gray-300 bg-white px-8 text-base font-medium text-gray-700 transition-all hover:border-blue-500 hover:bg-blue-500 hover:text-white sm:block'
+                        to={"add"}
+                    >
+                        Aggiungi prodotto
+                    </Link>
                 </div>
             </Flex>
 

@@ -28,18 +28,17 @@ const Pagination = ({
                     </li>
                     {totalPages > 0 &&
                         [...Array(totalPages)].map((val, index) => (
-                            <li
-                                className={
-                                    page === index + 1
-                                        ? "cursor-pointer relative block rounded bg-blue-500 px-3 py-1.5 text-sm font-medium text-white transition-all duration-300"
-                                        : "cursor-pointer relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                                }
-                                key={index}
-                            >
-                                <a onClick={() => onClick(index)}>
+                            <a key={index} onClick={() => onClick(index)}>
+                                <li
+                                    className={
+                                        page === index + 1
+                                            ? "cursor-pointer relative block rounded bg-blue-500 px-3 py-1.5 text-sm font-medium text-white transition-all duration-300"
+                                            : "cursor-pointer relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+                                    }
+                                >
                                     {index + 1}
-                                </a>
-                            </li>
+                                </li>
+                            </a>
                         ))}
                     <li>
                         <a

@@ -227,7 +227,7 @@ exports.deliverySettings = catchAsyncErrors(async (req, res, next) => {
             });
 
             slots.forEach((s) => {
-                s.slotTime.forEach((t) => {
+                s.slotTime?.forEach((t) => {
                     let updateSlot = {
                         updateMany: {
                             filter: {

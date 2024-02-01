@@ -114,6 +114,10 @@ const AddProductForm = ({
         setStatus(event);
     };
 
+    const handleStore = (event) => {
+        setStore(event);
+    };
+
     const saveProduct = async (e) => {
         e.preventDefault();
 
@@ -385,7 +389,7 @@ const AddProductForm = ({
                                     name='input-1'
                                     value={price}
                                     onValueChange={(e) => setPrice(e)}
-                                    placeholder='Please enter a number'
+                                    placeholder='Prezzo'
                                     className='tremor-TextInput-root relative items-center min-w-[10rem] outline-none rounded-tremor-default transition duration-100 border shadow-tremor-input dark:shadow-dark-tremor-input bg-tremor-background dark:bg-dark-tremor-background hover:bg-tremor-background-muted dark:hover:bg-dark-tremor-background-muted text-tremor-content-emphasis dark:text-dark-tremor-content-emphasis dark:border-dark-tremor-border mt-2 block   border-gray-300 focus:border-tremor-brand-subtle focus:ring-tremor-brand-muted :dark:border-dark-tremor-brand-subtle focus:dark:ring-dark-tremor-brand-muted sm:text-sm focus:ring-2'
                                     prefix={"€"}
                                     step={1}
@@ -422,7 +426,8 @@ const AddProductForm = ({
                             <Select
                                 className='max-w-full sm:max-w-xs'
                                 value={store}
-                                onChangeValue={setStore}
+                                onValueChange={handleStore}
+                                placeholder='Scegli...'
                             >
                                 {stores?.map((store, index) => (
                                     <SelectItem key={index} value={store._id}>
@@ -444,6 +449,7 @@ const AddProductForm = ({
                                     value={seller}
                                     onValueChange={(e) => onChangeSuggestion(e)}
                                     type='text'
+                                    placeholder='Inserisci...'
                                 />
                                 <div className='absolute z-10 w-full'>
                                     <ul
@@ -481,6 +487,7 @@ const AddProductForm = ({
                             <Select
                                 value={category}
                                 onValueChange={(e) => setCategory(e)}
+                                placeholder='Scegli...'
                             >
                                 {categories?.map((category, i) => (
                                     <SelectItem key={i} value={category._id}>
