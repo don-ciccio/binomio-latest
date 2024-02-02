@@ -11,7 +11,14 @@ import {
     SelectItem,
 } from "@tremor/react";
 import { ReactSortable } from "react-sortablejs";
-import { TextInput, Textarea, Button } from "@tremor/react";
+import {
+    TextInput,
+    Textarea,
+    Button,
+    Dialog,
+    DialogPanel,
+    Title,
+} from "@tremor/react";
 import CurrencyInput from "react-currency-input-field";
 
 import axios from "axios";
@@ -56,6 +63,8 @@ const AddProductForm = ({
     status: previousStatus,
     store: assignedStore,
 }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
     const [isUploading, setIsUploading] = useState(false);
     const [name, setName] = useState(existingTitle || "");
     const [category, setCategory] = useState(existingCategory || "");
@@ -79,6 +88,30 @@ const AddProductForm = ({
             return prev === index ? null : index;
         });
     };
+
+    const [dirty, setDirty] = useState(false);
+
+    const resetState = () => {
+        setDirty(false);
+        setIsOpen(false);
+        setName(existingTitle);
+        setCategory(existingCategory);
+        setDescription(existingDescription);
+        setPrice(existingPrice);
+        setImages(existingImages);
+        setStatus(previousStatus);
+        setSeller(assignedSeller);
+        setStore(assignedStore);
+        setProductProperties(assignedProperties);
+        setIsButtonShown(null);
+    };
+
+    const resetHandler = (e) => {
+        e.preventDefault();
+        setIsOpen(true);
+    };
+
+    const markFormDirty = () => setDirty(true);
 
     const history = useNavigate();
     const queryClient = useQueryClient();
@@ -111,10 +144,12 @@ const AddProductForm = ({
     });
 
     const handleStatus = (event) => {
+        setDirty(true);
         setStatus(event);
     };
 
     const handleStore = (event) => {
+        setDirty(true);
         setStore(event);
     };
 
@@ -142,6 +177,7 @@ const AddProductForm = ({
 
     const deleteImages = async (e) => {
         e.preventDefault();
+        setDirty(true);
         const removed = images[isButtonShown].toString();
 
         if (isFormSubmitted) {
@@ -160,7 +196,7 @@ const AddProductForm = ({
 
     const uploadImages = async (e) => {
         const files = e.target?.files;
-
+        setDirty(true);
         if (files?.length !== undefined && files?.length > 0) {
             setIsUploading(true);
             const data = new FormData();
@@ -183,6 +219,7 @@ const AddProductForm = ({
     };
 
     const setProductProp = (propName, value) => {
+        setDirty(true);
         setProductProperties((prev) => {
             const newProductProps = { ...prev };
             newProductProps[propName] = value;
@@ -191,6 +228,7 @@ const AddProductForm = ({
     };
 
     const setMultiProp = (e, name) => {
+        setDirty(true);
         setMultiProperty((prev) => {
             const newProductProps = { ...prev };
             newProductProps[name] = e.map((a) => a);
@@ -240,7 +278,62 @@ const AddProductForm = ({
     };
 
     return (
-        <form onSubmit={saveProduct}>
+        <form
+            onSubmit={saveProduct}
+            onChange={markFormDirty}
+            onReset={resetHandler}
+        >
+            <div
+                className={`flex justify-end gap-4 my-4 ${
+                    !dirty && "h-[42px]"
+                }`}
+            >
+                <div
+                    className={`transition-all duration-300 ${
+                        !dirty ? "opacity-0" : "opacity-100"
+                    }`}
+                >
+                    <div className={`flex gap-2.5 ${!dirty ? "hidden" : ""}`}>
+                        <Button size='lg' variant='secondary' type='reset'>
+                            Rimuovi
+                        </Button>
+
+                        <Button size='lg' variant='primary' type='submit'>
+                            Salva
+                        </Button>
+                    </div>
+                </div>
+            </div>
+            {isOpen && (
+                <Dialog
+                    open={isOpen}
+                    onClose={(val) => setIsOpen(val)}
+                    static={true}
+                >
+                    <DialogPanel>
+                        <Title className='mb-3'>
+                            Rimuovi tutte le modifiche non salvate
+                        </Title>
+                        Rimuovendo le modifiche, eliminerai tutte quelle
+                        apportate dopo l&rsquo;ultimo salvataggio.
+                        <div className='flex justify-between mt-3'>
+                            <Button
+                                variant='secondary'
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Continua a modificare
+                            </Button>
+                            <Button
+                                variant='secondary'
+                                color='red'
+                                onClick={resetState}
+                            >
+                                Rimuovi modifiche
+                            </Button>
+                        </div>
+                    </DialogPanel>
+                </Dialog>
+            )}
             <div className='grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-3'>
                 <div className='sm:col-span-2 flex flex-col gap-5'>
                     {/* <!-- Input Fields --> */}
@@ -314,7 +407,7 @@ const AddProductForm = ({
                                                 setList={updateImagesOrder}
                                                 className='flex gap-2 group'
                                             >
-                                                {!!images?.length &&
+                                                {images?.length > 0 ? (
                                                     images.map((link, i) => (
                                                         <div
                                                             className='max-w-[2.75rem] cursor-pointer'
@@ -356,7 +449,10 @@ const AddProductForm = ({
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                    ))}
+                                                    ))
+                                                ) : (
+                                                    <div className='max-w-[2.75rem] h-11'></div>
+                                                )}
                                             </ReactSortable>
                                             {isUploading && (
                                                 <div className='h-6 mt-2 ml-1.5 flex items-center'>
@@ -571,20 +667,6 @@ const AddProductForm = ({
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className='flex justify-start gap-4 mt-6'>
-                <Button
-                    size='lg'
-                    variant='secondary'
-                    type='button'
-                    onClick={() => history(-1)}
-                >
-                    Annulla
-                </Button>
-
-                <Button size='lg' variant='primary' type='submit'>
-                    Salva
-                </Button>
             </div>
         </form>
     );
