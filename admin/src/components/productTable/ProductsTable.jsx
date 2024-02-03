@@ -15,6 +15,8 @@ import {
     Icon,
     Switch,
 } from "@tremor/react";
+import TableLoader from "../common/TableLoader";
+
 import {
     ArrowsUpDownIcon,
     PencilSquareIcon,
@@ -79,7 +81,7 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
     return (
         <>
             {isLoading ? (
-                <p>Loading...</p>
+                <TableLoader />
             ) : (
                 <Table className='mt-6'>
                     <TableHead>

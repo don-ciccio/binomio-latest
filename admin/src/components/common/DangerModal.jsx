@@ -4,7 +4,7 @@ const DangerModal = ({ show, close, title, text, onClick, cancel }) => {
     return (
         <>
             {show ? (
-                <div className='fixed top-0 left-0 z-999999 flex h-screen w-full justify-center overflow-y-scroll bg-black/30 py-5 px-4'>
+                <div className='fixed top-0 left-0 z-999999 flex h-screen w-full justify-center overflow-y-scroll  py-5 px-4'>
                     <div className='relative m-auto w-full max-w-142.5 rounded-lg bg-white py-12 px-8 text-center dark:bg-boxdark md:py-15 md:px-17.5'>
                         <span className='mx-auto inline-block'>
                             <svg

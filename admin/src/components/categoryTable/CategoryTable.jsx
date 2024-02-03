@@ -11,13 +11,16 @@ import {
     TableHeaderCell,
     TableBody,
     Icon,
+    DialogPanel,
+    Title,
+    Dialog,
+    Button,
 } from "@tremor/react";
 
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 
 import axios from "axios";
 import TableLoader from "../common/TableLoader";
-import DangerModal from "../common/DangerModal";
 axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -37,7 +40,6 @@ const CategoryTable = ({ isLoading, categories }) => {
         },
         [categories, modal]
     );
-    console.log(categories);
 
     const deleteCategory = async (id) => {
         await axios.delete(`${API_URL}/api/admin/category/delete?_id=${id}`);
@@ -46,6 +48,60 @@ const CategoryTable = ({ isLoading, categories }) => {
 
     return (
         <>
+            {selectedCategory.number_of_product > 0 ? (
+                <Dialog
+                    open={modal}
+                    onClose={() => setModal(!modal)}
+                    static={true}
+                >
+                    <DialogPanel>
+                        <Title className='mb-3'>
+                            {`Impossibile Eliminare ${selectedCategory.name}`}
+                        </Title>
+                        Non è possibile eliminare questa categoria perché
+                        contiene dei prodotti.
+                        <div className='mt-3'>
+                            <Button
+                                variant='light'
+                                onClick={() => setModal(!modal)}
+                            >
+                                Ricevuto!
+                            </Button>
+                        </div>
+                    </DialogPanel>
+                </Dialog>
+            ) : (
+                <Dialog
+                    open={modal}
+                    onClose={() => setModal(!modal)}
+                    static={true}
+                >
+                    <DialogPanel>
+                        <Title className='mb-3'>
+                            {`Elimina ${selectedCategory.name}`}
+                        </Title>
+                        Sei sicuro di voler eliminare questa categoria?
+                        <div className='flex justify-between mt-3'>
+                            <Button
+                                variant='primary'
+                                onClick={() => setModal(!modal)}
+                            >
+                                Annulla
+                            </Button>
+                            <Button
+                                variant='primary'
+                                color='red'
+                                onClick={() => {
+                                    deleteCategory(selectedCategory._id);
+                                    setModal(!modal);
+                                }}
+                            >
+                                Elimina
+                            </Button>
+                        </div>
+                    </DialogPanel>
+                </Dialog>
+            )}
             {isLoading ? (
                 <TableLoader />
             ) : (
@@ -101,41 +157,6 @@ const CategoryTable = ({ isLoading, categories }) => {
                                                     color='red'
                                                 />
                                             </Link>
-                                            {selectedCategory.number_of_product >
-                                            0 ? (
-                                                <DangerModal
-                                                    show={modal}
-                                                    close={() =>
-                                                        setModal(!modal)
-                                                    }
-                                                    cancel={false}
-                                                    onClick={() =>
-                                                        setModal(!modal)
-                                                    }
-                                                    title={`Impossibile Eliminare ${selectedCategory.name}`}
-                                                    text={
-                                                        "Non è possibile eliminare questa categoria perché contiene dei prodotti."
-                                                    }
-                                                />
-                                            ) : (
-                                                <DangerModal
-                                                    cancel={true}
-                                                    show={modal}
-                                                    close={() =>
-                                                        setModal(!modal)
-                                                    }
-                                                    onClick={() => {
-                                                        deleteCategory(
-                                                            selectedCategory._id
-                                                        );
-                                                        setModal(!modal);
-                                                    }}
-                                                    title={`Elimina ${selectedCategory.name}`}
-                                                    text={
-                                                        "Sei sicuro di voler eliminare questa categoria?"
-                                                    }
-                                                />
-                                            )}
                                         </div>
                                     </TableCell>
                                 </>

@@ -304,36 +304,36 @@ const AddProductForm = ({
                     </div>
                 </div>
             </div>
-            {isOpen && (
-                <Dialog
-                    open={isOpen}
-                    onClose={(val) => setIsOpen(val)}
-                    static={true}
-                >
-                    <DialogPanel>
-                        <Title className='mb-3'>
-                            Rimuovi tutte le modifiche non salvate
-                        </Title>
-                        Rimuovendo le modifiche, eliminerai tutte quelle
-                        apportate dopo l&rsquo;ultimo salvataggio.
-                        <div className='flex justify-between mt-3'>
-                            <Button
-                                variant='secondary'
-                                onClick={() => setIsOpen(false)}
-                            >
-                                Continua a modificare
-                            </Button>
-                            <Button
-                                variant='secondary'
-                                color='red'
-                                onClick={resetState}
-                            >
-                                Rimuovi modifiche
-                            </Button>
-                        </div>
-                    </DialogPanel>
-                </Dialog>
-            )}
+
+            <Dialog
+                open={isOpen}
+                onClose={(val) => setIsOpen(val)}
+                static={true}
+            >
+                <DialogPanel>
+                    <Title className='mb-3'>
+                        Rimuovi tutte le modifiche non salvate
+                    </Title>
+                    Rimuovendo le modifiche, eliminerai tutte quelle apportate
+                    dopo l&rsquo;ultimo salvataggio.
+                    <div className='flex justify-between mt-3'>
+                        <Button
+                            variant='secondary'
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Continua a modificare
+                        </Button>
+                        <Button
+                            variant='secondary'
+                            color='red'
+                            onClick={resetState}
+                        >
+                            Rimuovi modifiche
+                        </Button>
+                    </div>
+                </DialogPanel>
+            </Dialog>
+
             <div className='grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-3'>
                 <div className='sm:col-span-2 flex flex-col gap-5'>
                     {/* <!-- Input Fields --> */}
