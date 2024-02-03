@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Icon } from "@iconify/react";
+
 import Spinner from "./common/Spinner";
 
 import { ReactSortable } from "react-sortablejs";
@@ -9,6 +9,21 @@ import { useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 import { useGetCategories } from "@/store/react-query/hooks/useQueries";
+
+import {
+    TextInput,
+    Textarea,
+    Button,
+    Icon as TremorIcon,
+    Dialog,
+    DialogPanel,
+    Title,
+} from "@tremor/react";
+
+import { PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { Icon } from "@iconify/react";
+
+import { Select, SelectItem } from "@tremor/react";
 
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -31,6 +46,28 @@ const AddCategoryForm = ({
     const [isButtonShown, setIsButtonShown] = useState(null);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [dirty, setDirty] = useState(false);
+
+    const markFormDirty = () => setDirty(true);
+
+    const resetState = () => {
+        setDirty(false);
+        setIsOpen(false);
+        setName(existingTitle);
+        setParent(existingParent);
+        setDescription(existingDescription);
+        setProperties(existingProperties);
+        setImages(existingImages);
+
+        setIsButtonShown(null);
+    };
+
+    const resetHandler = (e) => {
+        e.preventDefault();
+        setIsOpen(true);
+    };
 
     const { data: categories } = useGetCategories({ search: "" });
 
@@ -69,6 +106,7 @@ const AddCategoryForm = ({
 
     const deleteImages = async (e) => {
         e.preventDefault();
+        setDirty(true);
         const removed = images[isButtonShown].toString();
 
         if (isFormSubmitted) {
@@ -87,7 +125,7 @@ const AddCategoryForm = ({
 
     const uploadImages = async (e) => {
         const files = e.target?.files;
-
+        setDirty(true);
         if (files?.length !== undefined && files?.length > 0) {
             setIsUploading(true);
             const data = new FormData();
@@ -110,12 +148,19 @@ const AddCategoryForm = ({
     };
 
     const addProperty = () => {
+        setDirty(true);
         setProperties((prev) => {
             return [...prev, { name: "", values: "", multi: false }];
         });
     };
 
+    const handleParent = (event) => {
+        setDirty(true);
+        setParent(event);
+    };
+
     const handlePropertyNameChange = (index, property, newName) => {
+        setDirty(true);
         setProperties((prev) => {
             const properties = [...prev];
             properties[index].name = newName;
@@ -124,6 +169,7 @@ const AddCategoryForm = ({
     };
 
     const handlePropertyMultiChange = (index, newMulti) => {
+        setDirty(true);
         setProperties((prev) => {
             const properties = [...prev];
             properties[index].multi = newMulti;
@@ -132,6 +178,7 @@ const AddCategoryForm = ({
     };
 
     const handlePropertyValueChange = (index, property, newValues) => {
+        setDirty(true);
         setProperties((prev) => {
             const properties = [...prev];
             properties[index].values = newValues.split(",");
@@ -140,6 +187,7 @@ const AddCategoryForm = ({
     };
 
     const removeProperty = (index) => {
+        setDirty(true);
         setProperties((prev) => {
             const properties = [...prev];
             return properties.filter((p, pIndex) => {
@@ -169,310 +217,356 @@ const AddCategoryForm = ({
         }
         setIsFormSubmitted(true);
     };
-    console.log(properties);
+
     return (
-        <form onSubmit={saveCategory}>
+        <form
+            onChange={markFormDirty}
+            onSubmit={saveCategory}
+            onReset={resetHandler}
+        >
+            <div
+                className={`flex justify-end gap-4 my-4 ${
+                    !dirty && "h-[42px]"
+                }`}
+            >
+                <div
+                    className={`transition-all duration-300 ${
+                        !dirty ? "opacity-0" : "opacity-100"
+                    }`}
+                >
+                    <div className={`flex gap-2.5 ${!dirty ? "hidden" : ""}`}>
+                        <Button size='lg' variant='secondary' type='reset'>
+                            Rimuovi
+                        </Button>
+
+                        <Button size='lg' variant='primary' type='submit'>
+                            Salva
+                        </Button>
+                    </div>
+                </div>
+            </div>
+            {isOpen && (
+                <Dialog
+                    open={isOpen}
+                    onClose={(val) => setIsOpen(val)}
+                    static={true}
+                >
+                    <DialogPanel>
+                        <Title className='mb-3'>
+                            Rimuovi tutte le modifiche non salvate
+                        </Title>
+                        Rimuovendo le modifiche, eliminerai tutte quelle
+                        apportate dopo l&rsquo;ultimo salvataggio.
+                        <div className='flex justify-between mt-3'>
+                            <Button
+                                variant='secondary'
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Continua a modificare
+                            </Button>
+                            <Button
+                                variant='secondary'
+                                color='red'
+                                onClick={resetState}
+                            >
+                                Rimuovi modifiche
+                            </Button>
+                        </div>
+                    </DialogPanel>
+                </Dialog>
+            )}
             <div className='grid grid-cols-1 gap-5'>
                 <div className='flex flex-col gap-5'>
                     <div className='flex md:flex-row flex-col gap-5'>
-                        <div className='md:w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                            <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                                <h3 className='font-medium text-black dark:text-white'>
+                        <div className='w-full rounded-md border border-gray-200 bg-white'>
+                            <div className='border-b border-gray-200 py-4 px-6'>
+                                <span className='text-lg font-medium'>
                                     Caratteristiche Categoria
-                                </h3>
+                                </span>
                             </div>
-                            <div className='flex flex-col gap-5.5 p-6.5'>
+                            <div className='flex flex-col gap-6 p-6'>
                                 <div>
-                                    <label className='mb-3 block text-black dark:text-white'>
+                                    <label className='block text-sm font-medium text-gray-600'>
                                         Titolo
                                     </label>
-                                    <input
+                                    <TextInput
+                                        className='mt-2 max-w-full'
                                         type='text'
-                                        placeholder='Nome Categoria'
+                                        placeholder='Titolo'
                                         value={name}
-                                        onChange={(e) =>
-                                            setName(e.target.value)
-                                        }
-                                        className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                        onValueChange={(e) => setName(e)}
                                     />
                                 </div>
                             </div>
-                            <div className='flex flex-col  p-6.5'>
-                                <label className='mb-3 block text-black dark:text-white'>
+                            <div className='flex flex-col gap-2 p-6'>
+                                <label className='block text-sm font-medium text-gray-600'>
                                     Collezione
                                 </label>
-                                <div className='relative z-20 bg-transparent dark:bg-form-input'>
-                                    <select
+                                <div className='flex flex-col'>
+                                    <Select
+                                        className='max-w-full'
                                         value={parent}
-                                        onChange={(e) =>
-                                            setParent(e.target.value)
-                                        }
-                                        className='relative z-20 w-full appearance-none rounded border border-stroke bg-gray py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                        onValueChange={handleParent}
+                                        placeholder='Scegli...'
                                     >
-                                        <option value=''>Nessuna</option>
                                         {categories?.map((category, i) => (
-                                            <option
+                                            <SelectItem
                                                 key={i}
                                                 value={category._id}
                                             >
                                                 {category.name}
-                                            </option>
+                                            </SelectItem>
                                         ))}
-                                    </select>
-
-                                    <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2'>
-                                        <svg
-                                            className='fill-current'
-                                            width='24'
-                                            height='24'
-                                            viewBox='0 0 24 24'
-                                            fill='none'
-                                            xmlns='http://www.w3.org/2000/svg'
-                                        >
-                                            <g opacity='0.8'>
-                                                <path
-                                                    fillRule='evenodd'
-                                                    clipRule='evenodd'
-                                                    d='M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z'
-                                                    fill=''
-                                                ></path>
-                                            </g>
-                                        </svg>
-                                    </span>
+                                    </Select>
                                 </div>
                             </div>
                         </div>
-                        <div className='md:w-1/2 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                            <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                                <h3 className='font-medium text-black dark:text-white'>
+                        <div className='w-full rounded-md border border-gray-200 bg-white'>
+                            <div className='border-b border-gray-200 py-4 px-6'>
+                                <span className='text-lg font-medium'>
                                     Immagine
-                                </h3>
+                                </span>
                             </div>
-                            <div className='flex flex-col gap-5.5 p-6.5'>
-                                <div className='flex flex-col'>
-                                    <div
-                                        id='FileUpload'
-                                        className='relative mb-5.5 block w-full cursor-pointer appearance-none rounded border-2 border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5'
-                                    >
-                                        <input
-                                            type='file'
-                                            onChange={uploadImages}
-                                            className='cursor-pointer absolute inset-0 z-50 m-0 h-full w-full p-0 opacity-0 outline-none'
-                                        />
-                                        <div className='flex flex-col items-center justify-center space-y-3'>
-                                            <span className='flex h-11.5 w-11.5 items-center justify-center rounded-full border border-stroke bg-primary/5 dark:border-strokedark'>
-                                                <svg
-                                                    width='20'
-                                                    height='20'
-                                                    viewBox='0 0 20 20'
-                                                    fill='none'
-                                                    xmlns='http://www.w3.org/2000/svg'
+                            <div className='lex flex-col gap-2 p-6'>
+                                <div>
+                                    <label className='block text-sm font-medium text-gray-600'>
+                                        Aggiungi immagine
+                                    </label>
+                                    <div>
+                                        <div className='flex flex-col gap-2.5'>
+                                            <div
+                                                id='FileUpload'
+                                                className='flex items-center justify-center w-full mt-2'
+                                            >
+                                                <label className='flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600'>
+                                                    <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                                                        <svg
+                                                            className='w-8 h-8 mb-4 text-gray-500 dark:text-gray-400'
+                                                            aria-hidden='true'
+                                                            xmlns='http://www.w3.org/2000/svg'
+                                                            fill='none'
+                                                            viewBox='0 0 20 16'
+                                                        >
+                                                            <path
+                                                                stroke='currentColor'
+                                                                strokeLinecap='round'
+                                                                strokeLinejoin='round'
+                                                                strokeWidth='2'
+                                                                d='M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2'
+                                                            />
+                                                        </svg>
+                                                        <p className='mb-2 text-sm text-gray-500 dark:text-gray-400'>
+                                                            <span className='text-primary'>
+                                                                Clicca per
+                                                                effetture
+                                                                l&rsquo;upload
+                                                            </span>{" "}
+                                                            o trascina
+                                                            l&rsquo;immagine
+                                                        </p>
+                                                        <p className='text-xs text-gray-500 dark:text-gray-400'>
+                                                            SVG, PNG, JPG o GIF
+                                                            (MAX. 800x400px)
+                                                        </p>
+                                                    </div>
+                                                    <input
+                                                        id='dropzone-file'
+                                                        onChange={uploadImages}
+                                                        type='file'
+                                                        className='hidden'
+                                                    />
+                                                </label>
+                                            </div>
+                                            <div className='flex flex-row flex-wrap items-start gap-1 max-h-[4.5rem]'>
+                                                <ReactSortable
+                                                    list={images}
+                                                    setList={updateImagesOrder}
+                                                    className='flex gap-2 group'
                                                 >
-                                                    <g clipPath='url(#clip0_75_12841)'>
-                                                        <path
-                                                            d='M2.5 15.8333H17.5V17.5H2.5V15.8333ZM10.8333 4.85663V14.1666H9.16667V4.85663L4.1075 9.91663L2.92917 8.73829L10 1.66663L17.0708 8.73746L15.8925 9.91579L10.8333 4.85829V4.85663Z'
-                                                            fill='#3C50E0'
-                                                        ></path>
-                                                    </g>
-                                                    <defs>
-                                                        <clipPath id='clip0_75_12841'>
-                                                            <rect
-                                                                width='20'
-                                                                height='20'
-                                                                fill='white'
-                                                            ></rect>
-                                                        </clipPath>
-                                                    </defs>
-                                                </svg>
-                                            </span>
-                                            <p className='text-center text-xs'>
-                                                <span className='text-primary'>
-                                                    Clicca per effetture
-                                                    l&rsquo;upload
-                                                </span>{" "}
-                                                o trascina l&rsquo;immagine
-                                            </p>
+                                                    {images?.length > 0 ? (
+                                                        images.map(
+                                                            (link, i) => (
+                                                                <div
+                                                                    className='max-w-[2.75rem] cursor-pointer'
+                                                                    key={i}
+                                                                >
+                                                                    <div
+                                                                        className='relative'
+                                                                        onMouseEnter={() =>
+                                                                            clickHandler(
+                                                                                i
+                                                                            )
+                                                                        }
+                                                                        onMouseLeave={() =>
+                                                                            clickHandler(
+                                                                                i
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <img
+                                                                            src={
+                                                                                link
+                                                                            }
+                                                                            alt=''
+                                                                            className='p-0.5 border-2 border-gray-300 border-dashed rounded-lg dark:border-strokedark'
+                                                                        />
+                                                                        <button
+                                                                            onClick={
+                                                                                deleteImages
+                                                                            }
+                                                                            className={`${
+                                                                                isButtonShown ===
+                                                                                i
+                                                                                    ? "absolute -right-1 -top-2 bg-[#D34053] text-white rounded-full"
+                                                                                    : "hidden"
+                                                                            }`}
+                                                                        >
+                                                                            <Icon
+                                                                                className='w-4 h-4'
+                                                                                icon='iconamoon:close-bold'
+                                                                            />
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        )
+                                                    ) : (
+                                                        <div className='max-w-[2.75rem] h-11'></div>
+                                                    )}
+                                                </ReactSortable>
+                                                {isUploading && (
+                                                    <div className='h-6 mt-2 ml-1.5 flex items-center'>
+                                                        <Spinner />
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className='flex flex-row flex-wrap items-start gap-1 max-h-18'>
-                                        <ReactSortable
-                                            list={images}
-                                            setList={updateImagesOrder}
-                                            className='flex gap-2 group'
-                                        >
-                                            {!!images?.length &&
-                                                images.map((link, i) => (
-                                                    <div
-                                                        className='max-w-11 cursor-pointer'
-                                                        key={i}
-                                                    >
-                                                        <div
-                                                            className='relative'
-                                                            onMouseEnter={() =>
-                                                                clickHandler(i)
-                                                            }
-                                                            onMouseLeave={() =>
-                                                                clickHandler(i)
-                                                            }
-                                                        >
-                                                            <img
-                                                                src={link}
-                                                                alt=''
-                                                                className='rounded-sm border border-bodydark border-dashed dark:border-strokedark'
-                                                            />
-                                                            <button
-                                                                onClick={
-                                                                    deleteImages
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='w-full rounded-md border border-gray-200 bg-white'>
+                        <div className='border-b border-gray-200 py-4 px-6'>
+                            <span className='text-lg font-medium'>
+                                Descrizione
+                            </span>
+                        </div>
+                        <div className='flex flex-col gap-2 p-6'>
+                            <div>
+                                <label className='block text-sm font-medium text-gray-600'>
+                                    Descrizione
+                                </label>
+                                <Textarea
+                                    rows={"6"}
+                                    placeholder='Descrizione'
+                                    value={description}
+                                    onValueChange={(e) => setDescription(e)}
+                                    className='mt-2'
+                                ></Textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='w-full rounded-md border border-gray-200 bg-white'>
+                        <div className='border-b border-gray-200 py-4 px-6'>
+                            <span className='text-lg font-medium'>
+                                Proprietà
+                            </span>
+                        </div>
+                        <div className='px-4 py-5 sm:p-6'>
+                            <div className='flex flex-col gap-6'>
+                                <Button
+                                    icon={PlusIcon}
+                                    size='lg'
+                                    variant='primary'
+                                    type='button'
+                                    className='max-w-[120px]'
+                                    onClick={() => addProperty()}
+                                >
+                                    Aggiungi
+                                </Button>
+                                <div className='grid grid-cols-10 gap-6'>
+                                    {properties.length > 0 &&
+                                        properties.map((property, i) => (
+                                            <>
+                                                <div className='col-span-3'>
+                                                    <TextInput
+                                                        type='text'
+                                                        placeholder='Nome'
+                                                        value={property.name}
+                                                        onValueChange={(e) =>
+                                                            handlePropertyNameChange(
+                                                                i,
+                                                                property,
+                                                                e
+                                                            )
+                                                        }
+                                                    />
+                                                </div>
+
+                                                <div className='col-span-5'>
+                                                    <TextInput
+                                                        type='text'
+                                                        placeholder='valori, multipli con la virgola'
+                                                        value={property.values}
+                                                        onValueChange={(e) =>
+                                                            handlePropertyValueChange(
+                                                                i,
+                                                                property,
+                                                                e
+                                                            )
+                                                        }
+                                                    />
+                                                    <div className='mt-2 flex items-center'>
+                                                        <div className='flex h-5 items-center'>
+                                                            <input
+                                                                type='checkbox'
+                                                                value={
+                                                                    property.multi
                                                                 }
-                                                                className={`${
-                                                                    isButtonShown ===
-                                                                    i
-                                                                        ? "absolute -right-1 -top-2 bg-danger text-white rounded-full z-999"
-                                                                        : "hidden"
-                                                                }`}
-                                                            >
-                                                                <Icon
-                                                                    className='w-4 h-4'
-                                                                    icon='iconamoon:close-bold'
-                                                                />
-                                                            </button>
+                                                                onChange={(e) =>
+                                                                    handlePropertyMultiChange(
+                                                                        i,
+                                                                        e.target
+                                                                            .checked
+                                                                    )
+                                                                }
+                                                                checked={
+                                                                    property.multi
+                                                                }
+                                                                className='h-4 w-4 rounded border-gray-300 text-blue-700 focus:ring-blue-700'
+                                                            />
+                                                        </div>
+                                                        <div className='ml-2 text-xs sm:text-sm'>
+                                                            <label className=' text-gray-500'>
+                                                                Selezione
+                                                                multipla
+                                                            </label>
                                                         </div>
                                                     </div>
-                                                ))}
-                                        </ReactSortable>
-                                        {isUploading && (
-                                            <div className='h-6 mt-2 ml-1.5 flex items-center'>
-                                                <Spinner />
-                                            </div>
-                                        )}
-                                    </div>
+                                                </div>
+                                                <div className='col-span-2 mt-0.5'>
+                                                    <button
+                                                        onClick={() =>
+                                                            removeProperty(i)
+                                                        }
+                                                        type='button'
+                                                    >
+                                                        <TremorIcon
+                                                            icon={TrashIcon}
+                                                            variant='outlined'
+                                                            tooltip='Elimina'
+                                                            size='sm'
+                                                            color='red'
+                                                        />
+                                                    </button>
+                                                </div>
+                                            </>
+                                        ))}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                        <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                            <h3 className='font-medium text-black dark:text-white'>
-                                Descrizione
-                            </h3>
-                        </div>
-                        <div className='flex flex-col gap-5.5 p-6.5'>
-                            <textarea
-                                rows={6}
-                                placeholder='Descrizione'
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                                className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                            ></textarea>
-                        </div>
-                    </div>
-                    <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                        <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                            <h3 className='font-medium text-black dark:text-white'>
-                                Proprietà
-                            </h3>
-                        </div>
-                        <div className='flex flex-col gap-5.5 p-6.5'>
-                            <div className='mb-6 flex  gap-5 flex-col items-start'>
-                                <button
-                                    type='button'
-                                    onClick={() => addProperty()}
-                                    className='flex items-center gap-2 rounded bg-primary py-2 px-4.5 font-medium text-white hover:bg-opacity-80'
-                                >
-                                    <svg
-                                        className='fillCurrent'
-                                        width='16'
-                                        height='16'
-                                        viewBox='0 0 16 16'
-                                        fill='#fff'
-                                        xmlns='http://www.w3.org/2000/svg'
-                                    >
-                                        <path
-                                            d='M15 7H9V1C9 0.4 8.6 0 8 0C7.4 0 7 0.4 7 1V7H1C0.4 7 0 7.4 0 8C0 8.6 0.4 9 1 9H7V15C7 15.6 7.4 16 8 16C8.6 16 9 15.6 9 15V9H15C15.6 9 16 8.6 16 8C16 7.4 15.6 7 15 7Z'
-                                            fill=''
-                                        ></path>
-                                    </svg>
-                                    Aggiungi Proprietà
-                                </button>
-                                {properties.length > 0 &&
-                                    properties.map((property, i) => (
-                                        <div
-                                            className='w-full flex flex-row gap-4'
-                                            key={i}
-                                        >
-                                            <input
-                                                className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                                type='text'
-                                                onChange={(e) =>
-                                                    handlePropertyNameChange(
-                                                        i,
-                                                        property,
-                                                        e.target.value
-                                                    )
-                                                }
-                                                value={property.name}
-                                                placeholder='nome'
-                                            />
-                                            <input
-                                                className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                                type='text'
-                                                onChange={(e) =>
-                                                    handlePropertyValueChange(
-                                                        i,
-                                                        property,
-                                                        e.target.value
-                                                    )
-                                                }
-                                                value={property.values}
-                                                placeholder='valori, multipli con la virgola'
-                                            />
-                                            <label className='inline-flex items-center text-black dark:text-white'>
-                                                Multi
-                                            </label>
-                                            <input
-                                                type='checkbox'
-                                                value={property.multi}
-                                                onChange={(e) =>
-                                                    handlePropertyMultiChange(
-                                                        i,
-                                                        e.target.checked
-                                                    )
-                                                }
-                                                checked={property.multi}
-                                            />
-                                            <button
-                                                className='justify-center rounded bg-danger py-2 px-3.5 font-medium text-gray hover:bg-opacity-95'
-                                                onClick={() =>
-                                                    removeProperty(i)
-                                                }
-                                                type='button'
-                                            >
-                                                <Icon
-                                                    className='w-6 h-6'
-                                                    icon={"ion:trash-sharp"}
-                                                />
-                                            </button>
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='flex justify-start gap-4.5 mt-6'>
-                    <button
-                        type='button'
-                        onClick={() => history(-1)}
-                        className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
-                    >
-                        Annulla
-                    </button>
-
-                    <button
-                        className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
-                        type='submit'
-                    >
-                        Salva
-                    </button>
                 </div>
             </div>
         </form>

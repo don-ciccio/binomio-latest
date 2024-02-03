@@ -1,4 +1,4 @@
-import Breadcrumb from "@/components/common/BreadCrumb";
+import { Metric } from "@tremor/react";
 import AddCategoryForm from "@/components/AddCategoryForm";
 import Loader from "@/components/common/Loader";
 
@@ -18,11 +18,13 @@ const Edit = () => {
         );
 
     return (
-        <>
-            <Breadcrumb pageName='Modifica Categoria' />
+        <div className='h-full w-full bg-gray-50 px-3 py-5 xl:px-20 xl:py-12'>
+            <div className='flex p-1 mb-2'>
+                <Metric>{category?.data.name}</Metric>
+            </div>
 
             <AddCategoryForm {...category?.data} />
-        </>
+        </div>
     );
 };
 

@@ -15,7 +15,11 @@ import {
     Icon,
     Switch,
 } from "@tremor/react";
-import { ArrowsUpDownIcon } from "@heroicons/react/20/solid";
+import {
+    ArrowsUpDownIcon,
+    PencilSquareIcon,
+    TrashIcon,
+} from "@heroicons/react/20/solid";
 
 const ProductsTable = ({ data, isLoading, sort, setSort }) => {
     const queryClient = useQueryClient();
@@ -145,18 +149,26 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
                                         />
                                     </TableCell>
                                     <TableCell>
-                                        <Link
-                                            to={`${product._id}`}
-                                            className='rounded-full bg-green-200 py-[5px] px-3 text-xs text-green-900 transition-all hover:bg-green-100'
-                                        >
-                                            Modifica
-                                        </Link>
-                                        <Link
-                                            onClick={toggle(product._id)}
-                                            className='ml-3 rounded-full bg-orange-200 py-[5px] px-3 text-xs text-orange-900 transition-all hover:bg-orange-100'
-                                        >
-                                            Visualizza
-                                        </Link>
+                                        <div className='flex gap-1.5 items-center'>
+                                            <Link to={`${product._id}`}>
+                                                <Icon
+                                                    icon={PencilSquareIcon}
+                                                    variant='outlined'
+                                                    tooltip='Modifica'
+                                                    size='sm'
+                                                />
+                                            </Link>
+                                            <Link onClick={toggle(product._id)}>
+                                                <Icon
+                                                    icon={TrashIcon}
+                                                    variant='outlined'
+                                                    tooltip='Elimina'
+                                                    size='sm'
+                                                    color='red'
+                                                />
+                                            </Link>
+                                        </div>
+
                                         <Modal
                                             show={modal}
                                             close={() => setModal(!modal)}

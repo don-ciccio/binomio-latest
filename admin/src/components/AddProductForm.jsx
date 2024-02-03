@@ -349,6 +349,7 @@ const AddProductForm = ({
                                     Titolo
                                 </label>
                                 <TextInput
+                                    className='mt-2'
                                     type='text'
                                     placeholder='Titolo'
                                     value={name}
@@ -383,13 +384,15 @@ const AddProductForm = ({
                                                         />
                                                     </svg>
                                                     <p className='mb-2 text-sm text-gray-500 dark:text-gray-400'>
-                                                        <span className='font-semibold'>
-                                                            Click to upload
+                                                        <span className='text-primary'>
+                                                            Clicca per effetture
+                                                            l&rsquo;upload
                                                         </span>{" "}
-                                                        or drag and drop
+                                                        o trascina
+                                                        l&rsquo;immagine
                                                     </p>
                                                     <p className='text-xs text-gray-500 dark:text-gray-400'>
-                                                        SVG, PNG, JPG or GIF
+                                                        SVG, PNG, JPG o GIF
                                                         (MAX. 800x400px)
                                                     </p>
                                                 </div>
