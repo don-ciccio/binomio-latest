@@ -3,8 +3,7 @@ import { changeProductStatus } from "@/store/react-query/queries";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
-import Modal from "../common/Modal";
-import View from "@/pages/Products/View";
+
 import {
     Table,
     TableRow,
@@ -14,6 +13,10 @@ import {
     TableBody,
     Icon,
     Switch,
+    Dialog,
+    DialogPanel,
+    Title,
+    Button,
 } from "@tremor/react";
 import TableLoader from "../common/TableLoader";
 
@@ -22,6 +25,9 @@ import {
     PencilSquareIcon,
     TrashIcon,
 } from "@heroicons/react/20/solid";
+import axios from "axios";
+axios.defaults.withCredentials = true;
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ProductsTable = ({ data, isLoading, sort, setSort }) => {
     const queryClient = useQueryClient();
@@ -41,6 +47,11 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
         },
         [data?.products, modal]
     );
+
+    const deleteProduct = async (id) => {
+        await axios.delete(`${API_URL}/api/admin/product/delete?_id=${id}`);
+        queryClient.invalidateQueries(["products"], { type: "all" });
+    };
 
     const mutation = useMutation({
         mutationFn: ({ id, status }) => {
@@ -80,6 +91,32 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
 
     return (
         <>
+            <Dialog open={modal} onClose={() => setModal(!modal)} static={true}>
+                <DialogPanel>
+                    <Title className='mb-3'>
+                        {`Elimina ${selectedProduct.name}`}
+                    </Title>
+                    Sei sicuro di voler eliminare questo prodotto?
+                    <div className='flex justify-between mt-3'>
+                        <Button
+                            variant='primary'
+                            onClick={() => setModal(!modal)}
+                        >
+                            Annulla
+                        </Button>
+                        <Button
+                            variant='primary'
+                            color='red'
+                            onClick={() => {
+                                deleteProduct(selectedProduct._id);
+                                setModal(!modal);
+                            }}
+                        >
+                            Elimina
+                        </Button>
+                    </div>
+                </DialogPanel>
+            </Dialog>
             {isLoading ? (
                 <TableLoader />
             ) : (
@@ -170,13 +207,6 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
                                                 />
                                             </Link>
                                         </div>
-
-                                        <Modal
-                                            show={modal}
-                                            close={() => setModal(!modal)}
-                                        >
-                                            <View data={selectedProduct} />
-                                        </Modal>
                                     </TableCell>
                                 </>
                             </TableRow>

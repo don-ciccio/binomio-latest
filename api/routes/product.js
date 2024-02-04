@@ -41,8 +41,10 @@ router
     .put(isAuthenticatedUser, authorizeRoles("admin"), productStatus);
 router
     .route("/admin/product")
-    .put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct)
+    .put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct);
 
+router
+    .route("/admin/product/delete")
     .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct);
 
 module.exports = router;
