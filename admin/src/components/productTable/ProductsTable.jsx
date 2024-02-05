@@ -192,7 +192,7 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
                                             <Link to={`${product._id}`}>
                                                 <Icon
                                                     icon={PencilSquareIcon}
-                                                    variant='outlined'
+                                                    variant='light'
                                                     tooltip='Modifica'
                                                     size='sm'
                                                 />
@@ -200,7 +200,7 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
                                             <Link onClick={toggle(product._id)}>
                                                 <Icon
                                                     icon={TrashIcon}
-                                                    variant='outlined'
+                                                    variant='light'
                                                     tooltip='Elimina'
                                                     size='sm'
                                                     color='red'

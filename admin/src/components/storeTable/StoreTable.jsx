@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import TableLoader from "@/components/common/TableLoader";
 import { Link } from "react-router-dom";
-
+import { PencilSquareIcon } from "@heroicons/react/20/solid";
+import { Divider, Icon, Badge } from "@tremor/react";
 const StoresTable = ({ data, isLoading }) => {
     return (
         <>
@@ -12,49 +13,65 @@ const StoresTable = ({ data, isLoading }) => {
                     {data?.map((store, index) => (
                         <div
                             key={index}
-                            className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'
+                            className='w-full rounded-md border border-gray-200 bg-white mt-6'
                         >
-                            <div className='flex flex-row justify-between items-center border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                                <h3 className='font-medium text-black dark:text-white'>
+                            <div className='border-b border-gray-200 py-4 px-6 flex items-center justify-between'>
+                                <span className='text-xl font-medium'>
                                     Profilo
-                                </h3>
+                                </span>
                                 <div className='flex'>
                                     <Link
                                         to={`${store._id}`}
                                         className='relative text-sm inline-flex hover:underline hover:text-primary font-medium dark:text-white'
                                     >
-                                        Modifica
+                                        <Icon
+                                            icon={PencilSquareIcon}
+                                            variant='light'
+                                            tooltip='Modifica'
+                                            size='sm'
+                                        />
                                     </Link>
                                 </div>
                             </div>
-                            <div className='flex flex-col gap-5.5 p-6.5'>
+                            <div className='flex flex-col px-6 pt-6'>
                                 <div>
-                                    <label className='mb-3 block text-black dark:text-white'>
-                                        Nome
+                                    <label className='block font-medium mb-3'>
+                                        Nome del negozio
                                     </label>
-                                    <span>{store.name}</span>
+                                    <span className='block text-gray-500'>
+                                        {store.name}
+                                    </span>
                                 </div>
+                                <Divider />
                             </div>
-                            <div className='flex flex-col gap-5.5 p-6.5'>
+
+                            <div className='flex flex-col px-6 pt-2'>
                                 <div>
-                                    <label className='mb-3 block text-black dark:text-white'>
-                                        Indirizzo Aziendale
+                                    <label className='block font-medium mb-3'>
+                                        Indirizzo aziendale
                                     </label>
-                                    <span>
+                                    <span className='block text-gray-500'>
                                         {store.location.formattedAddress}
                                     </span>
                                 </div>
+                                <Divider />
                             </div>
-                            <div className='flex flex-col gap-5.5 p-6.5'>
+                            <div className='flex flex-col px-6 pt-2 pb-6'>
                                 <div>
-                                    <label className='mb-3 block text-black dark:text-white'>
+                                    <label className='block font-medium mb-3'>
                                         Stato
                                     </label>
-                                    <span>
+                                    <Badge
+                                        color={
+                                            store.isOpen === true
+                                                ? "green"
+                                                : "red"
+                                        }
+                                    >
                                         {store.isOpen === true
                                             ? "Aperto"
                                             : "Chiuso"}
-                                    </span>
+                                    </Badge>
                                 </div>
                             </div>
                         </div>

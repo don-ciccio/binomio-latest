@@ -141,7 +141,7 @@ const CategoryTable = ({ isLoading, categories }) => {
                                             <Link to={`${category._id}`}>
                                                 <Icon
                                                     icon={PencilSquareIcon}
-                                                    variant='outlined'
+                                                    variant='light'
                                                     tooltip='Modifica'
                                                     size='sm'
                                                 />
@@ -151,7 +151,7 @@ const CategoryTable = ({ isLoading, categories }) => {
                                             >
                                                 <Icon
                                                     icon={TrashIcon}
-                                                    variant='outlined'
+                                                    variant='light'
                                                     tooltip='Elimina'
                                                     size='sm'
                                                     color='red'

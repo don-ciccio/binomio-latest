@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateStore } from "@/store/react-query/hooks/useMutations";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Switch, Metric, TextInput, NumberInput } from "@tremor/react";
+import { MapPinIcon } from "@heroicons/react/20/solid";
 
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -65,140 +67,136 @@ const AddStoreForm = ({
     };
 
     return (
-        <form onSubmit={createStore}>
-            <div className='grid grid-cols-1 gap-5'>
-                <div className='flex flex-col gap-5'>
-                    <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                        <div className='flex flex-row justify-between items-center border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                            <h3 className='font-medium text-black dark:text-white'>
-                                Dettagli del Negozio
-                            </h3>
-                            <div className='flex flex-row gap-3'>
-                                <label className='relative inline-flex cursor-pointer'>
-                                    <input
-                                        checked={isOpen}
-                                        onChange={(e) =>
-                                            setIsOpen(e.target.checked)
-                                        }
-                                        type='checkbox'
-                                        className='sr-only peer'
-                                    />
-
-                                    <div className="w-11 h-6 bg-gray peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
-                                </label>
-                                <span className='span-text text-base items-center'>
-                                    {isOpen ? "Aperto" : "Chiuso"}
-                                </span>
-                            </div>
-                        </div>
-                        <div className='flex flex-col gap-5.5 p-6.5'>
-                            <div>
-                                <label className='mb-3 block text-black dark:text-white'>
-                                    Nome
-                                </label>
-                                <input
-                                    type='text'
-                                    placeholder='Nome'
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                />
-                            </div>
-                        </div>
-                        <div className='flex flex-col gap-5.5 p-6.5'>
-                            <div>
-                                <label className='mb-3 block text-black dark:text-white'>
-                                    Indirizzo
-                                </label>
-                                <input
-                                    type='text'
-                                    placeholder='Indirizzo'
-                                    value={shopAddress.address}
-                                    onChange={(e) =>
-                                        setShopAddress({
-                                            ...shopAddress,
-                                            address: e.target.value,
-                                        })
-                                    }
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                />
-                            </div>
-                            <div>
-                                <div className='flex flex-row gap-4'>
-                                    <input
-                                        type='text'
-                                        placeholder='Città'
-                                        value={shopAddress.city}
-                                        onChange={(e) =>
-                                            setShopAddress({
-                                                ...shopAddress,
-                                                city: e.target.value,
-                                            })
-                                        }
-                                        className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                    />
-                                    <input
-                                        type='text'
-                                        placeholder='Codice Postale'
-                                        value={shopAddress.postalCode}
-                                        onChange={(e) =>
-                                            setShopAddress({
-                                                ...shopAddress,
-                                                postalCode: e.target.value,
-                                            })
-                                        }
-                                        className='w-1/2 rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                        <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                            <h3 className='font-medium text-black dark:text-white'>
-                                Spedizione e consegne
-                            </h3>
-                        </div>
-
-                        <div className='flex flex-row gap-5.5 p-6.5'>
-                            <div>
-                                <label className='mb-3 block text-black dark:text-white'>
-                                    Raggio consegne
-                                </label>
-                                <div className='input-km input-km-right'>
-                                    <input
-                                        type='number'
-                                        value={deliveryRadius}
-                                        onChange={(e) =>
-                                            setDeliveryRadius(e.target.value)
-                                        }
-                                        className='pr-7 w-[88px] rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                                    />
-                                    <i className='right-10'>km</i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className='flex justify-start gap-4.5 mt-6'>
-                    <button
-                        type='button'
-                        onClick={() => history(-1)}
-                        className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
-                    >
-                        Annulla
-                    </button>
-
-                    <button
-                        className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
-                        type='submit'
-                    >
-                        Salva
-                    </button>
+        <>
+            <div className='flex p-1 mb-2 justify-between items-center'>
+                <Metric>{name}</Metric>
+                <div className='flex flex-row gap-2'>
+                    <Switch onChange={(e) => setIsOpen(e)} checked={isOpen} />
+                    <span className='span-text text-sm items-center'>
+                        {isOpen ? "Aperto" : "Chiuso"}
+                    </span>
                 </div>
             </div>
-        </form>
+            <form onSubmit={createStore}>
+                <div className='grid grid-cols-1 gap-5'>
+                    <div className='flex flex-col gap-5'>
+                        <div className='w-full rounded-md border border-gray-200 bg-white'>
+                            <div className='border-b border-gray-200 py-4 px-6'>
+                                <span className='text-lg font-medium'>
+                                    Modifica profilo
+                                </span>
+                            </div>
+
+                            <div className='flex flex-col gap-2 px-6 pt-6'>
+                                <div>
+                                    <label className='block text-sm font-medium text-gray-600'>
+                                        Nome del negozio
+                                    </label>
+                                    <TextInput
+                                        className='mt-2 max-w-sm'
+                                        type='text'
+                                        placeholder='Titolo'
+                                        value={name}
+                                        onValueChange={(e) => setName(e)}
+                                    />
+                                </div>
+                            </div>
+                            <div className='flex flex-col gap-6 p-6'>
+                                <div>
+                                    <label className='block text-sm font-medium text-gray-600'>
+                                        Indirizzo
+                                    </label>
+                                    <TextInput
+                                        type='text'
+                                        placeholder='Indirizzo'
+                                        value={shopAddress.address}
+                                        onChange={(e) =>
+                                            setShopAddress({
+                                                ...shopAddress,
+                                                address: e,
+                                            })
+                                        }
+                                        className='mt-2 max-w-md'
+                                    />
+                                </div>
+                                <div>
+                                    <div className='flex flex-row gap-4'>
+                                        <TextInput
+                                            type='text'
+                                            placeholder='Città'
+                                            value={shopAddress.city}
+                                            onChange={(e) =>
+                                                setShopAddress({
+                                                    ...shopAddress,
+                                                    city: e,
+                                                })
+                                            }
+                                            className='max-w-sm'
+                                        />
+                                        <TextInput
+                                            type='text'
+                                            placeholder='Codice Postale'
+                                            value={shopAddress.postalCode}
+                                            onChange={(e) =>
+                                                setShopAddress({
+                                                    ...shopAddress,
+                                                    postalCode: e,
+                                                })
+                                            }
+                                            className='max-w-xs'
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='w-full rounded-md border border-gray-200 bg-white'>
+                            <div className='border-b border-gray-200 py-4 px-6'>
+                                <span className='text-lg font-medium'>
+                                    Spedizione e consegne
+                                </span>
+                            </div>
+
+                            <div className='flex flex-col gap-2 p-6'>
+                                <div>
+                                    <label className='block text-sm font-medium text-gray-600'>
+                                        Raggio consegne
+                                    </label>
+
+                                    <NumberInput
+                                        icon={MapPinIcon}
+                                        type='number'
+                                        value={deliveryRadius}
+                                        onValueChange={(e) =>
+                                            setDeliveryRadius(e)
+                                        }
+                                        className='max-w-xs mt-2'
+                                        placeholder='Scegli...'
+                                        max={50}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='flex justify-start gap-4.5 mt-6'>
+                        <button
+                            type='button'
+                            onClick={() => history(-1)}
+                            className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
+                        >
+                            Annulla
+                        </button>
+
+                        <button
+                            className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
+                            type='submit'
+                        >
+                            Salva
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </>
     );
 };
 
