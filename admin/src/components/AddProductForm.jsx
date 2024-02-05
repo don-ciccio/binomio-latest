@@ -18,9 +18,8 @@ import {
     Dialog,
     DialogPanel,
     Title,
-    Callout,
 } from "@tremor/react";
-import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
+
 import CurrencyInput from "react-currency-input-field";
 
 import axios from "axios";
@@ -55,6 +54,8 @@ const merge = (a1, a2) => {
 
 const AddProductForm = ({
     _id,
+
+    setDirty,
     name: existingTitle,
     description: existingDescription,
     price: existingPrice,
@@ -91,8 +92,6 @@ const AddProductForm = ({
         });
     };
 
-    const [dirty, setDirty] = useState(false);
-
     const resetState = () => {
         setDirty(false);
         setIsOpen(false);
@@ -100,7 +99,7 @@ const AddProductForm = ({
         setCategory(existingCategory);
         setDescription(existingDescription);
         setPrice(existingPrice);
-        setImages(existingImages);
+        setImages(existingImages || []);
         setStatus(previousStatus);
         setSeller(assignedSeller);
         setStore(assignedStore);
@@ -281,6 +280,7 @@ const AddProductForm = ({
 
     return (
         <form
+            id='my-form'
             onSubmit={saveProduct}
             onChange={markFormDirty}
             onReset={resetHandler}
@@ -651,44 +651,6 @@ const AddProductForm = ({
                     </div>
                 </div>
             </div>
-            <div className={`flex mt-5 items-center`}>
-                <div
-                    className={`w-full transition-all duration-300 ${
-                        !dirty ? "opacity-0" : "opacity-100"
-                    }`}
-                >
-                    <Callout
-                        className='items-center flex-row justify-between mt-0'
-                        title='Modifiche non salvate'
-                        icon={ExclamationCircleIcon}
-                        color={"gray"}
-                    >
-                        <span
-                            className={`flex items-center gap-2.5 ${
-                                !dirty ? "hidden" : ""
-                            }`}
-                        >
-                            <Button
-                                size='lg'
-                                variant='secondary'
-                                color='gray'
-                                type='reset'
-                            >
-                                Rimuovi
-                            </Button>
-
-                            <Button
-                                size='lg'
-                                variant='primary'
-                                color='gray'
-                                type='submit'
-                            >
-                                Salva
-                            </Button>
-                        </span>
-                    </Callout>
-                </div>
-            </div>
         </form>
     );
 };
@@ -696,6 +658,7 @@ const AddProductForm = ({
 export default AddProductForm;
 
 AddProductForm.propTypes = {
+    setDirty: PropTypes.func,
     _id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,

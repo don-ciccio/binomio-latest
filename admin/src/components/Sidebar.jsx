@@ -46,7 +46,7 @@ const sidebarLinks = [
 const Sidebar = () => {
     return (
         <div
-            className={`sticky top-0 flex h-screen w-full flex-col justify-between border-r border-gray-200 bg-white px-1 py-5 xl:py-12 xl:px-2`}
+            className={`sticky top-0 flex h-screen w-full flex-col justify-between border-r border-gray-200 bg-white px-1 py-12 xl:py-12 xl:px-2`}
         >
             {/* <!-- SIDEBAR HEADER --> */}
             <div className='ie-logo px-3 py-0 text-center xl:text-left'>
