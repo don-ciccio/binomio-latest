@@ -38,7 +38,7 @@ const StoresTable = ({ data, isLoading }) => {
                                     <label className='block font-medium mb-3'>
                                         Nome del negozio
                                     </label>
-                                    <span className='block text-gray-500'>
+                                    <span className='block text-sm text-gray-500'>
                                         {store.name}
                                     </span>
                                 </div>
@@ -50,7 +50,7 @@ const StoresTable = ({ data, isLoading }) => {
                                     <label className='block font-medium mb-3'>
                                         Indirizzo aziendale
                                     </label>
-                                    <span className='block text-gray-500'>
+                                    <span className='block text-sm text-gray-500'>
                                         {store.location.formattedAddress}
                                     </span>
                                 </div>

@@ -3,8 +3,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateStore } from "@/store/react-query/hooks/useMutations";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Switch, Metric, TextInput, NumberInput } from "@tremor/react";
-import { MapPinIcon } from "@heroicons/react/20/solid";
+import {
+    Switch,
+    Metric,
+    TextInput,
+    NumberInput,
+    Button,
+    Dialog,
+    DialogPanel,
+    Title,
+    Callout,
+    Badge,
+} from "@tremor/react";
+import { MapPinIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid";
 
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -18,6 +29,7 @@ const AddStoreForm = ({
     shopAddress: previousShopAddress,
     deliveryRadius: previousDeliveryRadius,
 }) => {
+    const [isModal, setIsModal] = useState(false);
     const [isOpen, setIsOpen] = useState(previousOpen || false);
     const [name, setName] = useState(previousName || "");
     const [shopAddress, setShopAddress] = useState(
@@ -30,6 +42,28 @@ const AddStoreForm = ({
     const [deliveryRadius, setDeliveryRadius] = useState(
         previousDeliveryRadius || 1
     );
+
+    const [dirty, setDirty] = useState(false);
+
+    const markFormDirty = () => setDirty(true);
+
+    const resetState = () => {
+        setDirty(false);
+        setIsModal(false);
+        setName(previousName);
+        setIsOpen(previousOpen);
+        setShopAddress(previousShopAddress);
+        setDeliveryRadius(previousDeliveryRadius);
+    };
+
+    const resetHandler = () => {
+        setIsModal(true);
+    };
+
+    const handleOpen = () => {
+        setDirty(true);
+        setIsOpen(!isOpen);
+    };
 
     const history = useNavigate();
     const redirect = window.location.search
@@ -67,136 +101,195 @@ const AddStoreForm = ({
     };
 
     return (
-        <>
+        <form
+            onChange={markFormDirty}
+            onReset={resetHandler}
+            onSubmit={createStore}
+        >
+            <Dialog
+                open={isModal}
+                onClose={(val) => setIsModal(val)}
+                static={true}
+            >
+                <DialogPanel>
+                    <Title className='mb-3'>
+                        Rimuovi tutte le modifiche non salvate
+                    </Title>
+                    Rimuovendo le modifiche, eliminerai tutte quelle apportate
+                    dopo l&rsquo;ultimo salvataggio.
+                    <div className='flex justify-between mt-3'>
+                        <Button
+                            variant='secondary'
+                            onClick={() => setIsModal(false)}
+                        >
+                            Continua a modificare
+                        </Button>
+                        <Button
+                            variant='secondary'
+                            color='red'
+                            onClick={resetState}
+                        >
+                            Rimuovi modifiche
+                        </Button>
+                    </div>
+                </DialogPanel>
+            </Dialog>
             <div className='flex p-1 mb-2 justify-between items-center'>
-                <Metric>{name}</Metric>
+                <Metric>{previousName}</Metric>
                 <div className='flex flex-row gap-2'>
-                    <Switch onChange={(e) => setIsOpen(e)} checked={isOpen} />
+                    <Switch onChange={handleOpen} checked={isOpen} />
                     <span className='span-text text-sm items-center'>
-                        {isOpen ? "Aperto" : "Chiuso"}
+                        {isOpen ? (
+                            <Badge size='sm' color={"green"}>
+                                Aperto
+                            </Badge>
+                        ) : (
+                            <Badge size='sm' color={"red"}>
+                                Chiuso
+                            </Badge>
+                        )}
                     </span>
                 </div>
             </div>
-            <form onSubmit={createStore}>
-                <div className='grid grid-cols-1 gap-5'>
-                    <div className='flex flex-col gap-5'>
-                        <div className='w-full rounded-md border border-gray-200 bg-white'>
-                            <div className='border-b border-gray-200 py-4 px-6'>
-                                <span className='text-lg font-medium'>
-                                    Modifica profilo
-                                </span>
-                            </div>
 
-                            <div className='flex flex-col gap-2 px-6 pt-6'>
-                                <div>
-                                    <label className='block text-sm font-medium text-gray-600'>
-                                        Nome del negozio
-                                    </label>
-                                    <TextInput
-                                        className='mt-2 max-w-sm'
-                                        type='text'
-                                        placeholder='Titolo'
-                                        value={name}
-                                        onValueChange={(e) => setName(e)}
-                                    />
-                                </div>
+            <div className='grid grid-cols-1 gap-5'>
+                <div className='flex flex-col gap-5'>
+                    <div className='w-full rounded-md border border-gray-200 bg-white'>
+                        <div className='border-b border-gray-200 py-4 px-6'>
+                            <span className='text-lg font-medium'>
+                                Modifica profilo
+                            </span>
+                        </div>
+
+                        <div className='flex flex-col gap-2 px-6 pt-6'>
+                            <div>
+                                <label className='block text-sm font-medium text-gray-600'>
+                                    Nome del negozio
+                                </label>
+                                <TextInput
+                                    className='mt-2 max-w-sm'
+                                    type='text'
+                                    placeholder='Titolo'
+                                    value={name}
+                                    onValueChange={(e) => setName(e)}
+                                />
                             </div>
-                            <div className='flex flex-col gap-6 p-6'>
-                                <div>
-                                    <label className='block text-sm font-medium text-gray-600'>
-                                        Indirizzo
-                                    </label>
+                        </div>
+                        <div className='flex flex-col gap-6 p-6'>
+                            <div>
+                                <label className='block text-sm font-medium text-gray-600'>
+                                    Indirizzo
+                                </label>
+                                <TextInput
+                                    type='text'
+                                    placeholder='Indirizzo'
+                                    value={shopAddress.address}
+                                    onValueChange={(e) =>
+                                        setShopAddress({
+                                            ...shopAddress,
+                                            address: e,
+                                        })
+                                    }
+                                    className='mt-2 max-w-md'
+                                />
+                            </div>
+                            <div>
+                                <div className='flex flex-row gap-4'>
                                     <TextInput
                                         type='text'
-                                        placeholder='Indirizzo'
-                                        value={shopAddress.address}
-                                        onChange={(e) =>
+                                        placeholder='Città'
+                                        value={shopAddress.city}
+                                        onValueChange={(e) =>
                                             setShopAddress({
                                                 ...shopAddress,
-                                                address: e,
+                                                city: e,
                                             })
                                         }
-                                        className='mt-2 max-w-md'
+                                        className='max-w-sm'
                                     />
-                                </div>
-                                <div>
-                                    <div className='flex flex-row gap-4'>
-                                        <TextInput
-                                            type='text'
-                                            placeholder='Città'
-                                            value={shopAddress.city}
-                                            onChange={(e) =>
-                                                setShopAddress({
-                                                    ...shopAddress,
-                                                    city: e,
-                                                })
-                                            }
-                                            className='max-w-sm'
-                                        />
-                                        <TextInput
-                                            type='text'
-                                            placeholder='Codice Postale'
-                                            value={shopAddress.postalCode}
-                                            onChange={(e) =>
-                                                setShopAddress({
-                                                    ...shopAddress,
-                                                    postalCode: e,
-                                                })
-                                            }
-                                            className='max-w-xs'
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='w-full rounded-md border border-gray-200 bg-white'>
-                            <div className='border-b border-gray-200 py-4 px-6'>
-                                <span className='text-lg font-medium'>
-                                    Spedizione e consegne
-                                </span>
-                            </div>
-
-                            <div className='flex flex-col gap-2 p-6'>
-                                <div>
-                                    <label className='block text-sm font-medium text-gray-600'>
-                                        Raggio consegne
-                                    </label>
-
-                                    <NumberInput
-                                        icon={MapPinIcon}
-                                        type='number'
-                                        value={deliveryRadius}
+                                    <TextInput
+                                        type='text'
+                                        placeholder='Codice Postale'
+                                        value={shopAddress.postalCode}
                                         onValueChange={(e) =>
-                                            setDeliveryRadius(e)
+                                            setShopAddress({
+                                                ...shopAddress,
+                                                postalCode: e,
+                                            })
                                         }
-                                        className='max-w-xs mt-2'
-                                        placeholder='Scegli...'
-                                        max={50}
+                                        className='max-w-xs'
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div className='w-full rounded-md border border-gray-200 bg-white'>
+                        <div className='border-b border-gray-200 py-4 px-6'>
+                            <span className='text-lg font-medium'>
+                                Spedizione e consegne
+                            </span>
+                        </div>
 
-                    <div className='flex justify-start gap-4.5 mt-6'>
-                        <button
-                            type='button'
-                            onClick={() => history(-1)}
-                            className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
-                        >
-                            Annulla
-                        </button>
+                        <div className='flex flex-col gap-2 p-6'>
+                            <div>
+                                <label className='block text-sm font-medium text-gray-600'>
+                                    Raggio consegne
+                                </label>
 
-                        <button
-                            className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
-                            type='submit'
-                        >
-                            Salva
-                        </button>
+                                <NumberInput
+                                    icon={MapPinIcon}
+                                    type='number'
+                                    value={deliveryRadius}
+                                    onValueChange={(e) => setDeliveryRadius(e)}
+                                    className='max-w-xs mt-2'
+                                    placeholder='Scegli...'
+                                    max={50}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </form>
-        </>
+            </div>
+            <div className={`flex mt-5 items-center`}>
+                <div
+                    className={`w-full transition-all duration-300 ${
+                        !dirty ? "opacity-0" : "opacity-100"
+                    }`}
+                >
+                    <Callout
+                        className='items-center flex-row justify-between mt-0'
+                        title='Modifiche non salvate'
+                        icon={ExclamationCircleIcon}
+                        color={"gray"}
+                    >
+                        <span
+                            className={`flex items-center gap-2.5 ${
+                                !dirty ? "hidden" : ""
+                            }`}
+                        >
+                            <Button
+                                size='lg'
+                                variant='secondary'
+                                color='gray'
+                                type='reset'
+                                onClick={() => setIsOpen(!isOpen)}
+                            >
+                                Rimuovi
+                            </Button>
+
+                            <Button
+                                size='lg'
+                                variant='primary'
+                                color='gray'
+                                type='submit'
+                            >
+                                Salva
+                            </Button>
+                        </span>
+                    </Callout>
+                </div>
+            </div>
+        </form>
     );
 };
 

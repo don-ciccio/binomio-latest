@@ -18,7 +18,9 @@ import {
     Dialog,
     DialogPanel,
     Title,
+    Callout,
 } from "@tremor/react";
+import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
 import CurrencyInput from "react-currency-input-field";
 
 import axios from "axios";
@@ -283,28 +285,6 @@ const AddProductForm = ({
             onChange={markFormDirty}
             onReset={resetHandler}
         >
-            <div
-                className={`flex justify-end gap-4 my-4 ${
-                    !dirty && "h-[42px]"
-                }`}
-            >
-                <div
-                    className={`transition-all duration-300 ${
-                        !dirty ? "opacity-0" : "opacity-100"
-                    }`}
-                >
-                    <div className={`flex gap-2.5 ${!dirty ? "hidden" : ""}`}>
-                        <Button size='lg' variant='secondary' type='reset'>
-                            Rimuovi
-                        </Button>
-
-                        <Button size='lg' variant='primary' type='submit'>
-                            Salva
-                        </Button>
-                    </div>
-                </div>
-            </div>
-
             <Dialog
                 open={isOpen}
                 onClose={(val) => setIsOpen(val)}
@@ -669,6 +649,44 @@ const AddProductForm = ({
                                 ))}
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className={`flex mt-5 items-center`}>
+                <div
+                    className={`w-full transition-all duration-300 ${
+                        !dirty ? "opacity-0" : "opacity-100"
+                    }`}
+                >
+                    <Callout
+                        className='items-center flex-row justify-between mt-0'
+                        title='Modifiche non salvate'
+                        icon={ExclamationCircleIcon}
+                        color={"gray"}
+                    >
+                        <span
+                            className={`flex items-center gap-2.5 ${
+                                !dirty ? "hidden" : ""
+                            }`}
+                        >
+                            <Button
+                                size='lg'
+                                variant='secondary'
+                                color='gray'
+                                type='reset'
+                            >
+                                Rimuovi
+                            </Button>
+
+                            <Button
+                                size='lg'
+                                variant='primary'
+                                color='gray'
+                                type='submit'
+                            >
+                                Salva
+                            </Button>
+                        </span>
+                    </Callout>
                 </div>
             </div>
         </form>
