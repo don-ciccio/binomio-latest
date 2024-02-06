@@ -39,7 +39,7 @@ const Edit = () => {
                             }`}
                         >
                             <Button
-                                form='my-form'
+                                form='product-form'
                                 size='xs'
                                 variant='primary'
                                 color='rose'
@@ -49,7 +49,7 @@ const Edit = () => {
                             </Button>
 
                             <Button
-                                form='my-form'
+                                form='product-form'
                                 size='xs'
                                 variant='primary'
                                 color='gray'
@@ -61,7 +61,7 @@ const Edit = () => {
                     </Callout>
                 </div>
             </div>
-            <div className='mt-5 px-3 py-5 xl:px-20 xl:py-12'>
+            <div className='px-3 py-5 xl:px-20 xl:py-12'>
                 <div className='flex p-1 mb-4'>
                     <Metric>{product.data.product.name}</Metric>
                 </div>

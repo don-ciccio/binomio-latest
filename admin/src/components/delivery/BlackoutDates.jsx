@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 
 import { useCallback, useEffect } from "react";
 import { format, formatISO, parse, startOfDay } from "date-fns";
+import { AccordionBody, AccordionHeader } from "@tremor/react";
 
 import { useBlackoutDaysStore, useWeekdaysStore } from "@/store/zustand/store";
 import Loader from "@/components/common/Loader";
@@ -106,13 +107,9 @@ const BlackoutDates = ({
     };
 
     return (
-        <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-            <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                <h3 className='font-medium text-black dark:text-white'>
-                    Date di blackout
-                </h3>
-            </div>
-            <div className='flex flex-col p-6.5 gap-3'>
+        <>
+            <AccordionHeader>Date di blackout</AccordionHeader>
+            <AccordionBody>
                 <div className='flex flex-row items-center mb-5'>
                     <div className='relative '>
                         {loading ? (
@@ -170,8 +167,8 @@ const BlackoutDates = ({
                         ))}
                     </div>
                 )}
-            </div>
-        </div>
+            </AccordionBody>
+        </>
     );
 };
 

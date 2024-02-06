@@ -206,7 +206,7 @@ exports.deliverySettings = catchAsyncErrors(async (req, res, next) => {
         bulk = [];
 
         if (req.params.id) {
-            settings.forEach((item) => {
+            settings?.forEach((item) => {
                 let updateDoc = {
                     updateMany: {
                         filter: {
@@ -226,7 +226,7 @@ exports.deliverySettings = catchAsyncErrors(async (req, res, next) => {
                 bulk.push(updateDoc);
             });
 
-            slots.forEach((s) => {
+            slots?.forEach((s) => {
                 s.slotTime?.forEach((t) => {
                     let updateSlot = {
                         updateMany: {

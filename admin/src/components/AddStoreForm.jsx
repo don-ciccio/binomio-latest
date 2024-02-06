@@ -12,10 +12,9 @@ import {
     Dialog,
     DialogPanel,
     Title,
-    Callout,
     Badge,
 } from "@tremor/react";
-import { MapPinIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid";
+import { MapPinIcon } from "@heroicons/react/20/solid";
 
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -23,6 +22,7 @@ axios.defaults.withCredentials = true;
 const API_URL = import.meta.env.VITE_API_URL;
 
 const AddStoreForm = ({
+    setDirty,
     _id,
     isOpen: previousOpen,
     name: previousName,
@@ -43,12 +43,9 @@ const AddStoreForm = ({
         previousDeliveryRadius || 1
     );
 
-    const [dirty, setDirty] = useState(false);
-
     const markFormDirty = () => setDirty(true);
 
     const resetState = () => {
-        setDirty(false);
         setIsModal(false);
         setName(previousName);
         setIsOpen(previousOpen);
@@ -57,11 +54,12 @@ const AddStoreForm = ({
     };
 
     const resetHandler = () => {
+        setIsOpen(!isOpen);
         setIsModal(true);
     };
 
     const handleOpen = () => {
-        setDirty(true);
+        setDirty(false);
         setIsOpen(!isOpen);
     };
 
@@ -102,6 +100,7 @@ const AddStoreForm = ({
 
     return (
         <form
+            id='store-form'
             onChange={markFormDirty}
             onReset={resetHandler}
             onSubmit={createStore}
@@ -134,7 +133,7 @@ const AddStoreForm = ({
                     </div>
                 </DialogPanel>
             </Dialog>
-            <div className='flex p-1 mb-2 justify-between items-center'>
+            <div className='flex p-1 mb-4 justify-between items-center'>
                 <Metric>{previousName}</Metric>
                 <div className='flex flex-row gap-2'>
                     <Switch onChange={handleOpen} checked={isOpen} />
@@ -250,45 +249,6 @@ const AddStoreForm = ({
                     </div>
                 </div>
             </div>
-            <div className={`flex mt-5 items-center`}>
-                <div
-                    className={`w-full transition-all duration-300 ${
-                        !dirty ? "opacity-0" : "opacity-100"
-                    }`}
-                >
-                    <Callout
-                        className='items-center flex-row justify-between mt-0'
-                        title='Modifiche non salvate'
-                        icon={ExclamationCircleIcon}
-                        color={"gray"}
-                    >
-                        <span
-                            className={`flex items-center gap-2.5 ${
-                                !dirty ? "hidden" : ""
-                            }`}
-                        >
-                            <Button
-                                size='lg'
-                                variant='secondary'
-                                color='gray'
-                                type='reset'
-                                onClick={() => setIsOpen(!isOpen)}
-                            >
-                                Rimuovi
-                            </Button>
-
-                            <Button
-                                size='lg'
-                                variant='primary'
-                                color='gray'
-                                type='submit'
-                            >
-                                Salva
-                            </Button>
-                        </span>
-                    </Callout>
-                </div>
-            </div>
         </form>
     );
 };
@@ -296,6 +256,7 @@ const AddStoreForm = ({
 export default AddStoreForm;
 
 AddStoreForm.propTypes = {
+    setDirty: PropTypes.func,
     _id: PropTypes.string,
     name: PropTypes.string,
     isOpen: PropTypes.bool,

@@ -1,4 +1,5 @@
-import Breadcrumb from "@/components/common/BreadCrumb";
+import { Accordion, Metric, AccordionList } from "@tremor/react";
+
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useCallback, useEffect, useState } from "react";
@@ -109,13 +110,19 @@ const DeliverySettings = () => {
     };
 
     return (
-        <>
-            <Breadcrumb pageName='Gestione consegne' />
-            <div className='flex flex-col gap-5'>
-                <form onSubmit={updateSettings}>
-                    <div className='flex flex-col gap-5.5'>
+        <div className=' px-3 py-5 xl:px-20 xl:py-12'>
+            <div className='flex p-1 mb-4 justify-between items-center'>
+                <Metric>Impostazioni</Metric>
+            </div>
+            <form onSubmit={updateSettings}>
+                <AccordionList>
+                    <Accordion>
                         <DeliveryAvailability />
+                    </Accordion>
+                    <Accordion>
                         <DeliverySlots />
+                    </Accordion>
+                    <Accordion>
                         <BlackoutDates
                             date={date}
                             setDate={setDate}
@@ -126,26 +133,26 @@ const DeliverySettings = () => {
                             blackoutDates={blackoutDates}
                             setBlackoutDates={setBlackoutDates}
                         />
-                        <div className='flex justify-start gap-4.5 mt-6'>
-                            <button
-                                type='button'
-                                onClick={() => history(-1)}
-                                className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
-                            >
-                                Annulla
-                            </button>
+                    </Accordion>
+                </AccordionList>
+                <div className='flex justify-start gap-4.5 mt-6'>
+                    <button
+                        type='button'
+                        onClick={() => history(-1)}
+                        className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
+                    >
+                        Annulla
+                    </button>
 
-                            <button
-                                className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
-                                type='submit'
-                            >
-                                Salva
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </>
+                    <button
+                        className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
+                        type='submit'
+                    >
+                        Salva
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 };
 

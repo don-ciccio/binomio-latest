@@ -280,7 +280,7 @@ const AddProductForm = ({
 
     return (
         <form
-            id='my-form'
+            id='product-form'
             onSubmit={saveProduct}
             onChange={markFormDirty}
             onReset={resetHandler}

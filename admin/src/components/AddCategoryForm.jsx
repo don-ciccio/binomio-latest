@@ -18,14 +18,9 @@ import {
     Dialog,
     DialogPanel,
     Title,
-    Callout,
 } from "@tremor/react";
 
-import {
-    PlusIcon,
-    TrashIcon,
-    ExclamationCircleIcon,
-} from "@heroicons/react/20/solid";
+import { PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { Icon } from "@iconify/react";
 
 import { Select, SelectItem } from "@tremor/react";
@@ -36,6 +31,7 @@ axios.defaults.withCredentials = true;
 const API_URL = import.meta.env.VITE_API_URL;
 
 const AddCategoryForm = ({
+    setDirty,
     _id,
     name: existingTitle,
     parent: existingParent,
@@ -53,7 +49,6 @@ const AddCategoryForm = ({
     const [isUploading, setIsUploading] = useState(false);
 
     const [isOpen, setIsOpen] = useState(false);
-    const [dirty, setDirty] = useState(false);
 
     const markFormDirty = () => setDirty(true);
 
@@ -225,6 +220,7 @@ const AddCategoryForm = ({
 
     return (
         <form
+            id='category-form'
             onChange={markFormDirty}
             onSubmit={saveCategory}
             onReset={resetHandler}
@@ -552,44 +548,6 @@ const AddCategoryForm = ({
                     </div>
                 </div>
             </div>
-            <div className={`flex mt-5 items-center`}>
-                <div
-                    className={`w-full transition-all duration-300 ${
-                        !dirty ? "opacity-0" : "opacity-100"
-                    }`}
-                >
-                    <Callout
-                        className='items-center flex-row justify-between mt-0'
-                        title='Modifiche non salvate'
-                        icon={ExclamationCircleIcon}
-                        color={"gray"}
-                    >
-                        <span
-                            className={`flex items-center gap-2.5 ${
-                                !dirty ? "hidden" : ""
-                            }`}
-                        >
-                            <Button
-                                size='lg'
-                                variant='secondary'
-                                color='gray'
-                                type='reset'
-                            >
-                                Rimuovi
-                            </Button>
-
-                            <Button
-                                size='lg'
-                                variant='primary'
-                                color='gray'
-                                type='submit'
-                            >
-                                Salva
-                            </Button>
-                        </span>
-                    </Callout>
-                </div>
-            </div>
         </form>
     );
 };
@@ -597,6 +555,7 @@ const AddCategoryForm = ({
 export default AddCategoryForm;
 
 AddCategoryForm.propTypes = {
+    setDirty: PropTypes.func,
     _id: PropTypes.string,
     name: PropTypes.string,
     parent: PropTypes.string,

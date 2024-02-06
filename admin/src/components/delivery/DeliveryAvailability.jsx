@@ -2,6 +2,7 @@ import { useWeekdaysStore } from "@/store/zustand/store";
 import Loader from "@/components/common/Loader";
 import Input from "../common/Input";
 import { CustomTimePicker } from "../common/CustomTimePicker";
+import { AccordionBody, AccordionHeader } from "@tremor/react";
 
 const DeliveryForm = () => {
     const weekdays = useWeekdaysStore((state) => state.data);
@@ -11,15 +12,12 @@ const DeliveryForm = () => {
     );
 
     return (
-        <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-            <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                <h3 className='font-medium text-black dark:text-white'>
-                    Disponibilità alla consegna
-                </h3>
-            </div>
-            <div className='flex flex-col gap-5.5 p-6.5'>
-                <div>
-                    <label className='mb-7 block text-black dark:text-white'>
+        <>
+            <AccordionHeader>Disponibilità alla consegna</AccordionHeader>
+
+            <AccordionBody>
+                <div className='pt-4'>
+                    <label className='block text-sm font-medium text-gray-600'>
                         Seleziona i giorni di consegna:
                     </label>
                     {loading ? (
@@ -109,8 +107,8 @@ const DeliveryForm = () => {
                         ))
                     )}
                 </div>
-            </div>
-        </div>
+            </AccordionBody>
+        </>
     );
 };
 
