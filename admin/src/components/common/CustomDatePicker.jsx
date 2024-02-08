@@ -4,11 +4,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const ReactDatePickerInput = forwardRef((props, ref) => (
-    <div className='relative'>
+    <div className='relative w-full min-w-[10rem] text-tremor-default focus:ring-2 focus:ring-tremor-brand-muted dark:focus:ring-dark-tremor-brand-muted max-w-sm mx-auto'>
         <div className='flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none'>
             <svg
                 aria-hidden='true'
-                className='w-5 h-5 text-gray-500 dark:text-gray-400'
+                className='tremor-DatePicker-calendarIcon flex-none shrink-0 h-5 w-5 mr-2 -ml-0.5 text-tremor-content-subtle dark:text-dark-tremor-content-subtle'
                 fill='currentColor'
                 viewBox='0 0 20 20'
                 xmlns='http://www.w3.org/2000/svg'
@@ -24,7 +24,7 @@ const ReactDatePickerInput = forwardRef((props, ref) => (
             {...props}
             ref={ref}
             type='text'
-            className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+            className='w-full outline-none text-left whitespace-nowrap truncate focus:ring-2 transition duration-100 rounded-tremor-default flex flex-nowrap border pl-3 py-2 shadow-tremor-input focus:border-tremor-brand-subtle focus:ring-tremor-brand-muted dark:shadow-dark-tremor-input dark:focus:border-dark-tremor-brand-subtle dark:focus:ring-dark-tremor-brand-muted pr-8 bg-tremor-background dark:bg-dark-tremor-background hover:bg-tremor-background-muted dark:hover:bg-dark-tremor-background-muted text-tremor-content-emphasis dark:text-dark-tremor-content-emphasis border-tremor-border dark:border-dark-tremor-border'
         />
     </div>
 ));

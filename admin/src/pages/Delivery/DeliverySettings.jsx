@@ -112,7 +112,7 @@ const DeliverySettings = () => {
     return (
         <div className=' px-3 py-5 xl:px-20 xl:py-12'>
             <div className='flex p-1 mb-4 justify-between items-center'>
-                <Metric>Impostazioni</Metric>
+                <Metric>Gestione consegne</Metric>
             </div>
             <form onSubmit={updateSettings}>
                 <AccordionList>

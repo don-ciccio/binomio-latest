@@ -7,3 +7,43 @@
 * {
   font-family: Inter, sans-serif;
 }
+
+.react-datepicker__header {
+  @apply hidden
+}
+
+.react-datepicker {
+  @apply w-full border-0
+}
+
+.react-datepicker__triangle {
+  @apply hidden
+}
+
+.react-datepicker--time-only {
+  @apply block rounded-tremor-default w-full
+}
+
+.react-datepicker--time-container {
+  @apply w-full block rounded-tremor-default 
+}
+
+.react-datepicker__time-box {
+  @apply absolute z-10 -my-1 lg:min-w-[12.2rem] divide-y overflow-y-auto outline-none rounded-tremor-default max-h-[228px] left-0 border bg-tremor-background border-tremor-border divide-tremor-border shadow-tremor-dropdown
+}
+
+.react-datepicker__time-list ul {
+@apply divide-y overflow-y-auto outline-none rounded-tremor-default max-h-[228px] left-0 border my-1 bg-tremor-background border-tremor-border divide-tremor-border shadow-tremor-dropdown
+}
+
+.react-datepicker__time-list li {
+  @apply  flex justify-start items-center cursor-default text-tremor-default px-2.5 py-2.5 ui-active:bg-tremor-background-muted ui-active:text-tremor-content-strong ui-selected:text-tremor-content-strong ui-selected:bg-tremor-background-muted text-tremor-content-emphasis
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+  @apply bg-blue-600 hover:bg-blue-700
+}
+
+.react-datepicker-popper[data-placement^=bottom] {
+  @apply pt-0.5 
+}

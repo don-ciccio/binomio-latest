@@ -104,6 +104,17 @@ export const useSlotStore = create((set) => ({
     },
 }));
 
+/* const filtered = slotTime.map(
+    (slot) =>
+        slot.weekday === weekday &&
+        slot.slotTime.slice(0, -1).filter((obj) => {
+            return obj.active === true;
+        })
+);
+let result = filtered.filter((item) => item !== false);
+result.map((res) =>
+    res.map((item) => setProperties([{ time: item.time, active: item.active }]))
+); */
 export const useBlackoutDaysStore = create((set) => ({
     loading: false,
     hasErrors: false,

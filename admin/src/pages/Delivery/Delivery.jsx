@@ -39,7 +39,7 @@ const Delivery = () => {
                                         className='hidden p-2 rounded border border-gray-300 bg-white px-8 text-base font-medium text-gray-700 transition-all hover:border-blue-500 hover:bg-blue-500 hover:text-white sm:block'
                                         to={`${store._id}`}
                                     >
-                                        Gestione consegne
+                                        Gestisci
                                     </Link>
                                 </div>
                             </Flex>
