@@ -3,7 +3,7 @@ import {
     HomeIcon,
     QueueListIcon,
     BuildingStorefrontIcon,
-    BuildingLibraryIcon,
+    ShoppingCartIcon,
     TruckIcon,
     CogIcon,
 } from "@heroicons/react/24/outline";
@@ -19,7 +19,7 @@ const sidebarLinks = [
     {
         name: "Prodotti",
         href: "/products",
-        icon: BuildingStorefrontIcon,
+        icon: ShoppingCartIcon,
     },
     {
         name: "Categorie",
@@ -29,7 +29,7 @@ const sidebarLinks = [
     {
         name: "Negozio",
         href: "/stores",
-        icon: BuildingLibraryIcon,
+        icon: BuildingStorefrontIcon,
     },
     {
         name: "Delivery",

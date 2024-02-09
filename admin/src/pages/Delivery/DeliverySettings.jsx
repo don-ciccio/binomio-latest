@@ -1,4 +1,10 @@
-import { Accordion, Metric, AccordionList } from "@tremor/react";
+import {
+    Accordion,
+    Metric,
+    AccordionList,
+    Subtitle,
+    Button,
+} from "@tremor/react";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,6 +19,7 @@ import { useBlackoutDaysStore } from "@/store/zustand/store";
 
 import axios from "axios";
 import BlackoutDates from "@/components/delivery/BlackoutDates";
+import { useGetStoreById } from "../../store/react-query/hooks/useQueries";
 
 axios.defaults.withCredentials = true;
 
@@ -20,10 +27,11 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const DeliverySettings = () => {
     const { id } = useParams();
+
+    const { data: store } = useGetStoreById(id);
     const history = useNavigate();
     const weekdays = useWeekdaysStore((state) => state.data);
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
-
     const fetchSlotTime = useSlotStore((state) => state.fetch);
     const slotTime = useSlotStore((state) => state.data);
 
@@ -111,8 +119,9 @@ const DeliverySettings = () => {
 
     return (
         <div className=' px-3 py-5 xl:px-20 xl:py-12'>
-            <div className='flex p-1 mb-4 justify-between items-center'>
+            <div className='flex flex-col p-1 gap-3 mb-4 justify-between items-start'>
                 <Metric>Gestione consegne</Metric>
+                <Subtitle>{store.data.name}</Subtitle>
             </div>
             <form onSubmit={updateSettings}>
                 <AccordionList>
@@ -135,21 +144,18 @@ const DeliverySettings = () => {
                         />
                     </Accordion>
                 </AccordionList>
-                <div className='flex justify-start gap-4.5 mt-6'>
-                    <button
+                <div className='flex justify-end gap-4 mt-6'>
+                    <Button
+                        variant='secondary'
                         type='button'
                         onClick={() => history(-1)}
-                        className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
                     >
                         Annulla
-                    </button>
+                    </Button>
 
-                    <button
-                        className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
-                        type='submit'
-                    >
+                    <Button variant='primary' type='submit'>
                         Salva
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>

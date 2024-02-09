@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 
 import { useCallback, useEffect } from "react";
 import { format, formatISO, parse, startOfDay } from "date-fns";
-import { AccordionBody, AccordionHeader } from "@tremor/react";
+import { AccordionBody, AccordionHeader, Button } from "@tremor/react";
+import { PlusIcon } from "@heroicons/react/20/solid";
 
 import { useBlackoutDaysStore, useWeekdaysStore } from "@/store/zustand/store";
 import Loader from "@/components/common/Loader";
@@ -31,18 +32,23 @@ const BlackoutDates = ({
 
     useEffect(() => {
         setDate([]);
+        const today = format(new Date(), "yyyy-MM-dd") + "T23:00:00.000Z";
+
         blackoutDays?.forEach((day) => {
             const setTimezone = new Date(
                 new Date(day).getTime() -
                     new Date(day).getTimezoneOffset() * -6000
             );
-            setDate((date) => [
-                ...date,
-                <AddedElement
-                    value={format(setTimezone, "dd/MM/yyyy")}
-                    key={date.length}
-                />,
-            ]);
+
+            if (day > today) {
+                setDate((date) => [
+                    ...date,
+                    <AddedElement
+                        value={format(setTimezone, "dd/MM/yyyy")}
+                        key={date.length}
+                    />,
+                ]);
+            }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [blackoutDays]);
@@ -110,63 +116,51 @@ const BlackoutDates = ({
         <>
             <AccordionHeader>Date di blackout</AccordionHeader>
             <AccordionBody>
-                <div className='flex flex-row items-center mb-5'>
-                    <div className='relative '>
-                        {loading ? (
-                            <div className='flex items-center justify-center'>
-                                <Loader />
-                            </div>
-                        ) : (
-                            <CustomDatePicker
-                                selected={startDate}
-                                onChange={(date) => handleDay(date)}
-                                dateFormat='dd/MM/yyyy'
-                                excludeDates={blackDays}
-                                filterDate={isWeekday}
-                                minDate={new Date()}
-                                locale={it}
-                            />
-                        )}
-                    </div>
-                    <div className='ml-5 flex'>
-                        <button
-                            type='button'
-                            onClick={(e) => handleAddDate(e)}
-                            className='flex items-center gap-2 rounded bg-primary py-2 px-4.5 font-medium text-white hover:bg-opacity-80'
-                        >
-                            <svg
-                                className='fillCurrent'
-                                width='16'
-                                height='16'
-                                viewBox='0 0 16 16'
-                                fill='#fff'
-                                xmlns='http://www.w3.org/2000/svg'
+                <div className='rounded-md border pt-5 px-3 border-gray-200 bg-gray-50'>
+                    <div className='flex gap-4 mb-5'>
+                        <div className='flex flex-row items-end max-w-xs'>
+                            <Button
+                                icon={PlusIcon}
+                                type='button'
+                                onClick={(e) => handleAddDate(e)}
                             >
-                                <path
-                                    d='M15 7H9V1C9 0.4 8.6 0 8 0C7.4 0 7 0.4 7 1V7H1C0.4 7 0 7.4 0 8C0 8.6 0.4 9 1 9H7V15C7 15.6 7.4 16 8 16C8.6 16 9 15.6 9 15V9H15C15.6 9 16 8.6 16 8C16 7.4 15.6 7 15 7Z'
-                                    fill=''
-                                ></path>
-                            </svg>
-                            Aggiungi Data
-                        </button>
-                    </div>
-                </div>
-                {blackoutDaysLoading ? (
-                    <div className='flex items-center justify-center'>
-                        <Loader />
-                    </div>
-                ) : (
-                    <div className='flex flex-col'>
-                        {date.map((row, id) => (
-                            <div className='' key={id}>
-                                <AddedElement
-                                    value={row.props.value}
-                                    deleteHandler={() => removeDiv(row)}
+                                Aggiungi Data
+                            </Button>
+                        </div>
+                        <div className='flex '>
+                            {loading ? (
+                                <div className='flex items-center justify-center'>
+                                    <Loader />
+                                </div>
+                            ) : (
+                                <CustomDatePicker
+                                    selected={startDate}
+                                    onChange={(date) => handleDay(date)}
+                                    excludeDates={blackDays}
+                                    filterDate={isWeekday}
+                                    minDate={new Date()}
                                 />
-                            </div>
-                        ))}
+                            )}
+                        </div>
                     </div>
-                )}
+
+                    {blackoutDaysLoading ? (
+                        <div className='flex items-center justify-center'>
+                            <Loader />
+                        </div>
+                    ) : (
+                        <div className='flex flex-col'>
+                            {date.map((row, id) => (
+                                <div className='' key={id}>
+                                    <AddedElement
+                                        value={row.props.value}
+                                        deleteHandler={() => removeDiv(row)}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </AccordionBody>
         </>
     );
