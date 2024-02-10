@@ -57,8 +57,22 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
         mutationFn: ({ id, status }) => {
             return changeProductStatus(id, status);
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries(["products"], { type: "all" });
+        onMutate: async (newStatus) => {
+            await queryClient.cancelQueries({
+                queryKey: ["products", "details", newStatus.id],
+            });
+            const previousProducts = queryClient.getQueryData(
+                ["products", "details", newStatus.id],
+                newStatus
+            );
+            queryClient.setQueryData(
+                ["products", "details", newStatus.id],
+                newStatus
+            );
+            return { previousProducts, newStatus };
+        },
+        onSuccess: async () => {
+            return await queryClient.invalidateQueries(["products"]);
         },
     });
 
@@ -182,6 +196,7 @@ const ProductsTable = ({ data, isLoading, sort, setSort }) => {
                                             onChange={() =>
                                                 handleSwitchChange(product._id)
                                             }
+                                            defaultChecked={product.status}
                                             checked={
                                                 product.status === "Attivo"
                                             }

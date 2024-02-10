@@ -3,11 +3,21 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import {
+    TextInput,
+    Textarea,
+    Dialog,
+    DialogPanel,
+    Title,
+    Button,
+} from "@tremor/react";
+
 axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ContentForm = ({
+    setDirty,
     _id,
     topbar: existingTopbar,
     heroTitle: existingTitle,
@@ -19,6 +29,22 @@ const ContentForm = ({
     const [heroDescription, setHeroDescription] = useState(
         existingDescription || ""
     );
+
+    const [isModal, setIsModal] = useState(false);
+
+    const markFormDirty = () => setDirty(true);
+
+    const resetHandler = () => {
+        setIsModal(true);
+    };
+
+    const resetState = () => {
+        setDirty(false);
+        setIsModal(false);
+        setTopbar(existingTopbar);
+        setHeroTitle(existingTitle);
+        setHeroDescription(existingDescription);
+    };
 
     const queryClient = useQueryClient();
 
@@ -62,73 +88,86 @@ const ContentForm = ({
     };
 
     return (
-        <form onSubmit={saveContent}>
+        <form
+            id='content-form'
+            onChange={markFormDirty}
+            onReset={resetHandler}
+            onSubmit={saveContent}
+        >
+            <Dialog
+                open={isModal}
+                onClose={(val) => setIsModal(val)}
+                static={true}
+            >
+                <DialogPanel>
+                    <Title className='mb-3'>
+                        Rimuovi tutte le modifiche non salvate
+                    </Title>
+                    Rimuovendo le modifiche, eliminerai tutte quelle apportate
+                    dopo l&rsquo;ultimo salvataggio.
+                    <div className='flex justify-between mt-3'>
+                        <Button
+                            variant='secondary'
+                            onClick={() => setIsModal(false)}
+                        >
+                            Continua a modificare
+                        </Button>
+                        <Button
+                            variant='secondary'
+                            color='red'
+                            onClick={resetState}
+                        >
+                            Rimuovi modifiche
+                        </Button>
+                    </div>
+                </DialogPanel>
+            </Dialog>
             <div className='grid grid-cols-1 gap-5'>
                 <div className='flex flex-col gap-5'>
-                    <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
-                        <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
-                            <h3 className='font-medium text-black dark:text-white'>
+                    <div className='w-full rounded-md border border-gray-200 bg-white'>
+                        <div className='border-b border-gray-200 py-4 px-6'>
+                            <span className='text-lg font-medium'>
                                 Contenuti Homepage
-                            </h3>
+                            </span>
                         </div>
-                        <div className='flex flex-col gap-5.5 p-6.5'>
+                        <div className='flex flex-col gap-2 p-6'>
                             <div>
-                                <label className='mb-3 block text-black dark:text-white'>
+                                <label className='block text-sm font-medium text-gray-600'>
                                     Barra avvisi
                                 </label>
-                                <input
+                                <TextInput
+                                    className='mt-2 max-w-sm'
                                     type='text'
                                     placeholder='Messaggio barra avvisi'
                                     value={topbar}
-                                    onChange={(e) => setTopbar(e.target.value)}
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    onValueChange={(e) => setTopbar(e)}
                                 />
                             </div>
                         </div>
-                        <div className='flex flex-col gap-5.5 p-6.5'>
+                        <div className='flex flex-col gap-3 px-6 pt-6'>
                             <div>
-                                <label className='mb-3 block text-black dark:text-white'>
+                                <label className='block text-sm font-medium text-gray-600'>
                                     Sezione Hero
                                 </label>
-                                <input
+                                <TextInput
+                                    className='mt-2 max-w-md'
                                     type='text'
                                     placeholder='Titolo Hero'
                                     value={heroTitle}
-                                    onChange={(e) =>
-                                        setHeroTitle(e.target.value)
-                                    }
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    onValueChange={(e) => setHeroTitle(e)}
                                 />
                             </div>
                             <div>
-                                <textarea
+                                <Textarea
                                     type='text'
                                     placeholder='Descrizione Hero'
                                     value={heroDescription}
-                                    onChange={(e) =>
-                                        setHeroDescription(e.target.value)
-                                    }
-                                    className='w-full rounded-lg border-[1.5px] border-stroke bg-gray py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
+                                    onValueChange={(e) => setHeroDescription(e)}
+                                    className='mb-8'
                                 />
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className='flex justify-start gap-4.5 mt-6'>
-                    <button
-                        type='button'
-                        onClick={() => history(-1)}
-                        className='flex justify-center rounded border bg-white border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white'
-                    >
-                        Annulla
-                    </button>
-
-                    <button
-                        className='flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95'
-                        type='submit'
-                    >
-                        Salva
-                    </button>
                 </div>
             </div>
         </form>
@@ -138,6 +177,7 @@ const ContentForm = ({
 export default ContentForm;
 
 ContentForm.propTypes = {
+    setDirty: PropTypes.func,
     _id: PropTypes.string,
     topbar: PropTypes.string,
     heroTitle: PropTypes.string,

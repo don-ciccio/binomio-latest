@@ -5,7 +5,7 @@ import {
     BuildingStorefrontIcon,
     ShoppingCartIcon,
     TruckIcon,
-    CogIcon,
+    Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 
 import { NavLink } from "react-router-dom";
@@ -39,7 +39,7 @@ const sidebarLinks = [
     {
         name: "Tema",
         href: "/theme",
-        icon: CogIcon,
+        icon: Cog6ToothIcon,
     },
 ];
 
