@@ -52,8 +52,8 @@ const Sidebar = () => {
             <div className='ie-logo px-3 py-0 text-center xl:text-left'>
                 <NavLink to='/'>
                     <div className='text-xl font-medium text-gray-900 xl:px-3 xl:text-2xl'>
-                        <span className='block xl:hidden'>AD</span>
-                        <span className='hidden xl:block'>Admin</span>
+                        <span className='block xl:hidden'>BA</span>
+                        <span className='hidden xl:block'>Binomio Admin</span>
                     </div>
                 </NavLink>
             </div>

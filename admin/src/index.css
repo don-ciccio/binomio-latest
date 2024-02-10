@@ -1,14 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Lato:ital,wght@0,400;0,700;1,300&family=Montserrat:wght@100;200;300;400;500;600;700;800&family=Nunito:wght@200;300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Lato:ital,wght@0,400;0,700;1,300&family=Nunito:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
-  font-family: Montserrat, sans-serif;
+  font-family: Bricolage Grotesque , sans-serif;
 }
 
-input[type="checkbox"] {
+.tremor-MultiSelectItem-root input[type="checkbox"] {
   @apply form-checkbox text-blue-500 h-4 w-4 relative  outline-none rounded-md transition duration-100 border shadow-tremor-input  bg-tremor-background dark:bg-dark-tremor-background hover:bg-tremor-background-muted dark:hover:bg-dark-tremor-background-muted dark:text-dark-tremor-content-emphasis dark:border-dark-tremor-border  block border-gray-300 focus:border-tremor-brand-subtle focus:ring-tremor-brand-muted focus:dark:ring-dark-tremor-brand-muted sm:text-sm focus:ring-2
 }
 
