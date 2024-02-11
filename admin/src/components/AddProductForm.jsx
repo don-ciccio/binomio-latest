@@ -54,7 +54,6 @@ const merge = (a1, a2) => {
 
 const AddProductForm = ({
     _id,
-
     setDirty,
     name: existingTitle,
     description: existingDescription,

@@ -15,6 +15,10 @@ const tableSchema = new Schema({
         type: Number,
         default: true,
     },
+    location: {
+        type: String,
+        default: true,
+    },
     restaurant: {
         type: mongoose.Schema.ObjectId,
         ref: "Store",

@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import {
     HomeIcon,
-    QueueListIcon,
-    BuildingStorefrontIcon,
+    TagIcon,
+    BuildingOffice2Icon,
     ShoppingCartIcon,
     TruckIcon,
     Cog6ToothIcon,
+    CalendarDaysIcon,
 } from "@heroicons/react/24/outline";
 
 import { NavLink } from "react-router-dom";
@@ -24,17 +25,22 @@ const sidebarLinks = [
     {
         name: "Categorie",
         href: "/categories",
-        icon: QueueListIcon,
+        icon: TagIcon,
     },
     {
         name: "Negozio",
         href: "/stores",
-        icon: BuildingStorefrontIcon,
+        icon: BuildingOffice2Icon,
     },
     {
         name: "Delivery",
         href: "/delivery",
         icon: TruckIcon,
+    },
+    {
+        name: "Prenotazioni",
+        href: "/booking",
+        icon: CalendarDaysIcon,
     },
     {
         name: "Tema",

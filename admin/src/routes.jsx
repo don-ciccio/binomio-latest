@@ -19,6 +19,8 @@ import Delivery from "@/pages/Delivery/Delivery";
 import DeliverySettings from "@/pages/Delivery/DeliverySettings";
 import Content from "@/pages/Theme/Content";
 import DefaultLayout from "./layout/DefaultLayout";
+import Booking from "@/pages/Booking/Booking";
+
 const routes = (isAuthenticated) => [
     {
         path: "/",
@@ -57,6 +59,10 @@ const routes = (isAuthenticated) => [
                 element: <Delivery />,
             },
             { path: "delivery/:id", element: <DeliverySettings /> },
+            {
+                path: "booking",
+                element: <Booking />,
+            },
             {
                 path: "theme",
                 element: <Content />,
