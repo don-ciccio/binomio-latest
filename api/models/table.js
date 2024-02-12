@@ -13,11 +13,9 @@ const tableSchema = new Schema({
     },
     seats: {
         type: Number,
-        default: true,
     },
     location: {
         type: String,
-        default: true,
     },
     restaurant: {
         type: mongoose.Schema.ObjectId,

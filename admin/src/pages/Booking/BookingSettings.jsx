@@ -7,8 +7,15 @@ import {
     AccordionBody,
     AccordionHeader,
     TextInput,
+    Select,
+    SelectItem,
+    NumberInput,
 } from "@tremor/react";
-import { PlusIcon, MapPinIcon } from "@heroicons/react/20/solid";
+import {
+    PlusIcon,
+    MapPinIcon,
+    UserCircleIcon,
+} from "@heroicons/react/20/solid";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
@@ -33,6 +40,10 @@ const BookingSettings = () => {
     const [locationName, setLocationName] = useState("");
     const [roomName, setRoomName] = useState([]);
     const [selected, setSelected] = useState([]);
+
+    const [tableName, setTableName] = useState([]);
+    const [tableArea, setTableArea] = useState([]);
+    const [seatsNumber, setSeatsNumber] = useState(null);
 
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
     const weekdays = useWeekdaysStore((state) => state.data);
@@ -69,6 +80,7 @@ const BookingSettings = () => {
         setRoomName([...roomName, locationName]);
         setLocationName("");
     };
+    console.log(roomName);
 
     const removeDiv = useCallback(
         (itemId) => {
@@ -128,6 +140,10 @@ const BookingSettings = () => {
         }
     };
 
+    const handleTableArea = (event) => {
+        setTableArea(event);
+    };
+
     return (
         <div className=' px-3 xl:px-20 py-12'>
             <div className='flex flex-col p-1 gap-3 mb-4 justify-between items-start'>
@@ -137,45 +153,100 @@ const BookingSettings = () => {
             <form onSubmit={updateSettings}>
                 <AccordionList>
                     <Accordion>
-                        <AccordionHeader>Location</AccordionHeader>
+                        <AccordionHeader>Coperti</AccordionHeader>
                         <AccordionBody>
-                            <div className='rounded-md border pt-5 px-3 border-gray-200 bg-gray-50'>
-                                <div className='flex gap-4 mb-5'>
-                                    <div className='flex flex-row items-end max-w-xs'>
-                                        <Button
-                                            icon={PlusIcon}
-                                            type='button'
-                                            onClick={(e) =>
-                                                handleAddLocation(e)
-                                            }
-                                        >
-                                            Aggiungi location
-                                        </Button>
-                                    </div>
-                                    <div className='flex '>
-                                        <TextInput
-                                            className='mt-2 max-w-full'
-                                            type='text'
-                                            placeholder='Area'
-                                            value={locationName}
-                                            onValueChange={(e) =>
-                                                setLocationName(e)
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                                <div className='flex flex-col'>
-                                    {location.map((row, id) => (
-                                        <div className='' key={id}>
-                                            <AddedElement
-                                                icon={MapPinIcon}
-                                                value={row.props.value}
-                                                deleteHandler={() =>
-                                                    removeDiv(row)
+                            <div className='flex flex-col gap-5'>
+                                <div className='rounded-md border pt-5 px-3 border-gray-200 bg-gray-50'>
+                                    <div className='flex gap-4 mb-5'>
+                                        <div className='flex flex-row items-end max-w-xs'>
+                                            <Button
+                                                icon={PlusIcon}
+                                                type='button'
+                                                onClick={(e) =>
+                                                    handleAddLocation(e)
+                                                }
+                                            >
+                                                Aggiungi posizione
+                                            </Button>
+                                        </div>
+                                        <div className='flex '>
+                                            <TextInput
+                                                className='mt-2 max-w-full'
+                                                type='text'
+                                                placeholder='Posizione'
+                                                value={locationName}
+                                                onValueChange={(e) =>
+                                                    setLocationName(e)
                                                 }
                                             />
                                         </div>
-                                    ))}
+                                    </div>
+                                    <div className='flex flex-col'>
+                                        {location.map((row, id) => (
+                                            <div className='' key={id}>
+                                                <AddedElement
+                                                    icon={MapPinIcon}
+                                                    value={row.props.value}
+                                                    deleteHandler={() =>
+                                                        removeDiv(row)
+                                                    }
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className='rounded-md border pt-5 px-3 border-gray-200 bg-gray-50 min-h-[180px]'>
+                                    <div className='flex gap-4 mb-5 items-center'>
+                                        <div className='flex flex-row items-end max-w-xs'>
+                                            <Button
+                                                icon={PlusIcon}
+                                                type='button'
+                                                onClick={(e) =>
+                                                    handleAddLocation(e)
+                                                }
+                                            >
+                                                Aggiungi tavoli
+                                            </Button>
+                                        </div>
+                                        <div className='flex '>
+                                            <TextInput
+                                                className=' max-w-full'
+                                                type='text'
+                                                placeholder='Nome'
+                                                value={tableName}
+                                                onValueChange={(e) =>
+                                                    setTableName(e)
+                                                }
+                                            />
+                                        </div>
+                                        <div className='flex'>
+                                            <Select
+                                                value={tableArea}
+                                                onValueChange={handleTableArea}
+                                                placeholder='Posizione...'
+                                            >
+                                                {areas?.map((item, index) => (
+                                                    <SelectItem
+                                                        key={index}
+                                                        value={item}
+                                                    >
+                                                        {item}
+                                                    </SelectItem>
+                                                ))}
+                                            </Select>
+                                        </div>
+                                        <div className='flex'>
+                                            <NumberInput
+                                                className='max-w-[200px]'
+                                                icon={UserCircleIcon}
+                                                placeholder='Persone...'
+                                                value={seatsNumber}
+                                                onValueChange={(e) =>
+                                                    setSeatsNumber(e)
+                                                }
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </AccordionBody>

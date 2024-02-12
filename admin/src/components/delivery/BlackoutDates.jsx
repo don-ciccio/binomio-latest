@@ -67,6 +67,16 @@ const BlackoutDates = ({
                     return id !== itemId;
                 })
             );
+            setBlackoutDates(
+                blackoutDates.filter((id) => {
+                    return (
+                        id !==
+                        formatISO(
+                            parse(itemId.props.value, "dd/MM/yyyy", new Date())
+                        )
+                    );
+                })
+            );
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [date]
@@ -106,6 +116,7 @@ const BlackoutDates = ({
         ]);
         setBlackoutDates([...blackoutDates, formatISO(startOfDay(startDate))]);
     };
+    console.log(blackoutDates);
 
     const handleDay = (date) => {
         setStartDate(date);
