@@ -1,11 +1,10 @@
-const ReservationDays = require("../models/reservationDays");
-
 const mongoose = require("mongoose");
+const Store = require("../models/store");
 
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
 
-exports.newDay = catchAsyncErrors(async (req, res, next) => {
+/* exports.newDay = catchAsyncErrors(async (req, res, next) => {
     const dateTime = new Date(req.body.date);
 
     try {
@@ -56,6 +55,31 @@ exports.newDay = catchAsyncErrors(async (req, res, next) => {
                 }
             }
         );
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+}); */
+
+exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
+    const { area } = req.body;
+    try {
+        if (area.length > 0) {
+            await Store.findByIdAndUpdate(
+                { _id: mongoose.Types.ObjectId(req.params.id) },
+                {
+                    $push: {
+                        area: { $each: area },
+                    },
+                },
+                {
+                    new: true,
+                    upsert: true,
+                }
+            );
+            res.status(200).json({
+                success: true,
+            });
+        }
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }

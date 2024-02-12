@@ -8,10 +8,12 @@ const {
     getCalendarByStore,
     getSlotsByWeekday,
     getBlackoutDays,
+    getArea,
     deliverySettings,
 } = require("../controllers/storeController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
+const { bookingSettings } = require("../controllers/availabilityController");
 
 router
     .route("/admin/store/new")
@@ -36,7 +38,15 @@ router
     .get(isAuthenticatedUser, authorizeRoles("admin"), getBlackoutDays);
 
 router
+    .route("/admin/booking/:id/area")
+    .get(isAuthenticatedUser, authorizeRoles("admin"), getArea);
+
+router
     .route("/admin/calendar/:id/settings")
     .put(isAuthenticatedUser, authorizeRoles("admin"), deliverySettings);
+
+router
+    .route("/admin/booking/:id/settings")
+    .put(isAuthenticatedUser, authorizeRoles("admin"), bookingSettings);
 
 module.exports = router;

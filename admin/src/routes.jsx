@@ -20,6 +20,7 @@ import DeliverySettings from "@/pages/Delivery/DeliverySettings";
 import Content from "@/pages/Theme/Content";
 import DefaultLayout from "./layout/DefaultLayout";
 import Booking from "@/pages/Booking/Booking";
+import BookingSettings from "./pages/Booking/BookingSettings";
 
 const routes = (isAuthenticated) => [
     {
@@ -62,6 +63,10 @@ const routes = (isAuthenticated) => [
             {
                 path: "booking",
                 element: <Booking />,
+            },
+            {
+                path: "booking/:id",
+                element: <BookingSettings />,
             },
             {
                 path: "theme",

@@ -31,6 +31,18 @@ export const useWeekdaysStore = create((set) => ({
             ),
         }));
     },
+    toggleReservationAvailableState: (weekday) => {
+        set((state) => ({
+            data: state.data.map((day) =>
+                day.weekday === weekday
+                    ? {
+                          ...day,
+                          reservationAvailable: !day.reservationAvailable,
+                      }
+                    : day
+            ),
+        }));
+    },
     setStartTime: (time, weekday) => {
         set((state) => ({
             data: state.data.map((day) =>
@@ -104,17 +116,6 @@ export const useSlotStore = create((set) => ({
     },
 }));
 
-/* const filtered = slotTime.map(
-    (slot) =>
-        slot.weekday === weekday &&
-        slot.slotTime.slice(0, -1).filter((obj) => {
-            return obj.active === true;
-        })
-);
-let result = filtered.filter((item) => item !== false);
-result.map((res) =>
-    res.map((item) => setProperties([{ time: item.time, active: item.active }]))
-); */
 export const useBlackoutDaysStore = create((set) => ({
     loading: false,
     hasErrors: false,
@@ -126,6 +127,25 @@ export const useBlackoutDaysStore = create((set) => ({
             );
             set((state) => ({
                 data: (state.data = response.data.blackOutDays),
+                loading: false,
+            }));
+        } catch (error) {
+            set(() => ({ hasErrors: true, loading: false }));
+        }
+    },
+}));
+
+export const useAreaStore = create((set) => ({
+    loading: false,
+    hasErrors: false,
+    fetch: async (id) => {
+        set(() => ({ loading: true }));
+        try {
+            const response = await axios.get(
+                `${API_URL}/api/admin/booking/${id}/area`
+            );
+            set((state) => ({
+                data: (state.data = response.data.area),
                 loading: false,
             }));
         } catch (error) {

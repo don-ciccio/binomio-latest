@@ -6,7 +6,7 @@ import TableLoader from "@/components/common/TableLoader";
 
 const Booking = () => {
     const { data: stores, isLoading } = useGetStores();
-    console.log(stores);
+
     return (
         <>
             {isLoading ? (
@@ -46,17 +46,17 @@ const Booking = () => {
                             <div className='w-full rounded-md border border-gray-200 bg-white mt-6'>
                                 <div className='border-b border-gray-200 py-4 px-6 flex items-center justify-between'>
                                     <span className='text-xl font-medium'>
-                                        Profilo
+                                        Prenotazioni
                                     </span>
                                 </div>
 
                                 <div className='flex flex-col px-6 pt-6'>
                                     <div>
                                         <label className='block font-medium mb-3'>
-                                            Indirizzo di partenza
+                                            Elenco prenotazioni
                                         </label>
                                         <span className='block text-sm text-gray-500'>
-                                            {store.location.formattedAddress}
+                                            TODO
                                         </span>
                                     </div>
                                     <Divider />

@@ -97,6 +97,7 @@ exports.getCalendarByStore = catchAsyncErrors(async (req, res, next) => {
                         weekday: "long",
                     }),
                     available: date.available,
+                    reservationAvailable: date.reservationAvailable,
                     weekday: date.weekday,
                     startHour: date.startHour,
                     endHour: date.endHour,
@@ -150,6 +151,15 @@ exports.getBlackoutDays = catchAsyncErrors(async (req, res, next) => {
         const result = await Store.findById(req.params.id).select(
             "blackOutDays -_id"
         );
+        res.json(result);
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+});
+
+exports.getArea = catchAsyncErrors(async (req, res, next) => {
+    try {
+        const result = await Store.findById(req.params.id).select("area -_id");
         res.json(result);
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));

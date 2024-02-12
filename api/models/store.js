@@ -41,6 +41,8 @@ const storeSchema = new Schema({
         default: 0,
     },
     blackOutDays: [{ type: Date }],
+    reservationBlackOutDays: [{ type: Date }],
+    area: [{ type: String }],
 });
 
 // Geocode & create location

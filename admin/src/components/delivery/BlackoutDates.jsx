@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { useCallback, useEffect } from "react";
 import { format, formatISO, parse, startOfDay } from "date-fns";
 import { AccordionBody, AccordionHeader, Button } from "@tremor/react";
-import { PlusIcon } from "@heroicons/react/20/solid";
-
+import { PlusIcon, CalendarDaysIcon } from "@heroicons/react/20/solid";
 import { useBlackoutDaysStore, useWeekdaysStore } from "@/store/zustand/store";
 import Loader from "@/components/common/Loader";
 import { CustomDatePicker } from "../common/CustomDatePicker";
@@ -153,6 +152,7 @@ const BlackoutDates = ({
                             {date.map((row, id) => (
                                 <div className='' key={id}>
                                     <AddedElement
+                                        icon={CalendarDaysIcon}
                                         value={row.props.value}
                                         deleteHandler={() => removeDiv(row)}
                                     />

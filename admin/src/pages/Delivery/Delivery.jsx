@@ -16,7 +16,7 @@ const Delivery = () => {
                     {stores?.map((store, index) => (
                         <div
                             key={index}
-                            className='h-full w-full bg-gray-50 px-3 py-5 xl:px-20 xl:py-12'
+                            className='h-full w-full bg-gray-50 px-3 xl:px-20 py-12'
                         >
                             <Flex
                                 className='w-full justify-between'

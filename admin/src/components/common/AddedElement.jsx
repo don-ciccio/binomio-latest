@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import { Icon as TremorIcon, Badge } from "@tremor/react";
 
-import { TrashIcon, CalendarDaysIcon } from "@heroicons/react/20/solid";
-const AddedElement = ({ value, deleteHandler }) => {
+import { TrashIcon } from "@heroicons/react/20/solid";
+const AddedElement = ({ value, deleteHandler, icon }) => {
     return (
         <div className='cursor-pointer hover:bg-bodydark1/50 px-2 py-2 border-t border-bodydark2/50 justify-between flex gap-3 flex-row items-center'>
             <div className='flex  h-full'>
-                <Badge icon={CalendarDaysIcon} size='md'>
+                <Badge icon={icon} size='md'>
                     {value}
                 </Badge>
             </div>
@@ -34,4 +34,5 @@ export default AddedElement;
 AddedElement.propTypes = {
     value: PropTypes.string,
     deleteHandler: PropTypes.func,
+    icon: PropTypes.object,
 };

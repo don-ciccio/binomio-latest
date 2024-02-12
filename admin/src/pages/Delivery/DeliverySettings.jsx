@@ -118,7 +118,7 @@ const DeliverySettings = () => {
     };
 
     return (
-        <div className=' px-3 py-5 xl:px-20 xl:py-12'>
+        <div className=' px-3 xl:px-20 py-12'>
             <div className='flex flex-col p-1 gap-3 mb-4 justify-between items-start'>
                 <Metric>Gestione consegne</Metric>
                 <Subtitle>{store?.data?.name}</Subtitle>

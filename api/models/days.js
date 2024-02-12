@@ -5,6 +5,7 @@ const daySchema = new Schema({
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "Store" },
     day: { type: Date },
     available: { type: Boolean, default: false },
+    reservationAvailable: { type: Boolean, default: false },
     blackOutDay: { type: Boolean, default: false },
     weekday: { type: Number },
     startHour: { type: Number, required: true, default: 63000000 },
