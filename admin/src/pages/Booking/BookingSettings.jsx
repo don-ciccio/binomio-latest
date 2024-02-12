@@ -119,6 +119,7 @@ const BookingSettings = () => {
         try {
             const data = {
                 area: roomName,
+                selected: selected,
             };
             mutation.mutate({ data: data, id: id });
             history(-1);

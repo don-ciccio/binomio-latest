@@ -61,7 +61,7 @@ const ErrorHandler = require("../utils/errorHandler");
 }); */
 
 exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
-    const { area } = req.body;
+    const { area, selected } = req.body;
     try {
         if (area.length > 0) {
             await Store.findByIdAndUpdate(
@@ -76,10 +76,25 @@ exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
                     upsert: true,
                 }
             );
-            res.status(200).json({
-                success: true,
-            });
         }
+        if (selected.length > 0) {
+            await Store.findByIdAndUpdate(
+                { _id: mongoose.Types.ObjectId(req.params.id) },
+                {
+                    $pull: {
+                        area: {
+                            $in: selected,
+                        },
+                    },
+                },
+                {
+                    new: true,
+                }
+            );
+        }
+        res.status(200).json({
+            success: true,
+        });
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }
