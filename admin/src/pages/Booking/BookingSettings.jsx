@@ -10,6 +10,11 @@ import {
     Select,
     SelectItem,
     NumberInput,
+    Tab,
+    TabGroup,
+    TabList,
+    TabPanel,
+    TabPanels,
 } from "@tremor/react";
 import {
     PlusIcon,
@@ -26,6 +31,7 @@ import { useCallback, useEffect, useState } from "react";
 import AddedElement from "../../components/common/AddedElement";
 
 import axios from "axios";
+import AddedTableElement from "../../components/common/AddedTableElement";
 axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -37,12 +43,14 @@ const BookingSettings = () => {
     const { data: store } = useGetStoreById(id);
 
     const [location, setLocation] = useState([]);
+    const [tableElement, setTableElement] = useState([]);
+
     const [locationName, setLocationName] = useState("");
     const [roomName, setRoomName] = useState([]);
     const [selected, setSelected] = useState([]);
 
-    const [tableName, setTableName] = useState([]);
-    const [tableArea, setTableArea] = useState([]);
+    const [tableName, setTableName] = useState("");
+    const [tableArea, setTableArea] = useState("");
     const [seatsNumber, setSeatsNumber] = useState(null);
 
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
@@ -80,8 +88,20 @@ const BookingSettings = () => {
         setRoomName([...roomName, locationName]);
         setLocationName("");
     };
-    console.log(roomName);
 
+    const handleAddTable = (e) => {
+        e.preventDefault();
+        console.log("Table added!!");
+        setTableElement([
+            ...tableElement,
+            <AddedTableElement
+                key={tableElement.length}
+                name={tableName}
+                seats={seatsNumber}
+                empty={true}
+            />,
+        ]);
+    };
     const removeDiv = useCallback(
         (itemId) => {
             // filter out the div which matches the ID
@@ -132,6 +152,11 @@ const BookingSettings = () => {
             const data = {
                 area: roomName,
                 selected: selected,
+                table: {
+                    name: tableName,
+                    location: tableArea,
+                    seats: seatsNumber,
+                },
             };
             mutation.mutate({ data: data, id: id });
             history(-1);
@@ -202,7 +227,7 @@ const BookingSettings = () => {
                                                 icon={PlusIcon}
                                                 type='button'
                                                 onClick={(e) =>
-                                                    handleAddLocation(e)
+                                                    handleAddTable(e)
                                                 }
                                             >
                                                 Aggiungi tavoli
@@ -225,14 +250,16 @@ const BookingSettings = () => {
                                                 onValueChange={handleTableArea}
                                                 placeholder='Posizione...'
                                             >
-                                                {areas?.map((item, index) => (
-                                                    <SelectItem
-                                                        key={index}
-                                                        value={item}
-                                                    >
-                                                        {item}
-                                                    </SelectItem>
-                                                ))}
+                                                {location?.map(
+                                                    ({ props }, index) => (
+                                                        <SelectItem
+                                                            key={index}
+                                                            value={props.value}
+                                                        >
+                                                            {props.value}
+                                                        </SelectItem>
+                                                    )
+                                                )}
                                             </Select>
                                         </div>
                                         <div className='flex'>
@@ -241,12 +268,34 @@ const BookingSettings = () => {
                                                 icon={UserCircleIcon}
                                                 placeholder='Persone...'
                                                 value={seatsNumber}
-                                                onValueChange={(e) =>
-                                                    setSeatsNumber(e)
-                                                }
+                                                onValueChange={setSeatsNumber}
                                             />
                                         </div>
                                     </div>
+                                    <TabGroup>
+                                        <TabList
+                                            variant='solid'
+                                            className='mt-2'
+                                        >
+                                            {location?.map(({ props }, idx) => (
+                                                <Tab key={idx}>
+                                                    {props.value}
+                                                </Tab>
+                                            ))}
+                                        </TabList>
+                                        <TabPanels>
+                                            <TabPanel className='flex flex-row gap-3 flex-wrap'>
+                                                {tableElement.map((row, id) => (
+                                                    <div
+                                                        key={id}
+                                                        className='inline-flex p-2'
+                                                    >
+                                                        {row}
+                                                    </div>
+                                                ))}
+                                            </TabPanel>
+                                        </TabPanels>
+                                    </TabGroup>
                                 </div>
                             </div>
                         </AccordionBody>

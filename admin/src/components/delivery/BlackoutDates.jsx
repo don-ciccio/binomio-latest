@@ -116,7 +116,6 @@ const BlackoutDates = ({
         ]);
         setBlackoutDates([...blackoutDates, formatISO(startOfDay(startDate))]);
     };
-    console.log(blackoutDates);
 
     const handleDay = (date) => {
         setStartDate(date);

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Store = require("../models/store");
-
+const Table = require("../models/table");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
 
@@ -61,8 +61,23 @@ const ErrorHandler = require("../utils/errorHandler");
 }); */
 
 exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
-    const { area, selected } = req.body;
+    const { area, selected, table } = req.body;
     try {
+        if (
+            table.name.length !== 0 &&
+            table.location.length !== 0 &&
+            table.seats.length !== null
+        ) {
+            Table.create({
+                name: table.name,
+                seats: table.seats,
+                location: table.location,
+                restaurant: req.params.id,
+            });
+        } else {
+            console.log("No tables!!");
+        }
+
         if (area.length > 0) {
             await Store.findByIdAndUpdate(
                 { _id: mongoose.Types.ObjectId(req.params.id) },

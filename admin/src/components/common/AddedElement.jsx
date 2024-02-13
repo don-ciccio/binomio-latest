@@ -4,7 +4,7 @@ import { Icon as TremorIcon, Badge } from "@tremor/react";
 import { TrashIcon } from "@heroicons/react/20/solid";
 const AddedElement = ({ value, deleteHandler, icon }) => {
     return (
-        <div className='cursor-pointer hover:bg-bodydark1/50 px-2 py-2 border-t border-bodydark2/50 justify-between flex gap-3 flex-row items-center'>
+        <div className='hover:bg-bodydark1/50 px-2 py-2 border-t border-bodydark2/50 justify-between flex gap-3 flex-row items-center'>
             <div className='flex  h-full'>
                 <Badge icon={icon} size='md'>
                     {value}
