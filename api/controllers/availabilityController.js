@@ -63,17 +63,8 @@ const ErrorHandler = require("../utils/errorHandler");
 exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
     const { area, selected, table } = req.body;
     try {
-        if (
-            table.name.length !== 0 &&
-            table.location.length !== 0 &&
-            table.seats.length !== null
-        ) {
-            Table.create({
-                name: table.name,
-                seats: table.seats,
-                location: table.location,
-                restaurant: req.params.id,
-            });
+        if (table.length > 0) {
+            await Table.create(table);
         } else {
             console.log("No tables!!");
         }
@@ -110,6 +101,16 @@ exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
         res.status(200).json({
             success: true,
         });
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+});
+
+exports.getTables = catchAsyncErrors(async (req, res, next) => {
+    try {
+        const tables = await Table.find({ restaurant: req.params.id });
+
+        res.json(tables);
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }

@@ -26,7 +26,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
 import { useGetStoreById } from "../../store/react-query/hooks/useQueries";
-import { useAreaStore, useWeekdaysStore } from "../../store/zustand/store";
+import {
+    useAreaStore,
+    useTablesStore,
+    useWeekdaysStore,
+} from "../../store/zustand/store";
 import { useCallback, useEffect, useState } from "react";
 import AddedElement from "../../components/common/AddedElement";
 
@@ -44,6 +48,7 @@ const BookingSettings = () => {
 
     const [location, setLocation] = useState([]);
     const [tableElement, setTableElement] = useState([]);
+    const [tabLocation, setTabLocation] = useState("");
 
     const [locationName, setLocationName] = useState("");
     const [roomName, setRoomName] = useState([]);
@@ -53,19 +58,42 @@ const BookingSettings = () => {
     const [tableArea, setTableArea] = useState("");
     const [seatsNumber, setSeatsNumber] = useState(null);
 
+    const [tablesArray, setTablesArray] = useState([]);
+
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
     const weekdays = useWeekdaysStore((state) => state.data);
 
     const fetchAreas = useAreaStore((state) => state.fetch);
     const areas = useAreaStore((state) => state.data);
-    const areasLoading = useAreaStore((state) => state.loading);
+
+    const fetchTables = useTablesStore((state) => state.fetch);
+    const tables = useTablesStore((state) => state.data);
 
     useEffect(() => {
         fetchWeekdays(id);
         fetchAreas(id);
+        fetchTables(id);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
+
+    useEffect(() => {
+        setTableElement([]);
+        tables?.forEach((table) => {
+            setTableElement((loc) => [
+                ...loc,
+                <AddedTableElement
+                    key={loc.length}
+                    name={table.name}
+                    seats={table.seats}
+                    location={table.location}
+                    empty={table.isAvailable}
+                />,
+            ]);
+        });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tables]);
 
     useEffect(() => {
         setLocation([]);
@@ -98,10 +126,21 @@ const BookingSettings = () => {
                 key={tableElement.length}
                 name={tableName}
                 seats={seatsNumber}
+                location={tableArea}
                 empty={true}
             />,
         ]);
+        setTablesArray([
+            ...tablesArray,
+            {
+                name: tableName,
+                seats: seatsNumber,
+                location: tableArea,
+                restaurant: id,
+            },
+        ]);
     };
+
     const removeDiv = useCallback(
         (itemId) => {
             // filter out the div which matches the ID
@@ -152,11 +191,7 @@ const BookingSettings = () => {
             const data = {
                 area: roomName,
                 selected: selected,
-                table: {
-                    name: tableName,
-                    location: tableArea,
-                    seats: seatsNumber,
-                },
+                table: tablesArray,
             };
             mutation.mutate({ data: data, id: id });
             history(-1);
@@ -264,6 +299,7 @@ const BookingSettings = () => {
                                         </div>
                                         <div className='flex'>
                                             <NumberInput
+                                                min={1}
                                                 className='max-w-[200px]'
                                                 icon={UserCircleIcon}
                                                 placeholder='Persone...'
@@ -278,21 +314,33 @@ const BookingSettings = () => {
                                             className='mt-2'
                                         >
                                             {location?.map(({ props }, idx) => (
-                                                <Tab key={idx}>
+                                                <Tab
+                                                    onClick={() =>
+                                                        setTabLocation(
+                                                            props.value
+                                                        )
+                                                    }
+                                                    key={idx}
+                                                >
                                                     {props.value}
                                                 </Tab>
                                             ))}
                                         </TabList>
                                         <TabPanels>
                                             <TabPanel className='flex flex-row gap-3 flex-wrap'>
-                                                {tableElement.map((row, id) => (
-                                                    <div
-                                                        key={id}
-                                                        className='inline-flex p-2'
-                                                    >
-                                                        {row}
-                                                    </div>
-                                                ))}
+                                                {tableElement?.map(
+                                                    (row, id) =>
+                                                        tabLocation ===
+                                                            row.props
+                                                                .location && (
+                                                            <div
+                                                                key={id}
+                                                                className='inline-flex p-2'
+                                                            >
+                                                                {row}
+                                                            </div>
+                                                        )
+                                                )}
                                             </TabPanel>
                                         </TabPanels>
                                     </TabGroup>

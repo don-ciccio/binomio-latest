@@ -13,7 +13,10 @@ const {
 } = require("../controllers/storeController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
-const { bookingSettings } = require("../controllers/availabilityController");
+const {
+    bookingSettings,
+    getTables,
+} = require("../controllers/availabilityController");
 
 router
     .route("/admin/store/new")
@@ -48,5 +51,9 @@ router
 router
     .route("/admin/booking/:id/settings")
     .put(isAuthenticatedUser, authorizeRoles("admin"), bookingSettings);
+
+router
+    .route("/admin/booking/:id/tables")
+    .get(isAuthenticatedUser, authorizeRoles("admin"), getTables);
 
 module.exports = router;

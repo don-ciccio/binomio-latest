@@ -153,3 +153,23 @@ export const useAreaStore = create((set) => ({
         }
     },
 }));
+
+export const useTablesStore = create((set) => ({
+    loading: false,
+    hasErrors: false,
+    fetch: async (id) => {
+        set(() => ({ loading: true }));
+        try {
+            const response = await axios.get(
+                `${API_URL}/api/admin/booking/${id}/tables`
+            );
+
+            set((state) => ({
+                data: (state.data = response.data),
+                loading: false,
+            }));
+        } catch (error) {
+            set(() => ({ hasErrors: true, loading: false }));
+        }
+    },
+}));

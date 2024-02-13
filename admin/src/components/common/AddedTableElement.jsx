@@ -1,4 +1,4 @@
-const AddedTableElement = ({ name, seats, empty }) => {
+const AddedTableElement = ({ name, seats, empty, location }) => {
     const getRow1 = () => {
         let chairs = [];
         for (var i = 0; i < Math.ceil(seats / 2); i++) {
