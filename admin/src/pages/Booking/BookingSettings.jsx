@@ -21,6 +21,7 @@ import {
     MapPinIcon,
     UserCircleIcon,
 } from "@heroicons/react/20/solid";
+import { Icon } from "@iconify/react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
@@ -69,6 +70,13 @@ const BookingSettings = () => {
     const fetchTables = useTablesStore((state) => state.fetch);
     const tables = useTablesStore((state) => state.data);
 
+    const [isButtonShown, setIsButtonShown] = useState(null);
+
+    const clickHandler = (index) => {
+        setIsButtonShown((prev) => {
+            return prev === index ? null : index;
+        });
+    };
     useEffect(() => {
         fetchWeekdays(id);
         fetchAreas(id);
@@ -120,7 +128,7 @@ const BookingSettings = () => {
 
     const handleAddTable = (e) => {
         e.preventDefault();
-        console.log("Table added!!");
+
         setTableElement([
             ...tableElement,
             <AddedTableElement
@@ -161,6 +169,15 @@ const BookingSettings = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [location]
     );
+
+    const deleteTables = async (e) => {
+        e.preventDefault();
+        const removed = tableElement[isButtonShown];
+        setTableElement((currentTable) =>
+            currentTable.filter((el, i) => i !== isButtonShown)
+        );
+        console.log(removed.props);
+    };
 
     const config = {
         headers: {
@@ -305,8 +322,8 @@ const BookingSettings = () => {
                                                 icon={UserCircleIcon}
                                                 placeholder='Persone...'
                                                 value={seatsNumber}
-                                                onValueChange={() =>
-                                                    setSeatsNumber()
+                                                onValueChange={(e) =>
+                                                    setSeatsNumber(e)
                                                 }
                                             />
                                         </div>
@@ -340,7 +357,37 @@ const BookingSettings = () => {
                                                                 key={id}
                                                                 className='inline-flex p-2'
                                                             >
-                                                                {row}
+                                                                <div
+                                                                    className='relative'
+                                                                    onMouseEnter={() =>
+                                                                        clickHandler(
+                                                                            id
+                                                                        )
+                                                                    }
+                                                                    onMouseLeave={() =>
+                                                                        clickHandler(
+                                                                            id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {row}
+                                                                    <button
+                                                                        onClick={
+                                                                            deleteTables
+                                                                        }
+                                                                        className={`${
+                                                                            isButtonShown ===
+                                                                            id
+                                                                                ? "absolute -right-1.5 -top-2 bg-[#D34053] text-white rounded-full"
+                                                                                : "hidden"
+                                                                        }`}
+                                                                    >
+                                                                        <Icon
+                                                                            className='w-5 h-5'
+                                                                            icon='iconamoon:close-bold'
+                                                                        />
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         )
                                                 )}

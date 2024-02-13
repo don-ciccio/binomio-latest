@@ -340,7 +340,7 @@ const AddProductForm = ({
                                     Aggiungi immagine
                                 </label>
                                 <div>
-                                    <div className='flex flex-col gap-2.5'>
+                                    <div className='flex flex-col gap-3.5'>
                                         <div
                                             id='FileUpload'
                                             className='flex items-center justify-center w-full mt-2'
@@ -392,7 +392,7 @@ const AddProductForm = ({
                                                 {images?.length > 0 ? (
                                                     images.map((link, i) => (
                                                         <div
-                                                            className='max-w-[2.75rem] cursor-pointer'
+                                                            className='max-w-[5rem] cursor-pointer'
                                                             key={i}
                                                         >
                                                             <div
@@ -425,7 +425,7 @@ const AddProductForm = ({
                                                                     }`}
                                                                 >
                                                                     <Icon
-                                                                        className='w-4 h-4'
+                                                                        className='w-5 h-5'
                                                                         icon='iconamoon:close-bold'
                                                                     />
                                                                 </button>

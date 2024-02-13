@@ -7,7 +7,7 @@ import { ReactSortable } from "react-sortablejs";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useGetCategories } from "@/store/react-query/hooks/useQueries";
 
 import {
@@ -467,7 +467,7 @@ const AddCategoryForm = ({
                                 <div className='grid grid-cols-10 gap-6'>
                                     {properties.length > 0 &&
                                         properties.map((property, i) => (
-                                            <>
+                                            <Fragment key={i}>
                                                 <div className='col-span-3'>
                                                     <TextInput
                                                         type='text'
@@ -540,7 +540,7 @@ const AddCategoryForm = ({
                                                         />
                                                     </button>
                                                 </div>
-                                            </>
+                                            </Fragment>
                                         ))}
                                 </div>
                             </div>
