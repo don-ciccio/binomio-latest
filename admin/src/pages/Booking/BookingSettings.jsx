@@ -56,7 +56,7 @@ const BookingSettings = () => {
 
     const [tableName, setTableName] = useState("");
     const [tableArea, setTableArea] = useState("");
-    const [seatsNumber, setSeatsNumber] = useState(null);
+    const [seatsNumber, setSeatsNumber] = useState();
 
     const [tablesArray, setTablesArray] = useState([]);
 
@@ -80,6 +80,7 @@ const BookingSettings = () => {
     useEffect(() => {
         setTableElement([]);
         tables?.forEach((table) => {
+            setTabLocation(table.location);
             setTableElement((loc) => [
                 ...loc,
                 <AddedTableElement
@@ -304,7 +305,9 @@ const BookingSettings = () => {
                                                 icon={UserCircleIcon}
                                                 placeholder='Persone...'
                                                 value={seatsNumber}
-                                                onValueChange={setSeatsNumber}
+                                                onValueChange={() =>
+                                                    setSeatsNumber()
+                                                }
                                             />
                                         </div>
                                     </div>
