@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Store = require("../models/store");
 const Table = require("../models/table");
+const Days = require("../models/days");
+
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
 
@@ -61,21 +63,19 @@ const ErrorHandler = require("../utils/errorHandler");
 }); */
 
 exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
-    const { area, selected, table, removeTable } = req.body;
+    const { area, selected, table, removeTable, settings } = req.body;
     try {
-        if (table.length > 0) {
+        if (table && table.length > 0) {
             await Table.create(table);
-        } else {
-            console.log("No tables!!");
         }
 
-        if (removeTable.length > 0) {
+        if (removeTable && removeTable.length > 0) {
             await Table.deleteMany({ name: removeTable }, function (err) {
                 console.log("Delete successfully");
             }).clone();
         }
 
-        if (area.length > 0) {
+        if (area && area.length > 0) {
             await Store.findByIdAndUpdate(
                 { _id: mongoose.Types.ObjectId(req.params.id) },
                 {
@@ -89,7 +89,7 @@ exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
                 }
             );
         }
-        if (selected.length > 0) {
+        if (selected && selected.length > 0) {
             await Store.findByIdAndUpdate(
                 { _id: mongoose.Types.ObjectId(req.params.id) },
                 {
@@ -103,6 +103,34 @@ exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
                     new: true,
                 }
             );
+        }
+
+        bulk = [];
+
+        if (settings && req.params.id) {
+            settings?.forEach((item) => {
+                let updateDoc = {
+                    updateMany: {
+                        filter: {
+                            owner: req.params.id,
+                            weekday: item.weekday,
+                        },
+                        update: {
+                            $set: {
+                                reservationAvailable: item.reservationAvailable,
+                                startBookingHour: item.startBookingHour,
+                                endBookingHour: item.endBookingHour,
+                            },
+                        },
+                    },
+                };
+
+                bulk.push(updateDoc);
+            });
+
+            const options = { ordered: false };
+
+            await Days.bulkWrite(bulk, options);
         }
         res.status(200).json({
             success: true,

@@ -101,6 +101,8 @@ exports.getCalendarByStore = catchAsyncErrors(async (req, res, next) => {
                     weekday: date.weekday,
                     startHour: date.startHour,
                     endHour: date.endHour,
+                    startBookingHour: date.startBookingHour,
+                    endBookingHour: date.endBookingHour,
                 }))
                 .sort((a, b) => {
                     return a.weekday - b.weekday;

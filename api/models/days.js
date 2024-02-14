@@ -8,6 +8,8 @@ const daySchema = new Schema({
     reservationAvailable: { type: Boolean, default: false },
     blackOutDay: { type: Boolean, default: false },
     weekday: { type: Number },
+    startBookingHour: { type: Number, required: true, default: 63000000 },
+    endBookingHour: { type: Number, required: true, default: 81000000 },
     startHour: { type: Number, required: true, default: 63000000 },
     endHour: { type: Number, required: true, default: 81000000 },
     slotTime: [

@@ -25,6 +25,7 @@ import { Icon } from "@iconify/react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import { useMounted } from "@/hooks/useMounted";
 
 import { useGetStoreById } from "../../store/react-query/hooks/useQueries";
 import {
@@ -37,6 +38,7 @@ import AddedElement from "../../components/common/AddedElement";
 
 import axios from "axios";
 import AddedTableElement from "../../components/common/AddedTableElement";
+import BookingAvailabilityForm from "../../components/booking/BookingAvailability";
 axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -44,6 +46,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const BookingSettings = () => {
     const { id } = useParams();
     const history = useNavigate();
+    const mounted = useMounted();
 
     const { data: store } = useGetStoreById(id);
 
@@ -204,6 +207,25 @@ const BookingSettings = () => {
         }
     );
 
+    const handleChange = useCallback(() => {
+        try {
+            const data = {
+                settings: weekdays,
+            };
+
+            mutation.mutate({ data: data, id: id });
+        } catch (error) {
+            console.log(error.message);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [weekdays]);
+
+    useEffect(() => {
+        if (!mounted()) return;
+        handleChange();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [weekdays]);
+
     const updateSettings = (event) => {
         event.preventDefault();
         try {
@@ -212,6 +234,7 @@ const BookingSettings = () => {
                 selected: selected,
                 table: tablesArray,
                 removeTable: removeTable,
+                settings: weekdays,
             };
             mutation.mutate({ data: data, id: id });
             history(-1);
@@ -232,6 +255,9 @@ const BookingSettings = () => {
             </div>
             <form onSubmit={updateSettings}>
                 <AccordionList>
+                    <Accordion>
+                        <BookingAvailabilityForm />
+                    </Accordion>
                     <Accordion>
                         <AccordionHeader>Coperti</AccordionHeader>
                         <AccordionBody>

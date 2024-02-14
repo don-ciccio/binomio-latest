@@ -5,16 +5,16 @@ import { AccordionBody, AccordionHeader } from "@tremor/react";
 import { Grid, Col, Icon } from "@tremor/react";
 import { ClockIcon } from "@heroicons/react/24/outline";
 
-const DeliveryForm = () => {
+const BookingAvailabilityForm = () => {
     const weekdays = useWeekdaysStore((state) => state.data);
     const loading = useWeekdaysStore((state) => state.loading);
     const toggleAvailableState = useWeekdaysStore(
-        (state) => state.toggleAvailableState
+        (state) => state.toggleReservationAvailableState
     );
 
     return (
         <>
-            <AccordionHeader>Disponibilità alla consegna</AccordionHeader>
+            <AccordionHeader>Disponibilità alla prenotazione</AccordionHeader>
 
             <AccordionBody>
                 <div>
@@ -35,7 +35,9 @@ const DeliveryForm = () => {
                                                 <input
                                                     type='checkbox'
                                                     id={day.name}
-                                                    checked={day.available}
+                                                    checked={
+                                                        day.reservationAvailable
+                                                    }
                                                     onChange={() =>
                                                         toggleAvailableState(
                                                             day.weekday
@@ -49,7 +51,7 @@ const DeliveryForm = () => {
                                             </div>
                                         </Col>
 
-                                        {day.available ? (
+                                        {day.reservationAvailable ? (
                                             <Col numColSpan={5}>
                                                 <div className='flex gap-2'>
                                                     <Icon
@@ -59,12 +61,12 @@ const DeliveryForm = () => {
                                                     <div>
                                                         <CustomTimePicker
                                                             selected={
-                                                                day.startHour
+                                                                day.startBookingHour
                                                             }
                                                             onChange={(date) =>
                                                                 useWeekdaysStore
                                                                     .getState()
-                                                                    .setStartTime(
+                                                                    .setStartBookingTime(
                                                                         date.getTime(),
                                                                         day.weekday
                                                                     )
@@ -77,7 +79,7 @@ const DeliveryForm = () => {
                                                             timeFormat='HH:mm'
                                                             minTime={82800000}
                                                             maxTime={
-                                                                day.endHour
+                                                                day.endBookingHour
                                                             }
                                                         />
                                                     </div>
@@ -105,12 +107,12 @@ const DeliveryForm = () => {
                                                     <div className='mr-3'>
                                                         <CustomTimePicker
                                                             selected={
-                                                                day.endHour
+                                                                day.endBookingHour
                                                             }
                                                             onChange={(date) =>
                                                                 useWeekdaysStore
                                                                     .getState()
-                                                                    .setEndTime(
+                                                                    .setEndBookingTime(
                                                                         date.getTime(),
                                                                         day.weekday
                                                                     )
@@ -122,7 +124,7 @@ const DeliveryForm = () => {
                                                             dateFormat='HH:mm'
                                                             timeFormat='HH:mm'
                                                             minTime={
-                                                                day.startHour
+                                                                day.startBookingHour
                                                             }
                                                             maxTime={81000000}
                                                         />
@@ -150,4 +152,4 @@ const DeliveryForm = () => {
     );
 };
 
-export default DeliveryForm;
+export default BookingAvailabilityForm;

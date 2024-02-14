@@ -57,6 +57,22 @@ export const useWeekdaysStore = create((set) => ({
             ),
         }));
     },
+    setStartBookingTime: (time, weekday) => {
+        set((state) => ({
+            data: state.data.map((day) =>
+                day.weekday === weekday
+                    ? { ...day, startBookingHour: time }
+                    : day
+            ),
+        }));
+    },
+    setEndBookingTime: (time, weekday) => {
+        set((state) => ({
+            data: state.data.map((day) =>
+                day.weekday === weekday ? { ...day, endBookingHour: time } : day
+            ),
+        }));
+    },
 }));
 
 export const useSlotStore = create((set) => ({

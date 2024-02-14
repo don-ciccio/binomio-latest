@@ -12,7 +12,7 @@ input[type="checkbox"] {
 }
 
 .tremor-MultiSelectItem-root input[type="checkbox"] {
-  @apply form-checkbox text-blue-500 h-4 w-4 relative  outline-none rounded-md transition duration-100 border shadow-tremor-input  bg-tremor-background dark:bg-dark-tremor-background hover:bg-tremor-background-muted dark:hover:bg-dark-tremor-background-muted dark:text-dark-tremor-content-emphasis dark:border-dark-tremor-border  block border-gray-300 focus:border-tremor-brand-subtle focus:ring-tremor-brand-muted focus:dark:ring-dark-tremor-brand-muted sm:text-sm focus:ring-2
+  @apply form-checkbox mb-0.5 text-blue-500 h-4 w-4 relative outline-none rounded-md transition duration-100 border shadow-tremor-input  bg-tremor-background dark:bg-dark-tremor-background hover:bg-tremor-background-muted dark:hover:bg-dark-tremor-background-muted dark:text-dark-tremor-content-emphasis dark:border-dark-tremor-border  block border-gray-300 focus:border-tremor-brand-subtle focus:ring-tremor-brand-muted focus:dark:ring-dark-tremor-brand-muted sm:text-sm focus:ring-2
 }
 
 .react-datepicker {
@@ -32,7 +32,7 @@ input[type="checkbox"] {
 }
 
 .react-datepicker__time-box {
-  @apply absolute z-10 -mt-2 lg:min-w-[11.25rem] divide-y overflow-y-auto outline-none rounded-tremor-default max-h-[228px] -left-1 border bg-tremor-background border-tremor-border divide-tremor-border shadow-tremor-dropdown
+  @apply absolute z-10 -mt-2 lg:min-w-[10.25rem] divide-y overflow-y-auto outline-none rounded-tremor-default max-h-[228px] -left-1 border bg-tremor-background border-tremor-border divide-tremor-border shadow-tremor-dropdown
 }
 
 .react-datepicker__time-list ul {
