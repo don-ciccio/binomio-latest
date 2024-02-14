@@ -31,7 +31,7 @@ const BookingAvailabilityForm = () => {
                                         className='gap-2 place-items-start items-center min-h-[38px]'
                                     >
                                         <Col numColSpan={2}>
-                                            <div className='flex flex-row gap-4'>
+                                            <div className='flex flex-row gap-4 availability'>
                                                 <input
                                                     type='checkbox'
                                                     id={day.name}

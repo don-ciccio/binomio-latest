@@ -7,7 +7,7 @@
   font-family: Bricolage Grotesque , sans-serif;
 }
 
-input[type="checkbox"] {
+.availability input[type="checkbox"] {
   @apply cursor-pointer form-checkbox text-blue-500 h-5 w-5 relative outline-none rounded-md transition duration-100 border shadow-tremor-input bg-tremor-background dark:bg-dark-tremor-background hover:bg-tremor-background-muted dark:hover:bg-dark-tremor-background-muted dark:text-dark-tremor-content-emphasis dark:border-dark-tremor-border block border-gray-300 focus:border-tremor-brand-subtle focus:ring-tremor-brand-muted focus:dark:ring-dark-tremor-brand-muted sm:text-sm focus:ring-2
 }
 

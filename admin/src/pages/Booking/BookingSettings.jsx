@@ -91,7 +91,10 @@ const BookingSettings = () => {
 
     useEffect(() => {
         setTableElement([]);
-        setTabLocation(location[0]?.props.value);
+        if (location.length > 0) {
+            setTabLocation(location[0]?.props.value);
+        }
+
         tables?.forEach((table) => {
             setTableElement((loc) => [
                 ...loc,
