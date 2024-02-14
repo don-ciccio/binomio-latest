@@ -2,7 +2,8 @@ import { useWeekdaysStore } from "@/store/zustand/store";
 import Loader from "@/components/common/Loader";
 import { CustomTimePicker } from "../common/CustomTimePicker";
 import { AccordionBody, AccordionHeader } from "@tremor/react";
-import { Grid, Col, Switch } from "@tremor/react";
+import { Grid, Col, Icon } from "@tremor/react";
+import { ClockIcon } from "@heroicons/react/24/outline";
 
 const DeliveryForm = () => {
     const weekdays = useWeekdaysStore((state) => state.data);
@@ -26,31 +27,37 @@ const DeliveryForm = () => {
                             {weekdays?.map((day, index) => (
                                 <div className='px-4 pb-3' key={index}>
                                     <Grid
-                                        numItems={8}
+                                        numItems={11}
                                         className='gap-2 place-items-start items-center min-h-[38px]'
                                     >
-                                        <Col numColSpan={1}>
-                                            <span className='flex text-sm font-medium text-black'>
-                                                {day.name}
-                                            </span>
+                                        <Col numColSpan={2}>
+                                            <div className='flex flex-row gap-4'>
+                                                <input
+                                                    type='checkbox'
+                                                    id={day.name}
+                                                    checked={day.available}
+                                                    onChange={() =>
+                                                        toggleAvailableState(
+                                                            day.weekday
+                                                        )
+                                                    }
+                                                    color='blue'
+                                                />
+                                                <span className='flex text-sm font-medium text-black'>
+                                                    {day.name}
+                                                </span>
+                                            </div>
                                         </Col>
 
-                                        <Col numColSpan={1}>
-                                            <Switch
-                                                id={day.name}
-                                                checked={day.available}
-                                                onChange={() =>
-                                                    toggleAvailableState(
-                                                        day.weekday
-                                                    )
-                                                }
-                                                color='blue'
-                                            />
-                                        </Col>
                                         {day.available ? (
-                                            <Col numColSpan={6}>
-                                                <div className='flex'>
-                                                    <div className='mr-3'>
+                                            <Col numColSpan={5}>
+                                                <div className='flex gap-2'>
+                                                    <Icon
+                                                        icon={ClockIcon}
+                                                        variant='simple'
+                                                        size='md'
+                                                    />
+                                                    <div>
                                                         <CustomTimePicker
                                                             selected={
                                                                 day.startHour

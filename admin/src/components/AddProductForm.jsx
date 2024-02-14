@@ -265,7 +265,6 @@ const AddProductForm = ({
                     value: str,
                     label: str,
                 }));
-                console.log(obj);
             }
             catInfo = parentCat;
         }

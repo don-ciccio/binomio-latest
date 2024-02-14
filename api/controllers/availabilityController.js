@@ -61,12 +61,18 @@ const ErrorHandler = require("../utils/errorHandler");
 }); */
 
 exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
-    const { area, selected, table } = req.body;
+    const { area, selected, table, removeTable } = req.body;
     try {
         if (table.length > 0) {
             await Table.create(table);
         } else {
             console.log("No tables!!");
+        }
+
+        if (removeTable.length > 0) {
+            await Table.deleteMany({ name: removeTable }, function (err) {
+                console.log("Delete successfully");
+            }).clone();
         }
 
         if (area.length > 0) {

@@ -57,7 +57,8 @@ const BookingSettings = () => {
 
     const [tableName, setTableName] = useState("");
     const [tableArea, setTableArea] = useState("");
-    const [seatsNumber, setSeatsNumber] = useState();
+    const [seatsNumber, setSeatsNumber] = useState(1);
+    const [removeTable, setRemoveTable] = useState([]);
 
     const [tablesArray, setTablesArray] = useState([]);
 
@@ -87,8 +88,8 @@ const BookingSettings = () => {
 
     useEffect(() => {
         setTableElement([]);
+        setTabLocation(location[0]?.props.value);
         tables?.forEach((table) => {
-            setTabLocation(table.location);
             setTableElement((loc) => [
                 ...loc,
                 <AddedTableElement
@@ -176,7 +177,7 @@ const BookingSettings = () => {
         setTableElement((currentTable) =>
             currentTable.filter((el, i) => i !== isButtonShown)
         );
-        console.log(removed.props);
+        setRemoveTable([...removeTable, removed.props.name]);
     };
 
     const config = {
@@ -210,6 +211,7 @@ const BookingSettings = () => {
                 area: roomName,
                 selected: selected,
                 table: tablesArray,
+                removeTable: removeTable,
             };
             mutation.mutate({ data: data, id: id });
             history(-1);

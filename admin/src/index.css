@@ -7,6 +7,10 @@
   font-family: Bricolage Grotesque , sans-serif;
 }
 
+input[type="checkbox"] {
+  @apply cursor-pointer form-checkbox text-blue-500 h-5 w-5 relative outline-none rounded-md transition duration-100 border shadow-tremor-input bg-tremor-background dark:bg-dark-tremor-background hover:bg-tremor-background-muted dark:hover:bg-dark-tremor-background-muted dark:text-dark-tremor-content-emphasis dark:border-dark-tremor-border block border-gray-300 focus:border-tremor-brand-subtle focus:ring-tremor-brand-muted focus:dark:ring-dark-tremor-brand-muted sm:text-sm focus:ring-2
+}
+
 .tremor-MultiSelectItem-root input[type="checkbox"] {
   @apply form-checkbox text-blue-500 h-4 w-4 relative  outline-none rounded-md transition duration-100 border shadow-tremor-input  bg-tremor-background dark:bg-dark-tremor-background hover:bg-tremor-background-muted dark:hover:bg-dark-tremor-background-muted dark:text-dark-tremor-content-emphasis dark:border-dark-tremor-border  block border-gray-300 focus:border-tremor-brand-subtle focus:ring-tremor-brand-muted focus:dark:ring-dark-tremor-brand-muted sm:text-sm focus:ring-2
 }
@@ -28,7 +32,7 @@
 }
 
 .react-datepicker__time-box {
-  @apply absolute z-10 -mt-2 lg:min-w-[12rem] divide-y overflow-y-auto outline-none rounded-tremor-default max-h-[228px] -left-1 border bg-tremor-background border-tremor-border divide-tremor-border shadow-tremor-dropdown
+  @apply absolute z-10 -mt-2 lg:min-w-[11.25rem] divide-y overflow-y-auto outline-none rounded-tremor-default max-h-[228px] -left-1 border bg-tremor-background border-tremor-border divide-tremor-border shadow-tremor-dropdown
 }
 
 .react-datepicker__time-list ul {
@@ -52,9 +56,12 @@
 }
 
 .react-datepicker__input-container input {
-  @apply block w-full text-base md:text-sm bg-white border border-gray-300 rounded shadow-sm form-input
+  @apply block w-full text-base md:text-sm bg-white border border-gray-300 rounded-3xl shadow-sm form-input
 }
 
+.react-datepicker__input-container input:focus {
+  @apply outline-none ring-0
+}
 
 .react-datepicker__aria-live {
   @apply hidden
@@ -197,7 +204,7 @@
 }
 
 .react-datepicker__input-container input {
-  @apply block w-full text-base md:text-sm bg-white border border-gray-300 rounded shadow-sm form-input
+  @apply block w-full text-base md:text-sm bg-white border border-gray-300 rounded-3xl shadow-sm 
 }
 
 
