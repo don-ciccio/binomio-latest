@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import { useCreateStore } from "@/store/react-query/hooks/useMutations";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -15,7 +15,7 @@ import {
     Badge,
 } from "@tremor/react";
 import { MapPinIcon } from "@heroicons/react/20/solid";
-
+import { useForm } from "react-hook-form";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -23,44 +23,38 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const AddStoreForm = ({
     setDirty,
+    isModal,
+    setIsModal,
     _id,
     isOpen: previousOpen,
     name: previousName,
     shopAddress: previousShopAddress,
     deliveryRadius: previousDeliveryRadius,
 }) => {
-    const [isModal, setIsModal] = useState(false);
-    const [isOpen, setIsOpen] = useState(previousOpen || false);
-    const [name, setName] = useState(previousName || "");
-    const [shopAddress, setShopAddress] = useState(
-        previousShopAddress || {
-            address: "",
-            city: "",
-            postalCode: "",
-        }
-    );
-    const [deliveryRadius, setDeliveryRadius] = useState(
-        previousDeliveryRadius || 1
-    );
+    const { register, handleSubmit, setError, reset, watch } = useForm({
+        defaultValues: {
+            name: previousName,
+            isOpen: previousOpen,
+            shopAddress: previousShopAddress,
+            deliveryRadius: previousDeliveryRadius,
+        },
+    });
+
+    const watchShowOpen = watch("isOpen");
 
     const markFormDirty = () => setDirty(true);
 
     const resetState = () => {
+        reset();
         setIsModal(false);
-        setName(previousName);
-        setIsOpen(previousOpen);
-        setShopAddress(previousShopAddress);
-        setDeliveryRadius(previousDeliveryRadius);
     };
 
     const resetHandler = () => {
-        setIsOpen(!isOpen);
         setIsModal(true);
     };
 
     const handleOpen = () => {
         setDirty(false);
-        setIsOpen(!isOpen);
     };
 
     const history = useNavigate();
@@ -81,20 +75,18 @@ const AddStoreForm = ({
         },
     });
 
-    const createStore = (e) => {
-        e.preventDefault();
-        const data = {
-            name,
-            shopAddress,
-            deliveryRadius,
-            isOpen,
-        };
-
-        if (_id) {
-            mutationPut.mutate({ data: data, _id: _id });
-        } else {
-            mutation.mutate(data);
-            history(redirect);
+    const createStore = (data) => {
+        try {
+            if (_id) {
+                mutationPut.mutate({ data: data, _id: _id });
+            } else {
+                mutation.mutate(data);
+                history(redirect);
+            }
+        } catch (error) {
+            setError("root", {
+                message: "Errore dal server",
+            });
         }
     };
 
@@ -103,7 +95,7 @@ const AddStoreForm = ({
             id='store-form'
             onChange={markFormDirty}
             onReset={resetHandler}
-            onSubmit={createStore}
+            onSubmit={handleSubmit(createStore)}
         >
             <Dialog
                 open={isModal}
@@ -136,9 +128,9 @@ const AddStoreForm = ({
             <div className='flex p-1 mb-4 justify-between items-center'>
                 <Metric>{previousName}</Metric>
                 <div className='flex flex-row gap-2'>
-                    <Switch onChange={handleOpen} checked={isOpen} />
+                    <Switch onChange={handleOpen} checked={watchShowOpen} />
                     <span className='span-text text-sm items-center'>
-                        {isOpen ? (
+                        {watchShowOpen ? (
                             <Badge size='sm' color={"green"}>
                                 Aperto
                             </Badge>
@@ -169,8 +161,7 @@ const AddStoreForm = ({
                                     className='mt-2 max-w-sm'
                                     type='text'
                                     placeholder='Titolo'
-                                    value={name}
-                                    onValueChange={(e) => setName(e)}
+                                    {...register("name")}
                                 />
                             </div>
                         </div>
@@ -182,13 +173,7 @@ const AddStoreForm = ({
                                 <TextInput
                                     type='text'
                                     placeholder='Indirizzo'
-                                    value={shopAddress.address}
-                                    onValueChange={(e) =>
-                                        setShopAddress({
-                                            ...shopAddress,
-                                            address: e,
-                                        })
-                                    }
+                                    {...register("shopAddress.address")}
                                     className='mt-2 max-w-md'
                                 />
                             </div>
@@ -197,25 +182,13 @@ const AddStoreForm = ({
                                     <TextInput
                                         type='text'
                                         placeholder='Città'
-                                        value={shopAddress.city}
-                                        onValueChange={(e) =>
-                                            setShopAddress({
-                                                ...shopAddress,
-                                                city: e,
-                                            })
-                                        }
+                                        {...register("shopAddress.city")}
                                         className='max-w-sm'
                                     />
                                     <TextInput
                                         type='text'
                                         placeholder='Codice Postale'
-                                        value={shopAddress.postalCode}
-                                        onValueChange={(e) =>
-                                            setShopAddress({
-                                                ...shopAddress,
-                                                postalCode: e,
-                                            })
-                                        }
+                                        {...register("shopAddress.postalCode")}
                                         className='max-w-xs'
                                     />
                                 </div>
@@ -238,8 +211,7 @@ const AddStoreForm = ({
                                 <NumberInput
                                     icon={MapPinIcon}
                                     type='number'
-                                    value={deliveryRadius}
-                                    onValueChange={(e) => setDeliveryRadius(e)}
+                                    {...register("deliveryRadius")}
                                     className='max-w-xs mt-2'
                                     placeholder='Scegli...'
                                     max={50}
@@ -256,6 +228,8 @@ const AddStoreForm = ({
 export default AddStoreForm;
 
 AddStoreForm.propTypes = {
+    setIsModal: PropTypes.func,
+    isModal: PropTypes.bool,
     setDirty: PropTypes.func,
     _id: PropTypes.string,
     name: PropTypes.string,

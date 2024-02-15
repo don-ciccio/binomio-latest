@@ -11,6 +11,7 @@ import { useGetStoreById } from "@/store/react-query/hooks/useQueries";
 const Edit = () => {
     const { id } = useParams();
     const [dirty, setDirty] = useState(false);
+    const [isModal, setIsModal] = useState(false);
     const { data: store, isLoading } = useGetStoreById(id);
 
     if (isLoading)
@@ -44,7 +45,8 @@ const Edit = () => {
                                 size='xs'
                                 variant='primary'
                                 color='rose'
-                                type='reset'
+                                type='button'
+                                onClick={() => setIsModal(true)}
                             >
                                 Rimuovi
                             </Button>
@@ -62,8 +64,13 @@ const Edit = () => {
                     </Callout>
                 </div>
             </div>
-            <div className=' px-3 py-5 xl:px-20 xl:py-12'>
-                <AddStoreForm {...store?.data} setDirty={setDirty} />
+            <div className=' px-3 xl:px-20 py-12'>
+                <AddStoreForm
+                    {...store?.data}
+                    setDirty={setDirty}
+                    setIsModal={setIsModal}
+                    isModal={isModal}
+                />
             </div>
         </>
     );
