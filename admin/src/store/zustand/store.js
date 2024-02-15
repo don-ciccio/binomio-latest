@@ -151,6 +151,25 @@ export const useBlackoutDaysStore = create((set) => ({
     },
 }));
 
+export const useBookingBlackoutDaysStore = create((set) => ({
+    loading: false,
+    hasErrors: false,
+    fetch: async (id) => {
+        set(() => ({ loading: true }));
+        try {
+            const response = await axios.get(
+                `${API_URL}/api/admin/booking/${id}/blackoutdays`
+            );
+            set((state) => ({
+                data: (state.data = response.data.reservationBlackOutDays),
+                loading: false,
+            }));
+        } catch (error) {
+            set(() => ({ hasErrors: true, loading: false }));
+        }
+    },
+}));
+
 export const useAreaStore = create((set) => ({
     loading: false,
     hasErrors: false,

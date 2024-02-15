@@ -16,6 +16,7 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const {
     bookingSettings,
     getTables,
+    getBookingBlackoutDays,
 } = require("../controllers/availabilityController");
 
 router
@@ -39,6 +40,10 @@ router
 router
     .route("/admin/calendar/:id/blackoutdays")
     .get(isAuthenticatedUser, authorizeRoles("admin"), getBlackoutDays);
+
+router
+    .route("/admin/booking/:id/blackoutdays")
+    .get(isAuthenticatedUser, authorizeRoles("admin"), getBookingBlackoutDays);
 
 router
     .route("/admin/booking/:id/area")

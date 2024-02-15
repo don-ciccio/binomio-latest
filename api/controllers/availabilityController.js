@@ -63,7 +63,15 @@ const ErrorHandler = require("../utils/errorHandler");
 }); */
 
 exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
-    const { area, selected, table, removeTable, settings } = req.body;
+    const {
+        area,
+        selected,
+        table,
+        removeTable,
+        settings,
+        dates,
+        dateSelected,
+    } = req.body;
     try {
         if (table && table.length > 0) {
             await Table.create(table);
@@ -106,6 +114,48 @@ exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
         }
 
         bulk = [];
+        if (dates?.length > 0) {
+            const ISOarray = dates.map((date) => {
+                return new Date(
+                    new Date(date).setDate(new Date(date).getDate() + 1)
+                );
+            });
+
+            await Store.findByIdAndUpdate(
+                { _id: mongoose.Types.ObjectId(req.params.id) },
+                {
+                    $push: {
+                        reservationBlackOutDays: { $each: ISOarray },
+                    },
+                },
+                {
+                    new: true,
+                    upsert: true,
+                }
+            );
+        }
+
+        if (dateSelected?.length > 0) {
+            const ISOselected = dateSelected.map((date) => {
+                return new Date(
+                    new Date(date).setDate(new Date(date).getDate() + 1)
+                );
+            });
+
+            await Store.findByIdAndUpdate(
+                { _id: mongoose.Types.ObjectId(req.params.id) },
+                {
+                    $pull: {
+                        reservationBlackOutDays: {
+                            $in: ISOselected,
+                        },
+                    },
+                },
+                {
+                    new: true,
+                }
+            );
+        }
 
         if (settings && req.params.id) {
             settings?.forEach((item) => {
@@ -145,6 +195,17 @@ exports.getTables = catchAsyncErrors(async (req, res, next) => {
         const tables = await Table.find({ restaurant: req.params.id });
 
         res.json(tables);
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+});
+
+exports.getBookingBlackoutDays = catchAsyncErrors(async (req, res, next) => {
+    try {
+        const result = await Store.findById(req.params.id).select(
+            "reservationBlackOutDays -_id"
+        );
+        res.json(result);
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }

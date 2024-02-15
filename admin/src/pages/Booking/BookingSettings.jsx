@@ -30,6 +30,7 @@ import { useMounted } from "@/hooks/useMounted";
 import { useGetStoreById } from "../../store/react-query/hooks/useQueries";
 import {
     useAreaStore,
+    useBookingBlackoutDaysStore,
     useTablesStore,
     useWeekdaysStore,
 } from "../../store/zustand/store";
@@ -39,6 +40,7 @@ import AddedElement from "../../components/common/AddedElement";
 import axios from "axios";
 import AddedTableElement from "../../components/common/AddedTableElement";
 import BookingAvailabilityForm from "../../components/booking/BookingAvailability";
+import BookingBlackoutDates from "../../components/booking/BookingBlackoutDates";
 axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -65,6 +67,11 @@ const BookingSettings = () => {
 
     const [tablesArray, setTablesArray] = useState([]);
 
+    const [startDate, setStartDate] = useState(new Date());
+    const [blackoutDates, setBlackoutDates] = useState([]);
+    const [date, setDate] = useState([]);
+    const [dateSelected, setDateSelected] = useState([]);
+
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
     const weekdays = useWeekdaysStore((state) => state.data);
 
@@ -73,6 +80,10 @@ const BookingSettings = () => {
 
     const fetchTables = useTablesStore((state) => state.fetch);
     const tables = useTablesStore((state) => state.data);
+
+    const fetchBlackoutDays = useBookingBlackoutDaysStore(
+        (state) => state.fetch
+    );
 
     const [isButtonShown, setIsButtonShown] = useState(null);
 
@@ -85,7 +96,7 @@ const BookingSettings = () => {
         fetchWeekdays(id);
         fetchAreas(id);
         fetchTables(id);
-
+        fetchBlackoutDays(id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
@@ -109,7 +120,7 @@ const BookingSettings = () => {
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tables]);
+    }, [tables, location]);
 
     useEffect(() => {
         setLocation([]);
@@ -203,9 +214,13 @@ const BookingSettings = () => {
         {
             onSuccess: () => {
                 fetchAreas(id);
+                fetchBlackoutDays(id);
                 setLocation([]);
                 setRoomName([]);
                 setSelected([]);
+                setDate([]);
+                setBlackoutDates([]);
+                setDateSelected([]);
             },
         }
     );
@@ -238,6 +253,8 @@ const BookingSettings = () => {
                 table: tablesArray,
                 removeTable: removeTable,
                 settings: weekdays,
+                dates: blackoutDates,
+                dateSelected: dateSelected,
             };
             mutation.mutate({ data: data, id: id });
             history(-1);
@@ -428,6 +445,18 @@ const BookingSettings = () => {
                                 </div>
                             </div>
                         </AccordionBody>
+                    </Accordion>
+                    <Accordion>
+                        <BookingBlackoutDates
+                            date={date}
+                            setDate={setDate}
+                            startDate={startDate}
+                            setStartDate={setStartDate}
+                            selected={dateSelected}
+                            setSelected={setDateSelected}
+                            blackoutDates={blackoutDates}
+                            setBlackoutDates={setBlackoutDates}
+                        />
                     </Accordion>
                 </AccordionList>
                 <div className='flex justify-end gap-4 mt-6'>
