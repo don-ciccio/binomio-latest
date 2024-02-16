@@ -20,11 +20,13 @@ import {
     Title,
 } from "@tremor/react";
 
+import { z } from "zod";
 import CurrencyInput from "react-currency-input-field";
 
 import axios from "axios";
 import Spinner from "./common/Spinner";
 import { useGetStores } from "../store/react-query/hooks/useQueries";
+import { useSnackbar } from "notistack";
 axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -52,6 +54,17 @@ const merge = (a1, a2) => {
         .concat(a2.filter((item) => a1.every((x) => x.name !== item.name)));
 };
 
+const schema = z.object({
+    name: z.string().min(8),
+    description: z.string().min(10),
+    price: z.number().gte(1),
+    category: z.string().min(2),
+    properties: z.record(z.string().or(z.array())),
+    seller: z.string().min(2),
+    status: z.string().min(2),
+    store: z.string().min(2),
+});
+
 const AddProductForm = ({
     _id,
     setDirty,
@@ -73,7 +86,7 @@ const AddProductForm = ({
     const [status, setStatus] = useState(previousStatus || "Attivo");
     const [seller, setSeller] = useState(assignedSeller || "");
     const [store, setStore] = useState(assignedStore || "");
-
+    const [errors, setErrors] = useState([]);
     const [productProperties, setProductProperties] = useState(
         assignedProperties || {}
     );
@@ -89,6 +102,26 @@ const AddProductForm = ({
         setIsButtonShown((prev) => {
             return prev === index ? null : index;
         });
+    };
+
+    const { enqueueSnackbar } = useSnackbar();
+
+    const showAlert = (err, variant) => {
+        enqueueSnackbar(err, {
+            variant: variant,
+            preventDuplicate: true,
+            anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "right",
+            },
+            autoHideDuration: 7000,
+        });
+    };
+
+    const getError = (path) => {
+        const error = errors.find((error) => error.path[0] === path);
+
+        return error ? showAlert(error?.message, "error") : null;
     };
 
     const resetState = () => {
@@ -153,7 +186,7 @@ const AddProductForm = ({
         setStore(event);
     };
 
-    const saveProduct = async (e) => {
+    const saveProduct = (e) => {
         e.preventDefault();
 
         const data = {
@@ -167,11 +200,22 @@ const AddProductForm = ({
             store,
             properties: { ...productProperties, ...multiProperty },
         };
-        if (_id) {
-            mutationPut.mutate({ data: data, _id: _id });
+
+        const formData = schema.safeParse(data);
+
+        if (!formData.success) {
+            const { issues } = formData.error;
+
+            setErrors(issues);
         } else {
-            mutationPost.mutate({ data: data });
+            setErrors([]);
+            if (_id) {
+                mutationPut.mutate({ data: formData, _id: _id });
+            } else {
+                mutationPost.mutate({ data: formData });
+            }
         }
+
         setIsFormSubmitted(true);
     };
 
@@ -209,6 +253,7 @@ const AddProductForm = ({
                 setImages((oldImages) => {
                     return [...oldImages, ...res.data.links];
                 });
+                console.log(images);
                 setIsUploading(false);
             }
         }
@@ -334,6 +379,7 @@ const AddProductForm = ({
                                     onValueChange={(e) => setName(e)}
                                 />
                             </div>
+                            {getError("name")}
                             <div>
                                 <label className='block text-sm font-medium text-gray-600'>
                                     Aggiungi immagine
@@ -455,6 +501,7 @@ const AddProductForm = ({
                                     onValueChange={(e) => setDescription(e)}
                                     className='mt-2'
                                 ></Textarea>
+                                {getError("description")}
                             </div>
                             <div>
                                 <label className='block text-sm font-medium text-gray-600'>
@@ -471,6 +518,7 @@ const AddProductForm = ({
                                     prefix={"€"}
                                     step={1}
                                 />
+                                {getError("price")}
                             </div>
                         </div>
                     </div>
@@ -493,6 +541,7 @@ const AddProductForm = ({
                                     {options[1]}
                                 </SelectItem>
                             </Select>
+                            {getError("status")}
                         </div>
                     </div>
                     <div className='rounded-md border border-gray-200 bg-white'>
@@ -512,6 +561,7 @@ const AddProductForm = ({
                                     </SelectItem>
                                 ))}
                             </Select>
+                            {getError("store")}
                         </div>
                     </div>
                     <div className='rounded-md border border-gray-200 bg-white'>
@@ -528,6 +578,7 @@ const AddProductForm = ({
                                     type='text'
                                     placeholder='Inserisci...'
                                 />
+
                                 <div className='absolute z-10 w-full'>
                                     <ul
                                         className={`${
@@ -551,6 +602,7 @@ const AddProductForm = ({
                                         ))}
                                     </ul>
                                 </div>
+                                {getError("seller")}
                             </div>
                         </div>
                     </div>

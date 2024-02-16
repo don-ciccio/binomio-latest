@@ -62,10 +62,10 @@ const CategoryTable = ({ isLoading, categories }) => {
                         contiene dei prodotti.
                         <div className='mt-3'>
                             <Button
-                                variant='light'
+                                variant='secondary'
                                 onClick={() => setModal(!modal)}
                             >
-                                Ricevuto!
+                                Chiudi
                             </Button>
                         </div>
                     </DialogPanel>
