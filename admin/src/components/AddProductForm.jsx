@@ -57,10 +57,9 @@ const merge = (a1, a2) => {
 const schema = z.object({
     name: z.string().min(8),
     description: z.string().min(10),
-    price: z.number().gte(1),
+    price: z.number().min(1).or(z.string().min(1)),
     category: z.string().min(2),
     properties: z.record(z.string().or(z.array())),
-    seller: z.string().min(2),
     status: z.string().min(2),
     store: z.string().min(2),
 });
@@ -106,22 +105,19 @@ const AddProductForm = ({
 
     const { enqueueSnackbar } = useSnackbar();
 
-    const showAlert = (err, variant) => {
-        enqueueSnackbar(err, {
-            variant: variant,
-            preventDuplicate: true,
-            anchorOrigin: {
-                vertical: "bottom",
-                horizontal: "right",
-            },
-            autoHideDuration: 7000,
-        });
-    };
+    const showAlert = (err, variant, path) => {
+        err = err.find((error) => error.path[0] === path);
 
-    const getError = (path) => {
-        const error = errors.find((error) => error.path[0] === path);
-
-        return error ? showAlert(error?.message, "error") : null;
+        if (err?.message !== undefined) {
+            enqueueSnackbar(err?.message, {
+                variant: variant,
+                preventDuplicate: true,
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right",
+                },
+            });
+        }
     };
 
     const resetState = () => {
@@ -161,7 +157,10 @@ const AddProductForm = ({
             return axios.put(`${API_URL}/api/admin/product`, { ...data, _id });
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({
+                queryKey: ["products"],
+            });
+
             history(redirect);
         },
     });
@@ -190,14 +189,14 @@ const AddProductForm = ({
         e.preventDefault();
 
         const data = {
-            name,
-            description,
-            price,
-            images,
-            category,
-            seller,
-            status,
-            store,
+            name: name,
+            description: description,
+            price: price,
+            images: images,
+            category: category,
+            seller: seller.toString(),
+            status: status,
+            store: store,
             properties: { ...productProperties, ...multiProperty },
         };
 
@@ -210,9 +209,9 @@ const AddProductForm = ({
         } else {
             setErrors([]);
             if (_id) {
-                mutationPut.mutate({ data: formData, _id: _id });
+                mutationPut.mutate({ data: data, _id: _id });
             } else {
-                mutationPost.mutate({ data: formData });
+                mutationPost.mutate({ data: data });
             }
         }
 
@@ -253,7 +252,7 @@ const AddProductForm = ({
                 setImages((oldImages) => {
                     return [...oldImages, ...res.data.links];
                 });
-                console.log(images);
+
                 setIsUploading(false);
             }
         }
@@ -379,7 +378,8 @@ const AddProductForm = ({
                                     onValueChange={(e) => setName(e)}
                                 />
                             </div>
-                            {getError("name")}
+                            {errors.length > 0 &&
+                                showAlert(errors, "error", "name")}
                             <div>
                                 <label className='block text-sm font-medium text-gray-600'>
                                     Aggiungi immagine
@@ -478,11 +478,11 @@ const AddProductForm = ({
                                                         </div>
                                                     ))
                                                 ) : (
-                                                    <div className='max-w-[2.75rem] h-11'></div>
+                                                    <div className='max-w-[5rem] h-11'></div>
                                                 )}
                                             </ReactSortable>
                                             {isUploading && (
-                                                <div className='h-6 mt-2 ml-1.5 flex items-center'>
+                                                <div className='h-8 mt-4 ml-3.5 flex items-center'>
                                                     <Spinner />
                                                 </div>
                                             )}
@@ -501,7 +501,8 @@ const AddProductForm = ({
                                     onValueChange={(e) => setDescription(e)}
                                     className='mt-2'
                                 ></Textarea>
-                                {getError("description")}
+                                {errors.length > 0 &&
+                                    showAlert(errors, "error", "description")}
                             </div>
                             <div>
                                 <label className='block text-sm font-medium text-gray-600'>
@@ -518,7 +519,8 @@ const AddProductForm = ({
                                     prefix={"€"}
                                     step={1}
                                 />
-                                {getError("price")}
+                                {errors.length > 0 &&
+                                    showAlert(errors, "error", "price")}
                             </div>
                         </div>
                     </div>
@@ -541,7 +543,8 @@ const AddProductForm = ({
                                     {options[1]}
                                 </SelectItem>
                             </Select>
-                            {getError("status")}
+                            {errors.length > 0 &&
+                                showAlert(errors, "error", "status")}
                         </div>
                     </div>
                     <div className='rounded-md border border-gray-200 bg-white'>
@@ -561,7 +564,8 @@ const AddProductForm = ({
                                     </SelectItem>
                                 ))}
                             </Select>
-                            {getError("store")}
+                            {errors.length > 0 &&
+                                showAlert(errors, "error", "store")}
                         </div>
                     </div>
                     <div className='rounded-md border border-gray-200 bg-white'>
@@ -602,7 +606,8 @@ const AddProductForm = ({
                                         ))}
                                     </ul>
                                 </div>
-                                {getError("seller")}
+                                {errors.length > 0 &&
+                                    showAlert(errors, "error", "seller")}
                             </div>
                         </div>
                     </div>
