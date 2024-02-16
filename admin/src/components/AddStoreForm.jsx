@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 
+import { useSnackbar } from "notistack";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useCreateStore } from "@/store/react-query/hooks/useMutations";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -16,10 +18,22 @@ import {
 } from "@tremor/react";
 import { MapPinIcon } from "@heroicons/react/20/solid";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
+
+const schema = z.object({
+    isOpen: z.boolean(),
+    name: z.string().min(8),
+    shopAddress: z.object({
+        address: z.string().min(8),
+        city: z.string().min(2),
+        postalCode: z.string().min(2),
+    }),
+    deliveryRadius: z.string().min(1),
+});
 
 const AddStoreForm = ({
     setDirty,
@@ -31,16 +45,36 @@ const AddStoreForm = ({
     shopAddress: previousShopAddress,
     deliveryRadius: previousDeliveryRadius,
 }) => {
-    const { register, handleSubmit, setError, reset, watch } = useForm({
+    const {
+        register,
+        handleSubmit,
+        setError,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm({
         defaultValues: {
             name: previousName,
             isOpen: previousOpen,
             shopAddress: previousShopAddress,
             deliveryRadius: previousDeliveryRadius,
         },
+        resolver: zodResolver(schema),
     });
 
     const watchShowOpen = watch("isOpen");
+    const { enqueueSnackbar } = useSnackbar();
+
+    const showAlert = (err, variant) => {
+        enqueueSnackbar(err, {
+            variant: variant,
+            preventDuplicate: true,
+            anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "right",
+            },
+        });
+    };
 
     const markFormDirty = () => setDirty(true);
 
@@ -163,6 +197,8 @@ const AddStoreForm = ({
                                     placeholder='Titolo'
                                     {...register("name")}
                                 />
+                                {errors.name &&
+                                    showAlert(errors.name.message, "error")}
                             </div>
                         </div>
                         <div className='flex flex-col gap-6 p-6'>
@@ -210,13 +246,18 @@ const AddStoreForm = ({
 
                                 <NumberInput
                                     icon={MapPinIcon}
-                                    type='number'
                                     {...register("deliveryRadius")}
                                     className='max-w-xs mt-2'
                                     placeholder='Scegli...'
                                     max={50}
+                                    min={1}
                                 />
                             </div>
+                            {errors.deliveryRadius &&
+                                showAlert(
+                                    errors.deliveryRadius.message,
+                                    "error"
+                                )}
                         </div>
                     </div>
                 </div>
