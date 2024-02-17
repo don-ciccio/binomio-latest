@@ -41,6 +41,7 @@ exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
     if (!user) {
         next(new ErrorHandler("User not login", 403));
     }
+
     res.status(200).json({
         success: true,
         user,
@@ -69,6 +70,13 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
     if (!doesPasswordMatch) {
         return next(new ErrorHandler("Invalid email or password", 401));
     }
+
+    req.session.user = {
+        name: user.name,
+        isLoggedIn: true,
+    };
+
+    await req.session.save();
 
     sendToken(user, 200, res);
 });

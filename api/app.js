@@ -3,7 +3,7 @@ const cors = require("cors");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middleware/errors");
-
+const MongoStore = require("connect-mongo");
 const express = require("express");
 
 dotenv.config();
@@ -15,6 +15,12 @@ var sess = {
     resave: true,
     saveUninitialized: true,
 };
+
+const sessionStore = MongoStore.create({
+    mongoUrl: process.env.DB_URL,
+    ttl: 20000,
+    touchAfter: 24 * 3600,
+});
 
 if (app.get("env") === "PRODUCTION") {
     app.set("trust proxy", 1); // trust first proxy
@@ -34,6 +40,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(errorMiddleware);
+
+app.use(
+    session({
+        store: sessionStore,
+        secret: process.env.SESSION_SECRET,
+        saveUninitialized: false, // don't create session until something stored
+        resave: false,
+        cookie: {
+            secure: true, // if true only transmit cookie over https
+            httpOnly: true, // if true prevent client side JS from reading the cookie
+            maxAge: 1000 * 60 * 10, // session max age in miliseconds
+        },
+    })
+);
 
 // Import all routes
 const auth = require("./routes/auth");
