@@ -7,6 +7,7 @@ import {
     getStores,
     getStore,
     getContent,
+    getSessions,
 } from "../queries";
 
 export const useGetProducts = ({
@@ -65,4 +66,8 @@ export const useGetContent = () => {
         staleTime: 5000,
         cacheTime: 1000 * 60 * 60 * 24,
     });
+};
+
+export const useGetSessions = () => {
+    return useQuery(["sessions"], () => getSessions());
 };

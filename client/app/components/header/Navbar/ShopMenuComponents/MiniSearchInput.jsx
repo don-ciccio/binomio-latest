@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { animated, useSpring } from "@react-spring/web";
 
-import Image from "next/image";
 import SearchIcon from "@/app/components/icons/SearchIcon";
 
 const MiniSearchInput = ({ onClick, state, show }) => {
@@ -19,12 +18,14 @@ const MiniSearchInput = ({ onClick, state, show }) => {
                 style={expand}
                 className='w-full relative z-1 transition-width ease-in-out duration-300 focus:opacity-90'
             >
-                <form action='#' autoComplete='off'>
+                <form>
                     <label htmlFor='search' className='hidden'>
                         <span>Search</span>
                     </label>
                     <div>
                         <input
+                            name='Cerca'
+                            autoComplete='off'
                             id='search'
                             type='text'
                             placeholder='Cerca'

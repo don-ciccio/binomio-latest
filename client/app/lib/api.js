@@ -145,6 +145,15 @@ export const getUser = async () => {
     }
 };
 
+export const getSession = async () => {
+    try {
+        return await api.post("/api/session");
+    } catch (err) {
+        console.log(err.response.data);
+        return null;
+    }
+};
+
 export const logOut = async () => {
     try {
         return await api.get("/api/logout");

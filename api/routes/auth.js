@@ -9,6 +9,7 @@ const {
     googleController,
     refreshToken,
     logout,
+    countSessions,
 } = require("../controllers/authController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
@@ -19,6 +20,7 @@ router.route("/login").post(loginUser);
 router.route("/logout").get(logout);
 
 router.route("/me").get(isAuthenticatedUser, getUserProfile);
+router.route("/admin/session").get(isAuthenticatedUser, countSessions);
 
 // Google and Facebook Login
 router.route("/auth/google").post(googleController);

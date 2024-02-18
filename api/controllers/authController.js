@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Session = require("../models/session");
 
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
@@ -120,6 +121,12 @@ exports.googleController = catchAsyncErrors(async (req, res) => {
                             sameSite: "none",
                         };
 
+                        req.session.user = {
+                            name: user.name,
+                            isLoggedIn: true,
+                        };
+
+                        req.session.save();
                         res.status(200)
                             .cookie("user_token", tokens.id_token, options)
                             .cookie("ref_token", tokens.refresh_token, options)
@@ -156,6 +163,12 @@ exports.googleController = catchAsyncErrors(async (req, res) => {
                                 sameSite: "none",
                             };
 
+                            req.session.user = {
+                                name: user.name,
+                                isLoggedIn: true,
+                            };
+
+                            req.session.save();
                             res.status(200)
                                 .cookie("user_token", tokens.id_token, options)
                                 .cookie(
@@ -236,4 +249,16 @@ exports.refreshToken = catchAsyncErrors(async (req, res, next) => {
                 });
             }
         });
+});
+
+exports.countSessions = catchAsyncErrors(async (req, res, next) => {
+    const total = await Session.countDocuments();
+
+    const data = await Session.find();
+
+    if (total === 0) {
+        return next(new ErrorHandler("No db sessions found", 400));
+    }
+
+    res.status(200).json({ total, data });
 });
