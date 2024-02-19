@@ -134,8 +134,8 @@ const MobileCart = ({ open, contentWidth, show, toggle }) => {
                                 <li className='w-full p-0 absolute top-0 list-none'>
                                     <div className='px-2'>
                                         <form
+                                            name='search'
                                             className='block mt-0'
-                                            action='#'
                                             autoComplete='off'
                                         >
                                             <div className='relative block'>

@@ -12,11 +12,11 @@ import MobileNav from "../MobileNavbar/MobileNav";
 import Link from "next/link";
 
 const animationConfig = {
-    mass: 1,
     frictionLight: 20,
     frictionHeavy: 30,
     tension: 375,
-    delay: 125,
+    delay: 25,
+    duration: 50,
 };
 
 const Navbar = forwardRef((props, ref) => {
@@ -33,7 +33,7 @@ const Navbar = forwardRef((props, ref) => {
         widthBottom: "18px",
         widthMiddle: "18px",
         scale: "scale(0)",
-        config: config.gentle,
+        config: config.stiff,
     }));
 
     const setToggle = () => {
@@ -56,7 +56,7 @@ const Navbar = forwardRef((props, ref) => {
                 widthBottom: show ? "17px" : "22px",
                 widthMiddle: show ? "0px" : "0px",
             },
-            config: config.stiff,
+            config: config.default,
         });
     };
 
@@ -73,7 +73,7 @@ const Navbar = forwardRef((props, ref) => {
                     widthBottom: "18px",
                     widthMiddle: "18px",
                 },
-                config: { tension: 170, friction: 27, duration: 250 },
+                config: { tension: 170, friction: 27, duration: 150 },
             });
             setOpen(!open);
         }, 150);

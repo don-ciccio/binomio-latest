@@ -11,7 +11,7 @@ const HamburgerMenu = ({
     const handleClick = (e) => {
         e.preventDefault();
         api.start({
-            config: config.molasses,
+            config: config.wobbly,
             to:
                 open && show
                     ? [
