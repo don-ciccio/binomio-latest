@@ -92,7 +92,7 @@ const Filter = ({ data }) => {
                                 <div className='flex flex-col justify-center w-full border-b-[1px] border-zinc-300'>
                                     <MenuAccordion title={property._id}>
                                         <div className='mb-2'>
-                                            {property.values &&
+                                            {property?.values &&
                                                 property?.values.map(
                                                     (value, i) => (
                                                         <li
@@ -128,7 +128,7 @@ const Filter = ({ data }) => {
                             <div className='flex flex-col justify-center w-full'>
                                 <MenuAccordion title='Produttore'>
                                     <div className='mb-2'>
-                                        {data.sellers?.map((property, i) => (
+                                        {data?.sellers.map((property, i) => (
                                             <li
                                                 className='inline-block mr-2 mb-4'
                                                 key={i}

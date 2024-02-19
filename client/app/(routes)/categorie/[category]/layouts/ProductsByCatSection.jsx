@@ -37,7 +37,7 @@ const ProductsByCatSection = ({ initialData }) => {
     const [toggleView, setToggleView] = useState(true);
 
     const mounted = useMounted();
-    const { data, isLoading, isError } = useProductsByCategory({
+    const { data, isLoading, refetch } = useProductsByCategory({
         cat: params.category,
         query: current,
         initialData,
@@ -104,7 +104,12 @@ const ProductsByCatSection = ({ initialData }) => {
                 </div>
 
                 <div className='flex justify-end basis-1/4'>
-                    <button onClick={() => setOpen(!open)}>
+                    <button
+                        onClick={() => {
+                            setOpen(!open);
+                            refetch();
+                        }}
+                    >
                         <div className='flex flex-basis-11 justify-center'>
                             <div className='z-2 flex flex-row gap-1 items-center justify-center'>
                                 <div className='flex'>
@@ -127,7 +132,7 @@ const ProductsByCatSection = ({ initialData }) => {
                 </div>
             </div>
 
-            <Filter data={data} />
+            {!isLoading && <Filter data={data} />}
 
             <div
                 className={`${

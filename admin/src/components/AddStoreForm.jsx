@@ -54,10 +54,10 @@ const AddStoreForm = ({
         formState: { errors },
     } = useForm({
         defaultValues: {
-            name: previousName,
-            isOpen: previousOpen,
-            shopAddress: previousShopAddress,
-            deliveryRadius: previousDeliveryRadius,
+            name: previousName || "",
+            isOpen: previousOpen || false,
+            shopAddress: previousShopAddress || {},
+            deliveryRadius: previousDeliveryRadius || 1,
         },
         resolver: zodResolver(schema),
     });

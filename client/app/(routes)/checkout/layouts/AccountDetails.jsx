@@ -90,11 +90,7 @@ function AccountDetails({ setActiveStep }) {
                     </div>
                 </form>
             ) : (
-                <div className='min-h-[315px]'>
-                    <p>
-                        Benvenuto <strong>{authUser.name}!</strong>
-                    </p>
-                </div>
+                setActiveStep(1)
             )}
 
             <div className=' border-b border-zinc-300 pt-[100px]' />
