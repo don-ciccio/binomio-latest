@@ -73,6 +73,7 @@ export const useProductsByCategory = ({ cat, query, initialData }) => {
         () => getProductsByCategory(cat, query),
         {
             initialData: initialData,
+            staleTime: 1000,
         }
     );
 };
