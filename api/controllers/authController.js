@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Session = require("../models/session");
+const Product = require("../models/product");
 
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
@@ -254,11 +255,21 @@ exports.refreshToken = catchAsyncErrors(async (req, res, next) => {
 exports.countSessions = catchAsyncErrors(async (req, res, next) => {
     const total = await Session.countDocuments();
 
-    const data = await Session.find();
+    const totalProducts = await Product.countDocuments();
+    const activeProducts = await Product.find({ status: "Attivo" });
+    const inactiveProducts = await Product.find({ status: "Bozza" });
+
+    const sessions = await Session.find();
 
     if (total === 0) {
         return next(new ErrorHandler("No db sessions found", 400));
     }
 
-    res.status(200).json({ total, data });
+    res.status(200).json({
+        total,
+        sessions,
+        totalProducts,
+        activeProducts: activeProducts.length,
+        inactiveProducts: inactiveProducts.length,
+    });
 });

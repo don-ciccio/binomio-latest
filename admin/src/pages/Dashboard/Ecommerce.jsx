@@ -1,19 +1,26 @@
 import PropTypes from "prop-types";
 
-import { Metric, LineChart } from "@tremor/react";
-import Widgets from "../../components/ui/Widgets";
+import Loader from "@/components/common/Loader";
+import {
+    Metric,
+    LineChart,
+    Card,
+    Grid,
+    CategoryBar,
+    Legend,
+} from "@tremor/react";
 import { useGetSessions } from "../../store/react-query/hooks/useQueries";
 import { format, parseISO } from "date-fns";
 let times = [
-    { time: "1:00", Sessioni: 0 },
-    { time: "2:00", Sessioni: 0 },
-    { time: "3:00", Sessioni: 0 },
-    { time: "4:00", Sessioni: 0 },
-    { time: "5:00", Sessioni: 0 },
-    { time: "6:00", Sessioni: 0 },
-    { time: "7:00", Sessioni: 0 },
-    { time: "8:00", Sessioni: 0 },
-    { time: "9:00", Sessioni: 0 },
+    { time: "01:00", Sessioni: 0 },
+    { time: "02:00", Sessioni: 0 },
+    { time: "03:00", Sessioni: 0 },
+    { time: "04:00", Sessioni: 0 },
+    { time: "05:00", Sessioni: 0 },
+    { time: "06:00", Sessioni: 0 },
+    { time: "07:00", Sessioni: 0 },
+    { time: "08:00", Sessioni: 0 },
+    { time: "09:00", Sessioni: 0 },
     { time: "10:00", Sessioni: 0 },
     { time: "11:00", Sessioni: 0 },
     { time: "12:00", Sessioni: 0 },
@@ -28,23 +35,22 @@ let times = [
     { time: "21:00", Sessioni: 0 },
     { time: "22:00", Sessioni: 0 },
     { time: "23:00", Sessioni: 0 },
-    { time: "24:00", Sessioni: 0 },
+    { time: "00:00", Sessioni: 0 },
 ];
 
 const Ecommerce = () => {
-    const { data, isLoading } = useGetSessions();
+    const { data: dashboard, isLoading } = useGetSessions();
 
     const normalizeData = () => {
-        const array = data?.data.data.map((data) => ({
+        const array = dashboard?.data.sessions.map((data) => ({
             lastModified: format(parseISO(data.lastModified), "HH:00"),
-            id: data._id,
         }));
 
         return array;
     };
     const array = normalizeData();
 
-    let def = times.map(({ time }) => ({
+    const sessionsArray = times.map(({ time }) => ({
         time: time,
         Sessioni: array?.reduce(
             (acc, cur) => (cur.lastModified === time ? ++acc : acc),
@@ -77,18 +83,52 @@ const Ecommerce = () => {
         );
     };
 
+    if (isLoading)
+        return (
+            <div className='flex items-center justify-center h-screen'>
+                <Loader />
+            </div>
+        );
     return (
         <div className='h-full w-full bg-gray-50 px-3 py-12 xl:px-20'>
             <Metric>Dashboard</Metric>
-            <Widgets />
+            <Grid numItemsMd={2} numItemsLg={3} className='my-5 gap-5'>
+                <Card className='mx-auto max-w-md'>
+                    <p className='text-tremor-default text-tremor-content dark:text-dark-tremor-content'>
+                        Prodotti
+                    </p>
+                    <p className='text-tremor-metric text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold'>
+                        {dashboard?.data.totalProducts}
+                    </p>
+                    <CategoryBar
+                        className='mt-4'
+                        values={[
+                            dashboard?.data.activeProducts,
+                            dashboard?.data.inactiveProducts,
+                        ]}
+                        colors={["emerald", "red"]}
+                    />
+                    <Legend
+                        className='mt-3'
+                        categories={["Attivi", "Bozza"]}
+                        colors={["emerald", "red"]}
+                    />
+                </Card>
+
+                <Card className='mx-auto max-w-md'></Card>
+
+                <Card></Card>
+            </Grid>
             <LineChart
                 className='mt-6'
-                data={def}
+                data={sessionsArray}
                 index='time'
                 categories={["Sessioni"]}
-                colors={["blue"]}
+                colors={["emerald"]}
                 yAxisWidth={30}
                 customTooltip={customTooltip}
+                showAnimation={true}
+                curveType={"monotone"}
             />
         </div>
     );
