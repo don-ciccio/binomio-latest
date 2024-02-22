@@ -7,33 +7,48 @@ import {
 } from "@/app/lib/api";
 import ProductsByCatSection from "./layouts/ProductsByCatSection";
 import Breadcrumb from "@/app/components/ui/Breadcrumb";
+import {
+    dehydrate,
+    HydrationBoundary,
+    QueryClient,
+} from "@tanstack/react-query";
 
 export default async function Home({ params, searchParams }) {
-    const initialCategories = await getCategories("");
-    const initialContent = await getContent();
-    const initialProducts = await getProductsByCategory(
-        params.category,
-        searchParams
-    );
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery({
+        queryKey: ["categories"],
+        queryFn: getCategories,
+    });
+    await queryClient.prefetchQuery({
+        queryKey: ["content"],
+        queryFn: getContent,
+    });
+    await queryClient.prefetchQuery({
+        queryKey: ["products", "category"],
+        queryFn: getProductsByCategory(params.category, searchParams),
+    });
 
     return (
         <div className='pb-24'>
-            <Header
-                categories={initialCategories}
-                message={initialContent.data?.content.topbar}
-                className={`origin-[center_center_0px] align-middle w-20 h-20 block rounded-full`}
-            >
-                <SVGLogo className='overflow-hidden align-middle h-full w-full' />
-            </Header>
-            <div id='maincontent' className='mt-36 flex-basis-1 relative z-2'>
-                <div className='px-6 sm:px-14 relative z-1'>
-                    <Breadcrumb />
-                </div>
+            <HydrationBoundary state={dehydrate(queryClient)}>
+                <Header
+                    className={`origin-[center_center_0px] align-middle w-20 h-20 block rounded-full`}
+                >
+                    <SVGLogo className='overflow-hidden align-middle h-full w-full' />
+                </Header>
+                <div
+                    id='maincontent'
+                    className='mt-36 flex-basis-1 relative z-2'
+                >
+                    <div className='px-6 sm:px-14 relative z-1'>
+                        <Breadcrumb />
+                    </div>
 
-                <div className='xs:px-5 px-3'>
-                    <ProductsByCatSection initialData={initialProducts} />
+                    <div className='xs:px-5 px-3'>
+                        <ProductsByCatSection />
+                    </div>
                 </div>
-            </div>
+            </HydrationBoundary>
         </div>
     );
 }

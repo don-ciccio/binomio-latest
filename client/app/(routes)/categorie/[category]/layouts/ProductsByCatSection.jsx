@@ -26,7 +26,7 @@ function shorten(str, maxLen) {
     return trimmed_str.split(" ").splice(0, maxLen).join(" ");
 }
 
-const ProductsByCatSection = ({ initialData }) => {
+const ProductsByCatSection = () => {
     const open = useToggle((state) => state.open);
     const setOpen = useToggle((state) => state.setOpen);
     const params = useParams();
@@ -40,7 +40,6 @@ const ProductsByCatSection = ({ initialData }) => {
     const { data, isLoading, refetch } = useProductsByCategory({
         cat: params.category,
         query: current,
-        initialData,
     });
 
     const existingParams = [];
@@ -107,7 +106,6 @@ const ProductsByCatSection = ({ initialData }) => {
                     <button
                         onClick={() => {
                             setOpen(!open);
-                            refetch();
                         }}
                     >
                         <div className='flex flex-basis-11 justify-center'>
@@ -132,7 +130,7 @@ const ProductsByCatSection = ({ initialData }) => {
                 </div>
             </div>
 
-            {!isLoading && <Filter data={data} />}
+            <Filter />
 
             <div
                 className={`${

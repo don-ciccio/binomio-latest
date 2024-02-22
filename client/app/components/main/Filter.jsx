@@ -1,24 +1,30 @@
 "use client";
-
+import { QueryClient } from "@tanstack/react-query";
 import { useSpring, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
-import dynamic from "next/dynamic";
 
-const Modal = dynamic(
-    () => {
-        return import("../ui/Modal");
-    },
-    { ssr: false }
-);
+import Modal from "../ui/Modal";
 
 import MenuAccordion from "../ui/Accordion";
-import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
 import { useToggle } from "@/app/lib/store";
 import ContentAnimatedModal from "../ui/ContentAnimatedModal";
 
-const Filter = ({ data }) => {
+import { useProductsByCategory } from "@/app/lib/api";
+
+import { useRouter, useParams, useSearchParams } from "next/navigation";
+
+const Filter = () => {
+    const queryClient = new QueryClient();
+
+    const params = useParams();
+    const searchParams = useSearchParams();
+    const current = qs.parse(searchParams.toString());
     const [refWidth, { width }] = useMeasure();
+    const { data } = useProductsByCategory({
+        cat: params.category,
+        query: current,
+    });
 
     const open = useToggle((state) => state.open);
     const setOpen = useToggle((state) => state.setOpen);
@@ -29,7 +35,6 @@ const Filter = ({ data }) => {
         config: { duration: 650, mass: 5, tension: 1500, friction: 100 },
     });
 
-    const searchParams = useSearchParams();
     const router = useRouter();
 
     const selectedValue = (valueKey) => {
@@ -56,6 +61,9 @@ const Filter = ({ data }) => {
             { skipNull: true }
         );
 
+        queryClient.refetchQueries({
+            queryKey: ["products", "category"],
+        });
         router.push(url);
     };
 
@@ -87,6 +95,7 @@ const Filter = ({ data }) => {
                                 Filtra per:
                             </h2>
                         </div>
+
                         {data?.properties.map((property, i) => (
                             <ContentAnimatedModal key={i}>
                                 <div className='flex flex-col justify-center w-full border-b-[1px] border-zinc-300'>
@@ -98,12 +107,12 @@ const Filter = ({ data }) => {
                                                         <li
                                                             className='inline-block mr-2 mb-4'
                                                             key={i}
-                                                            onClick={() =>
+                                                            onClick={() => {
                                                                 onClick(
                                                                     value,
                                                                     property._id
-                                                                )
-                                                            }
+                                                                );
+                                                            }}
                                                         >
                                                             <label
                                                                 className={`${
@@ -132,9 +141,9 @@ const Filter = ({ data }) => {
                                             <li
                                                 className='inline-block mr-2 mb-4'
                                                 key={i}
-                                                onClick={() =>
-                                                    onClick(property, "seller")
-                                                }
+                                                onClick={() => {
+                                                    onClick(property, "seller");
+                                                }}
                                             >
                                                 <label
                                                     className={`${

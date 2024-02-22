@@ -14,5 +14,5 @@ export default function Modal({ children }) {
 
     return open && mounted
         ? createPortal(<div ref={eleCallBack}>{children}</div>, document.body)
-        : createPortal(<>{children}</>, document.body);
+        : null;
 }
