@@ -1,5 +1,4 @@
 "use client";
-import { QueryClient } from "@tanstack/react-query";
 import { useSpring, animated } from "@react-spring/web";
 import useMeasure from "react-use-measure";
 
@@ -10,21 +9,12 @@ import qs from "query-string";
 import { useToggle } from "@/app/lib/store";
 import ContentAnimatedModal from "../ui/ContentAnimatedModal";
 
-import { useProductsByCategory } from "@/app/lib/api";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import { useRouter, useParams, useSearchParams } from "next/navigation";
-
-const Filter = () => {
-    const queryClient = new QueryClient();
-
-    const params = useParams();
+const Filter = ({ data }) => {
     const searchParams = useSearchParams();
-    const current = qs.parse(searchParams.toString());
+
     const [refWidth, { width }] = useMeasure();
-    const { data } = useProductsByCategory({
-        cat: params.category,
-        query: current,
-    });
 
     const open = useToggle((state) => state.open);
     const setOpen = useToggle((state) => state.setOpen);
@@ -41,7 +31,8 @@ const Filter = () => {
         return searchParams.get(valueKey);
     };
 
-    const onClick = (id, valueKey) => {
+    const onClick = (id, valueKey, e) => {
+        e.preventDefault();
         const current = qs.parse(searchParams.toString());
 
         const query = {
@@ -61,9 +52,6 @@ const Filter = () => {
             { skipNull: true }
         );
 
-        queryClient.refetchQueries({
-            queryKey: ["products", "category"],
-        });
         router.push(url);
     };
 
@@ -107,10 +95,11 @@ const Filter = () => {
                                                         <li
                                                             className='inline-block mr-2 mb-4'
                                                             key={i}
-                                                            onClick={() => {
+                                                            onClick={(e) => {
                                                                 onClick(
                                                                     value,
-                                                                    property._id
+                                                                    property._id,
+                                                                    e
                                                                 );
                                                             }}
                                                         >
@@ -141,8 +130,12 @@ const Filter = () => {
                                             <li
                                                 className='inline-block mr-2 mb-4'
                                                 key={i}
-                                                onClick={() => {
-                                                    onClick(property, "seller");
+                                                onClick={(e) => {
+                                                    onClick(
+                                                        property,
+                                                        "seller",
+                                                        e
+                                                    );
                                                 }}
                                             >
                                                 <label

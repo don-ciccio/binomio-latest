@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import api from "./utils/axiosInterceptor";
 import qs from "query-string";
 import axios from "axios";
@@ -86,6 +86,7 @@ export const useProductsByCategory = ({ cat, query }) => {
     return useQuery({
         queryKey: ["products", "category", { cat, query }],
         queryFn: () => getProductsByCategory(cat, query),
+        ...{ placeholderData: keepPreviousData },
     });
 };
 

@@ -15,6 +15,7 @@ import {
 
 export default async function Home({ params, searchParams }) {
     const queryClient = new QueryClient();
+
     await queryClient.prefetchQuery({
         queryKey: ["categories"],
         queryFn: getCategories,

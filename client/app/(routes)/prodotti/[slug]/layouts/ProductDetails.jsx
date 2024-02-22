@@ -6,7 +6,8 @@ import { useGetProduct } from "@/app/lib/api";
 import { useParams } from "next/navigation";
 import { useCartStore, useToastStore } from "@/app/lib/store";
 import { useState } from "react";
-const ProductDetails = ({ initialProduct }) => {
+
+const ProductDetails = () => {
     const params = useParams();
     const { cart, addToCart } = useCartStore();
     const { setToast } = useToastStore();
@@ -14,7 +15,6 @@ const ProductDetails = ({ initialProduct }) => {
 
     const { data, isLoading, isError } = useGetProduct({
         slug: params.slug,
-        initialProduct,
     });
 
     async function handleClick(productId, e) {
@@ -60,20 +60,20 @@ const ProductDetails = ({ initialProduct }) => {
                         <div className='mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none'></div>
 
                         <img
-                            src={data?.product[0].images[0]}
-                            alt={data?.product[0].name}
+                            src={data?.product[0]?.images[0]}
+                            alt={data?.product[0]?.name}
                             className='rounded-lg object-cover p-3 object-center bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-400 via-zinc-300 to-zinc-200 shadow-sm'
                         />
                     </div>
                     <div className='mt-5 px-4 sm:px-0 lg:mt-0'>
                         <div>
                             <h1 className='text-3xl font-bold text-gray-900'>
-                                {data?.product[0].name}
+                                {data?.product[0]?.name}
                             </h1>
                             <div className='mt-3 flex items-end justify-between'>
                                 <div className='text-2xl text-gray-900'>
                                     <p className='font-semibold'>
-                                        €{data?.product[0].price}
+                                        €{data?.product[0]?.price}
                                     </p>
                                 </div>
                             </div>
@@ -138,19 +138,19 @@ const ProductDetails = ({ initialProduct }) => {
                                 </div>
                                 <RippleButton
                                     onClick={(e) =>
-                                        handleClick(data?.product[0]._id, e)
+                                        handleClick(data?.product[0]?._id, e)
                                     }
                                     label='Aggiungi al carrello'
                                 />
                             </div>
                             <div className='mt-3 flex items-end justify-between'>
-                                <p>{data?.product[0].description}</p>
+                                <p>{data?.product[0]?.description}</p>
                             </div>
                             <div className='mt-5 flex items-end justify-between'>
                                 <ul>
-                                    {data?.product[0].properties &&
+                                    {data?.product[0]?.properties &&
                                         Object.entries(
-                                            data?.product[0].properties
+                                            data?.product[0]?.properties
                                         ).map(([key, value]) => (
                                             <li
                                                 key={key}
