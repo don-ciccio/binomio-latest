@@ -16,11 +16,11 @@ import RippleButton from "../ui/Button";
 import { useGetContentHero, useGetCategories } from "@/app/lib/api";
 
 const Main = React.forwardRef((props, ref) => {
-    const { data } = useGetContentHero(props);
+    const { data } = useGetContentHero();
     const [search, setSearch] = useState("");
-    const { data: categories } = useGetCategories({ search, props });
+    const { data: categories } = useGetCategories({ search });
 
-    const withParent = categories.filter((p) => p.hasOwnProperty("parent"));
+    const withParent = categories?.filter((p) => p.hasOwnProperty("parent"));
     const divScroll = useRef();
     const [scrollPosition, setScrollPosition] = useState(0);
     const [scrollRange, setScrollRange] = useState(0);
@@ -114,10 +114,10 @@ const Main = React.forwardRef((props, ref) => {
                     ></span>
                     <div className='top-16 relative pt-20 pb-8 px-3 text-center	rounded-2xl	shadow-sm bg-white overflow-hidden '>
                         <h2 className='mb-2.5 tracking-wide uppercase text-2xl max-w-3xl mx-auto font-medium'>
-                            {data.data?.content.heroTitle}
+                            {data?.content.heroTitle}
                         </h2>
                         <p className='text-lg px-3 max-w-3xl mx-auto mt-0 mb-1.5'>
-                            {data.data?.content.heroDescription}
+                            {data?.content.heroDescription}
                         </p>
 
                         <div className='mt-8 block'>

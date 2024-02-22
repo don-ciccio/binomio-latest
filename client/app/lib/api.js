@@ -18,14 +18,18 @@ export const getProducts = async (
         sort.order
     }&category=${filterCategory.toString()}&status=${status}&search=${search}&limit=${limit}`;
 
-    const { data } = await axios.get(url);
+    const response = await fetch(url, { method: "GET" });
+    const data = await response.json();
     return data;
 };
 
 export const getCategories = async (search) => {
-    const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories?search=${search}`
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories?search=${search}`,
+        { method: "GET" }
     );
+
+    const data = await response.json();
     return data;
 };
 
@@ -34,48 +38,55 @@ export const getProductsByCategory = async (cat, query) => {
         url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/${cat}`,
         query: query,
     });
-    const { data } = await axios.get(url);
+    const response = await fetch(url, { method: "GET" });
+    const data = await response.json();
     return data;
 };
 
 export const getProductsBySlug = async (slug) => {
-    const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/single/${slug}`
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/single/${slug}`,
+        { method: "GET" }
     );
+    const data = await response.json();
     return data;
 };
 
 export const getMenuBySlug = async (slug) => {
-    const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/menu/${slug}`
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/menu/${slug}`,
+        { method: "GET" }
     );
+    const data = await response.json();
     return data;
 };
 
 export const getContent = async () => {
-    return await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/content`
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/content`,
+        { method: "GET" }
     );
+    const data = await response.json();
+    return data;
 };
 
 export const getProductsByIds = async (ids) => {
     const idArray = ids.length < 1 ? null : ids;
     const query = qs.stringify({ filterBy: idArray });
 
-    return await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/cart?${query}`
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/cart?${query}`,
+        { method: "GET" }
     );
+    const data = await response.json();
+    return data;
 };
 
-export const useProductsByCategory = ({ cat, query, initialData }) => {
-    return useQuery(
-        ["products", "category", { cat, query, initialData }],
-        () => getProductsByCategory(cat, query),
-        {
-            initialData: initialData,
-            staleTime: 1000,
-        }
-    );
+export const useProductsByCategory = ({ cat, query }) => {
+    return useQuery({
+        queryKey: ["products", "category", { cat, query }],
+        queryFn: () => getProductsByCategory(cat, query),
+    });
 };
 
 export const useGetProducts = ({
@@ -86,51 +97,39 @@ export const useGetProducts = ({
     search,
     limit,
 }) => {
-    return useQuery(
-        [
+    return useQuery({
+        queryKey: [
             "products",
             "list",
             { page, sort, filterCategory, status, search, limit },
         ],
-        () => getProducts(page, sort, filterCategory, status, search, limit),
-        {
-            keepPreviousData: true,
-            staleTime: 5000,
-            cacheTime: 1000 * 60 * 60 * 24,
-        }
-    );
-};
+        queryFn: () =>
+            getProducts(page, sort, filterCategory, status, search, limit),
 
-export const useGetCategories = ({ search, categories }) => {
-    return useQuery(
-        ["categories", "list", { search }],
-        () => getCategories(search),
-        {
-            initialData: categories,
-        }
-    );
-};
-
-export const useGetProduct = ({ slug, productInitial }) => {
-    return useQuery(
-        ["products", "detail", { slug }],
-        () => getProductsBySlug(slug),
-        {
-            initialData: productInitial,
-        }
-    );
-};
-
-export const useGetContent = ({ message }) => {
-    return useQuery(["content"], () => getContent(), {
-        initialData: message,
+        keepPreviousData: true,
     });
 };
 
-export const useGetContentHero = (props) => {
-    return useQuery(["content"], () => getContent(), {
-        initialData: props,
+export const useGetCategories = ({ search }) => {
+    return useQuery({
+        queryKey: ["categories", "list", { search }],
+        queryFn: () => getCategories(search),
     });
+};
+
+export const useGetProduct = ({ slug }) => {
+    return useQuery({
+        queryKey: ["products", "detail", { slug }],
+        queryFn: () => getProductsBySlug(slug),
+    });
+};
+
+export const useGetContent = () => {
+    return useQuery({ queryKey: ["content"], queryFn: () => getContent() });
+};
+
+export const useGetContentHero = () => {
+    return useQuery({ queryKey: ["content"], queryFn: () => getContent() });
 };
 
 export const getUser = async () => {

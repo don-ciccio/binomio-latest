@@ -1,11 +1,12 @@
-import { useGetContent } from "@/app/lib/api";
+import { useGetContentHero } from "@/app/lib/api";
 import { ThemeContext } from "@/app/lib/context/theme";
 import { useTransition, animated } from "@react-spring/web";
 import { useContext } from "react";
 
-const TopMenu = ({ message }) => {
+const TopMenu = () => {
     const { state } = useContext(ThemeContext);
-    const { data } = useGetContent({ message });
+    const { data } = useGetContentHero();
+
     const transitions = useTransition(!state.active, {
         from: {
             opacity: state.active ? 0 : 1,
@@ -38,7 +39,7 @@ const TopMenu = ({ message }) => {
                                     : "shadow-black/25"
                             } shadow-sm bg-zinc-800 h-5 pt-0.5 text-xs items-center text-center uppercase text-zinc-200 tracking-tight`}
                         >
-                            <span>{data.data?.content.topbar}</span>
+                            <span>{data?.content.topbar}</span>
                         </animated.div>
                     )
             )}

@@ -38,7 +38,7 @@ export const useCart = () => {
         timestampMap.set(item.id, item.timestamp || 1);
     });
 
-    const cartData = data.data?.products
+    const cartData = data?.products
         .map((item) => {
             return {
                 id: item._id,

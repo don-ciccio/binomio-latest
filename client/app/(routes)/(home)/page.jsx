@@ -1,21 +1,34 @@
 import { getCategories, getContent, getProducts } from "@/app/lib/api";
 import HeroSection from "./layouts/HeroSection";
 import ProductsSection from "./layouts/ProductsSection";
+import {
+    dehydrate,
+    HydrationBoundary,
+    QueryClient,
+} from "@tanstack/react-query";
 
 export default async function Home() {
-    const initialCategories = await getCategories("");
-    const initialContent = await getContent();
-    const initialProducts = await getProducts();
+    const queryClient = new QueryClient();
+
+    await queryClient.fetchQuery({
+        queryKey: ["categories"],
+        queryFn: getCategories,
+    });
+    await queryClient.fetchQuery({
+        queryKey: ["content"],
+        queryFn: getContent,
+    });
+    await queryClient.fetchQuery({
+        queryKey: ["products"],
+        queryFn: getProducts,
+    });
 
     return (
         <div className='overflow-hidden block'>
-            <HeroSection
-                categories={initialCategories}
-                message={initialContent.data?.content.topbar}
-                herotitle={initialContent.data?.content.heroTitle}
-                herodescription={initialContent.data?.content.heroDescription}
-            />
-            <ProductsSection initialData={initialProducts} />
+            <HydrationBoundary state={dehydrate(queryClient)}>
+                <HeroSection />
+                <ProductsSection />
+            </HydrationBoundary>
         </div>
     );
 }

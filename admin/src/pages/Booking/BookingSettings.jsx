@@ -34,7 +34,7 @@ import {
     useTablesStore,
     useWeekdaysStore,
 } from "../../store/zustand/store";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import AddedElement from "../../components/common/AddedElement";
 
 import axios from "axios";
@@ -100,7 +100,7 @@ const BookingSettings = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
-    useEffect(() => {
+    useMemo(() => {
         setTableElement([]);
         if (location.length > 0) {
             setTabLocation(location[0]?.props.value);
@@ -122,7 +122,7 @@ const BookingSettings = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tables, location]);
 
-    useEffect(() => {
+    useMemo(() => {
         setLocation([]);
         areas?.forEach((area) => {
             setLocation((loc) => [

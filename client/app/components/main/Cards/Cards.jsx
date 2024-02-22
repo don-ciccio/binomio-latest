@@ -4,7 +4,7 @@ import SVGLogo from "@/app/components/icons/SVGLogo";
 const Cards = ({ style, items }) => {
     return (
         <>
-            {items.map(({ images, name, description }, i) => (
+            {items?.map(({ images, name, description }, i) => (
                 <a.div
                     style={style}
                     key={i}

@@ -1,7 +1,7 @@
 import Divider from "./Divider";
 import { Fragment } from "react";
 const steps = [
-    { label: "Profilo", number: 1, component: <Divider /> },
+    { label: "Login", number: 1, component: <Divider /> },
     { label: "Consegna", number: 2, component: <Divider /> },
     { label: "Pagamento", number: 3 },
 ];

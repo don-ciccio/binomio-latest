@@ -5,8 +5,7 @@ import { Icon } from "@iconify/react";
 import { useMounted } from "@/app/lib/hooks/useMounted";
 
 const fetchProducts = async (wishlistIds, wishlist) => {
-    const response = await getProductsByIds(wishlistIds);
-    const data = response.data;
+    const data = await getProductsByIds(wishlistIds);
 
     // Timestamp Mapping
     const timestampMap = new Map();

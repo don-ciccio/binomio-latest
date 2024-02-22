@@ -10,14 +10,13 @@ const Header = forwardRef((props, ref) => {
     return (
         <Container>
             <ThemeProvider>
-                <TopMenu message={props.message} />
+                <TopMenu />
                 <Navbar
                     {...props}
                     id={props.id}
                     ref={ref}
                     style={props.style}
                     className={props.className}
-                    categories={props.categories}
                 >
                     {props.children}
                 </Navbar>

@@ -4,11 +4,11 @@ import Link from "next/link";
 
 import { useState } from "react";
 
-const Links = ({ categories }) => {
+const Links = () => {
     const [search, setSearch] = useState("");
-    const { data } = useGetCategories({ search, categories });
+    const { data } = useGetCategories({ search });
 
-    const withoutParent = data.filter((p) => !p.hasOwnProperty("parent"));
+    const withoutParent = data?.filter((p) => !p.hasOwnProperty("parent"));
 
     return (
         <nav className='lg:block hidden'>

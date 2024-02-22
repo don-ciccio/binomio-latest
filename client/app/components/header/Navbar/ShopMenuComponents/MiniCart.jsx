@@ -26,7 +26,7 @@ const MiniCart = () => {
                                 {isLoading ? (
                                     <p>Loading...</p>
                                 ) : (
-                                    cartData.map((item) => (
+                                    cartData?.map((item) => (
                                         <li key={item.id} className='pb-5'>
                                             <div className='flex flex-row gap-1.5'>
                                                 <div className='flex flex-basis-25 max-w-1/4 px-2.5 h-full'>
