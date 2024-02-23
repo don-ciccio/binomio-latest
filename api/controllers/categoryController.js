@@ -56,10 +56,11 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
                     },
                 },
             ]).exec();
+            const admin = await Category.populate(data, { path: "parent" });
+            const menu = data?.filter((p) => !p.hasOwnProperty("parent"));
+            const food = data?.filter((p) => p.hasOwnProperty("parent"));
 
-            res.status(200).json(
-                await Category.populate(data, { path: "parent" })
-            );
+            res.status(200).json({ admin, menu, food });
         }
     } catch (error) {
         return next(new ErrorHandler(error.message, 404));

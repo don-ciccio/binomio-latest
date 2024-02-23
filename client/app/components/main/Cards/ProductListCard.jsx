@@ -69,8 +69,8 @@ const ProductListCard = ({ name, price, images, id, description }) => {
             </div>
 
             <div className={"flex flex-auto h-full items-center"}>
-                <div className='flex gap-4 flex-auto h-full mt-4'>
-                    <div className='flex flex-col  gap-5'>
+                <div className='flex gap-4 flex-auto h-full mt-2'>
+                    <div className='flex flex-col  gap-3'>
                         <div className={"text-left flex text-xl font-semibold"}>
                             {name}
                         </div>

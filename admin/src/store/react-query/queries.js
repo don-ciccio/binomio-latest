@@ -62,5 +62,5 @@ export const getCategories = async (search = "") => {
     const { data } = await axios.get(
         `${API_URL}/api/categories?search=${search}`
     );
-    return data;
+    return data?.admin;
 };

@@ -7,14 +7,21 @@ import {
     useChain,
     useSpringRef,
 } from "@react-spring/web";
-
+import { useGetCategories } from "@/app/lib/api";
+import Link from "next/link";
 import MobileMenuList from "./MobileMenuList";
 import MobileSubmenu from "./MobileSubmenu";
 
-import { useEffect } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
+import AccountIcon from "../../icons/AccountIcon";
+import HeartIcon from "../../icons/HeartIcon";
+import CartIcon from "../../icons/CartIcon";
 
 const MobileNav = ({ open, show, toggle }) => {
+    const [search, setSearch] = useState("");
+    const { data } = useGetCategories({ search });
+
     const headings = [
         "Woman",
         "Man",
@@ -103,7 +110,7 @@ const MobileNav = ({ open, show, toggle }) => {
                                 className='block top-32 w-full fixed left-0 bottom-0 overflow-y-auto'
                             >
                                 {open &&
-                                    headings.length &&
+                                    data?.menu.length &&
                                     trail.map((props, index) => {
                                         return (
                                             <MobileMenuList
@@ -111,109 +118,57 @@ const MobileNav = ({ open, show, toggle }) => {
                                                 index={index}
                                                 style={{ ...props }}
                                             >
-                                                <li
-                                                    onClick={toggle}
-                                                    className='border-gray-300 border-b list-none'
-                                                >
-                                                    <div className='h-16 flex flex-wrap justify-between uppercase text-xl leading-5 tracking-wide '>
-                                                        <p className='flex items-center pl-5 m-0 leading-5'>
-                                                            Vini
-                                                        </p>
-                                                        <span className='h-16 w-16 flex justify-center items-center'>
-                                                            <Image
-                                                                width={20}
-                                                                height={20}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                }}
-                                                                className='transform rotate-180 max-w-full h-auto border-none align-middle'
-                                                                src='./images/left-chevron.svg'
-                                                                alt='arrow'
-                                                            />
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                                <li className='border-gray-300 border-b list-none'>
-                                                    <div className='h-16 flex flex-wrap justify-between uppercase text-xl leading-5 tracking-wide '>
-                                                        <p className='flex items-center pl-5 m-0 leading-5'>
-                                                            Birre
-                                                        </p>
-                                                        <span className='h-16 w-16 flex justify-center items-center'>
-                                                            <Image
-                                                                width={20}
-                                                                height={20}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                }}
-                                                                className='transform rotate-180 max-w-full h-auto border-none align-middle'
-                                                                src='./images/left-chevron.svg'
-                                                                alt='arrow'
-                                                            />
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                                <li className='border-gray-300 border-b list-none'>
-                                                    <div className='h-16 flex flex-wrap justify-between uppercase text-xl leading-5 tracking-wide '>
-                                                        <p className='flex items-center pl-5 m-0 leading-5'>
-                                                            Cocktail
-                                                        </p>
-                                                        <span className='h-16 w-16 flex justify-center items-center'>
-                                                            <Image
-                                                                width={20}
-                                                                height={20}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                }}
-                                                                className='transform rotate-180 max-w-full h-auto border-none align-middle'
-                                                                src='./images/left-chevron.svg'
-                                                                alt='arrow'
-                                                            />
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                                <li className='border-gray-300 border-b list-none'>
-                                                    <div className='h-16 flex flex-wrap justify-between uppercase text-xl leading-5 tracking-wide '>
-                                                        <p className='flex items-center pl-5 m-0 leading-5'>
-                                                            Analcolici
-                                                        </p>
-                                                        <span className='h-16 w-16 flex justify-center items-center'>
-                                                            <Image
-                                                                width={20}
-                                                                height={20}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                }}
-                                                                className='transform rotate-180 max-w-full h-auto border-none align-middle'
-                                                                src='./images/left-chevron.svg'
-                                                                alt='arrow'
-                                                            />
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                                <li className='border-gray-300 border-b list-none'>
-                                                    <div className='h-16 flex flex-wrap justify-between uppercase text-xl leading-5 tracking-wide '>
-                                                        <p className='flex items-center pl-5 m-0 leading-5'>
-                                                            Menu Food
-                                                        </p>
-                                                        <span className='h-16 w-16 flex justify-center items-center'>
-                                                            <Image
-                                                                width={20}
-                                                                height={20}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                }}
-                                                                className='transform rotate-180 max-w-full h-auto border-none align-middle'
-                                                                src='./images/left-chevron.svg'
-                                                                alt='arrow'
-                                                            />
-                                                        </span>
-                                                    </div>
-                                                </li>
+                                                {data?.menu.map(
+                                                    (category, index) =>
+                                                        category.slug !==
+                                                            "menu" && (
+                                                            <Link
+                                                                href={`/categorie/${category.slug}`}
+                                                                key={index}
+                                                            >
+                                                                <li className='border-gray-300 border-b list-none'>
+                                                                    <div className='h-16 flex flex-wrap justify-between  text-lg leading-5 tracking-wide '>
+                                                                        <p className='flex items-center pl-5 m-0 leading-5'>
+                                                                            {
+                                                                                category.name
+                                                                            }
+                                                                        </p>
+                                                                        <span className='h-16 w-16 flex justify-center items-center'>
+                                                                            <Icon
+                                                                                className='w-6 h-6 cursor-pointer'
+                                                                                icon='oui:arrow-right'
+                                                                            />
+                                                                        </span>
+                                                                    </div>
+                                                                </li>
+                                                            </Link>
+                                                        )
+                                                )}
+                                                {data?.menu.map(
+                                                    (category, index) =>
+                                                        category.slug ===
+                                                            "menu" && (
+                                                            <li
+                                                                onClick={toggle}
+                                                                key={index}
+                                                                className='border-gray-300 border-b list-none  last-of-type:text-orange-600'
+                                                            >
+                                                                <div className='h-16 flex flex-wrap justify-between  font-medium text-lg leading-5 tracking-wide '>
+                                                                    <p className='flex items-center pl-5 m-0 leading-5'>
+                                                                        {
+                                                                            category.name
+                                                                        }
+                                                                    </p>
+                                                                    <span className='h-16 w-16 flex justify-center items-center'>
+                                                                        <Icon
+                                                                            className='w-6 h-6 cursor-pointer'
+                                                                            icon='oui:arrow-right'
+                                                                        />
+                                                                    </span>
+                                                                </div>
+                                                            </li>
+                                                        )
+                                                )}
                                                 <li className='border-gray-300 border-b border-t list-none'>
                                                     <div className='h-16 flex flex-wrap justify-between text-xl leading-5 tracking-wide '>
                                                         <h5 className='flex items-center m-0 pl-5 font-semibold text-base'>
@@ -226,16 +181,9 @@ const MobileNav = ({ open, show, toggle }) => {
                                                             <span className='align-middle h-5 inline-block leading-5 text-xs mr-2'>
                                                                 IT
                                                             </span>
-                                                            <Image
-                                                                width={20}
-                                                                height={20}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                }}
-                                                                className='overflow-hidden align-middle inline-block h-5 w-5'
-                                                                src='./images/down-chevron.svg'
-                                                                alt='arrow down'
+                                                            <Icon
+                                                                className='w-6 h-6 cursor-pointer'
+                                                                icon='oui:arrow-down'
                                                             />
                                                         </a>
                                                     </div>
@@ -246,17 +194,7 @@ const MobileNav = ({ open, show, toggle }) => {
                                                             href='/#'
                                                             className='no-underline bg-transparent cursor-pointer text-center'
                                                         >
-                                                            <Image
-                                                                width={20}
-                                                                height={20}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                }}
-                                                                className='max-w-full h-auto align-middle border-none inline-block'
-                                                                src='./images/account.svg'
-                                                                alt='account'
-                                                            />
+                                                            <AccountIcon />
                                                             <p className='leading-5 mb-2.5 block mt-0'>
                                                                 Account
                                                             </p>
@@ -267,17 +205,7 @@ const MobileNav = ({ open, show, toggle }) => {
                                                             href='/#'
                                                             className='no-underline bg-transparent cursor-pointer text-center'
                                                         >
-                                                            <Image
-                                                                width={20}
-                                                                height={20}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                }}
-                                                                className='max-w-full h-auto align-middle border-none inline-block'
-                                                                src='./images/wish-off.svg'
-                                                                alt='wishList'
-                                                            />
+                                                            <HeartIcon className='w-7 h-7' />
                                                             <p className='leading-5 mb-2.5 block mt-0'>
                                                                 Wishlist
                                                             </p>
@@ -288,17 +216,7 @@ const MobileNav = ({ open, show, toggle }) => {
                                                             href='/#'
                                                             className='no-underline bg-transparent cursor-pointer text-center'
                                                         >
-                                                            <Image
-                                                                width={20}
-                                                                height={20}
-                                                                style={{
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                }}
-                                                                className='max-w-full h-auto align-middle border-none inline-block'
-                                                                src='./images/pin.svg'
-                                                                alt='stores'
-                                                            />
+                                                            <CartIcon />
                                                             <p className='leading-5 mb-2.5 block mt-0'>
                                                                 Stores
                                                             </p>
