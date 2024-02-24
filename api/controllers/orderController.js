@@ -23,7 +23,7 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
             storeId = item.store;
             stores.push(storeId);
         });
-
+        console.log(orderItems);
         let address = `${shippingInfo.address} ${shippingInfo.postalCode} ${shippingInfo.city} `;
 
         let location = await getAddressCordinates(address, API_KEY);

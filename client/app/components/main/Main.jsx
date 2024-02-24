@@ -11,18 +11,46 @@ import { vectorScaling, clamp } from "@/app/lib/utils/utilFuncs";
 import Cards from "./Cards/Cards";
 import Slider from "./Cards/Slider";
 
-import RippleButton from "../ui/Button";
-
 /* data */
 import { useGetContentHero, useGetCategories } from "@/app/lib/api";
+import { useReservationStore } from "@/app/lib/store/reservationStore";
 
 const Main = React.forwardRef((props, ref) => {
+    const id = "64787b91837e138ddfed4ed0";
     const [startDate, setStartDate] = useState(new Date());
     const [time, setTime] = useState("");
 
     const { data } = useGetContentHero();
     const [search, setSearch] = useState("");
     const { data: categories } = useGetCategories({ search });
+
+    const fetchDays = useReservationStore((state) => state.fetch);
+    const fetchWeekDays = useReservationStore((state) => state.fetchWeekdays);
+
+    const blackoutDays = useReservationStore((state) => state.data);
+    const weekDays = useReservationStore((state) => state.weekdays);
+
+    const blackDays = blackoutDays?.map(
+        (day) =>
+            new Date(
+                new Date(day).getTime() -
+                    new Date(day).getTimezoneOffset() * -6000
+            )
+    );
+    const offDay = weekDays
+        ?.filter((weekday) => {
+            return weekday.reservationAvailable !== false;
+        })
+        .map((weekday) => weekday.weekday);
+
+    const isWeekday = (date) => {
+        const day = new Date(
+            new Date(date).getTime() -
+                new Date(date).getTimezoneOffset() * -6000
+        ).getDay();
+
+        return offDay.includes(day);
+    };
 
     const divScroll = useRef();
     const [scrollPosition, setScrollPosition] = useState(0);
@@ -74,6 +102,8 @@ const Main = React.forwardRef((props, ref) => {
     );
 
     useEffect(() => {
+        fetchDays(id);
+        fetchWeekDays(id);
         const onScroll = () => {
             const maxScrollLeft =
                 divScroll.current.scrollWidth - divScroll.current.clientWidth;
@@ -126,8 +156,10 @@ const Main = React.forwardRef((props, ref) => {
                                 {data?.content.heroDescription}
                             </p>
                         </div>
-                        <div className='flex flex-row flex-wrap gap-4 items-center justify-center'>
+                        <div className='flex flex-row flex-wrap gap-4 px-3 items-center justify-center'>
                             <CustomDatePicker
+                                filterDate={isWeekday}
+                                excludeDates={blackDays}
                                 selected={startDate}
                                 onChange={(date) => {
                                     setStartDate(date);
