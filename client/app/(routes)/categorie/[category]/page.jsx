@@ -25,7 +25,11 @@ export default async function Home({ params, searchParams }) {
         queryFn: getContent,
     });
     await queryClient.prefetchQuery({
-        queryKey: ["products", "category"],
+        queryKey: [
+            "products",
+            "category",
+            { cat: params.category, query: searchParams },
+        ],
         queryFn: getProductsByCategory(params.category, searchParams),
     });
 
