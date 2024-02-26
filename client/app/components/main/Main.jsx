@@ -13,22 +13,26 @@ import Slider from "./Cards/Slider";
 
 /* data */
 import { useGetContentHero, useGetCategories } from "@/app/lib/api";
-import { useReservationStore } from "@/app/lib/store/reservationStore";
+import {
+    useReservationStore,
+    useReservationDaysStore,
+} from "@/app/lib/store/reservationStore";
+import { CustomTimePicker } from "../ui/CustomTimePicker";
 
 const Main = React.forwardRef((props, ref) => {
     const id = "64787b91837e138ddfed4ed0";
     const [startDate, setStartDate] = useState(new Date());
-    const [time, setTime] = useState("");
+    const [time, setTime] = useState();
 
     const { data } = useGetContentHero();
     const [search, setSearch] = useState("");
     const { data: categories } = useGetCategories({ search });
 
     const fetchDays = useReservationStore((state) => state.fetch);
-    const fetchWeekDays = useReservationStore((state) => state.fetchWeekdays);
+    const fetchWeekDays = useReservationDaysStore((state) => state.fetch);
 
     const blackoutDays = useReservationStore((state) => state.data);
-    const weekDays = useReservationStore((state) => state.weekdays);
+    const weekDays = useReservationDaysStore((state) => state.data);
 
     const blackDays = blackoutDays?.map(
         (day) =>
@@ -167,41 +171,33 @@ const Main = React.forwardRef((props, ref) => {
                                 }}
                             />
                             <div className='relative z-20 bg-transparent dark:bg-form-input'>
-                                <select
-                                    value={time}
-                                    onChange={(e) => setTime(e.target.value)}
-                                    className='w-32 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
-                                >
-                                    <option disabled value=''>
-                                        Orario
-                                    </option>
-                                </select>
-                                <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2'>
-                                    <svg
-                                        className='fill-current'
-                                        width='24'
-                                        height='24'
-                                        viewBox='0 0 24 24'
-                                        fill='none'
-                                        xmlns='http://www.w3.org/2000/svg'
-                                    >
-                                        <g opacity='0.8'>
-                                            <path
-                                                fillRule='evenodd'
-                                                clipRule='evenodd'
-                                                d='M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z'
-                                                fill=''
-                                            ></path>
-                                        </g>
-                                    </svg>
-                                </span>
+                                {weekDays?.map((day, id) => {
+                                    return (
+                                        day.weekday === startDate.getDay() && (
+                                            <div key={id}>
+                                                <CustomTimePicker
+                                                    onChange={(date) =>
+                                                        setTime(date.getTime())
+                                                    }
+                                                    selected={
+                                                        day.startBookingHour
+                                                    }
+                                                    showTimeSelect
+                                                    showTimeSelectOnly
+                                                    timeIntervals={30}
+                                                    timeCaption='Orario'
+                                                    dateFormat='HH:mm'
+                                                    timeFormat='HH:mm'
+                                                    minTime={82800000}
+                                                    maxTime={day.endBookingHour}
+                                                />
+                                            </div>
+                                        )
+                                    );
+                                })}
                             </div>
                             <div className='relative z-20 bg-transparent dark:bg-form-input'>
-                                <select
-                                    value={time}
-                                    onChange={(e) => setTime(e.target.value)}
-                                    className='w-32 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
-                                >
+                                <select className='w-32 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'>
                                     <option disabled value=''>
                                         Ospiti
                                     </option>

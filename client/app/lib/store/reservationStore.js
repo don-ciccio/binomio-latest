@@ -18,7 +18,12 @@ export const useReservationStore = create((set) => ({
             set(() => ({ hasErrors: true, loading: false }));
         }
     },
-    fetchWeekdays: async (id) => {
+}));
+
+export const useReservationDaysStore = create((set) => ({
+    loading: false,
+    hasErrors: false,
+    fetch: async (id) => {
         set(() => ({ loading: true }));
         try {
             const response = await api.get(`api/admin/calendar/${id}`);

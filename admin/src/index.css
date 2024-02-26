@@ -32,7 +32,7 @@
 }
 
 .react-datepicker__time-box {
-  @apply absolute z-10 -mt-2 lg:min-w-[10.25rem] divide-y overflow-y-auto outline-none rounded-tremor-default max-h-[228px] -left-1 border bg-tremor-background border-tremor-border divide-tremor-border shadow-tremor-dropdown
+  @apply absolute z-10 -mt-2 lg:min-w-[11.15rem] divide-y overflow-y-auto outline-none rounded-tremor-default max-h-[228px] -left-1 border bg-tremor-background border-tremor-border divide-tremor-border shadow-tremor-dropdown
 }
 
 .react-datepicker__time-list ul {
