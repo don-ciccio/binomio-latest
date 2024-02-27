@@ -31,6 +31,7 @@
     "react-datepicker": "^4.20.0",
     "react-dom": "^18.2.0",
     "react-slider": "^2.0.5",
+    "react-spring-bottom-sheet": "^3.4.1",
     "react-use-measure": "^2.1.1",
     "supports-color": "8.1.1",
     "zustand": "^4.3.8"

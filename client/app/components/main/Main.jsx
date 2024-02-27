@@ -2,8 +2,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useGesture } from "@use-gesture/react";
 import { a, useSpring } from "@react-spring/web";
-import CustomDatePicker from "@/app/components/ui/CustomDatePicker";
-import { format } from "date-fns";
 import { Icon } from "@iconify/react";
 
 /* utils */
@@ -15,56 +13,20 @@ import Slider from "./Cards/Slider";
 
 /* data */
 import { useGetContentHero, useGetCategories } from "@/app/lib/api";
-import {
-    useReservationStore,
-    useReservationDaysStore,
-} from "@/app/lib/store/reservationStore";
+import { useToggleBooking } from "@/app/lib/store";
+import RippleButton from "../ui/Button";
 
 const Main = React.forwardRef((props, ref) => {
-    const id = "64787b91837e138ddfed4ed0";
-    const [startDate, setStartDate] = useState(new Date());
-    const [time, setTime] = useState(new Date());
-    const [people, setPeople] = useState(null);
-
-    const handleDateChange = (date) => {
-        console.log(date);
-    };
-
     const { data } = useGetContentHero();
     const [search, setSearch] = useState("");
     const { data: categories } = useGetCategories({ search });
 
-    const fetchDays = useReservationStore((state) => state.fetch);
-    const fetchWeekDays = useReservationDaysStore((state) => state.fetch);
-
-    const blackoutDays = useReservationStore((state) => state.data);
-    const weekDays = useReservationDaysStore((state) => state.data);
-
-    const blackDays = blackoutDays?.map(
-        (day) =>
-            new Date(
-                new Date(day).getTime() -
-                    new Date(day).getTimezoneOffset() * -6000
-            )
-    );
-    const offDay = weekDays
-        ?.filter((weekday) => {
-            return weekday.reservationAvailable !== false;
-        })
-        .map((weekday) => weekday.weekday);
-
-    const isWeekday = (date) => {
-        const day = new Date(
-            new Date(date).getTime() -
-                new Date(date).getTimezoneOffset() * -6000
-        ).getDay();
-
-        return offDay.includes(day);
-    };
-
     const divScroll = useRef();
     const [scrollPosition, setScrollPosition] = useState(0);
     const [scrollRange, setScrollRange] = useState(0);
+
+    const open = useToggleBooking((state) => state.open);
+    const setOpen = useToggleBooking((state) => state.setOpen);
 
     const onChange = (scrollPosition) => {
         divScroll.current.scrollTo(scrollPosition, 0);
@@ -112,8 +74,6 @@ const Main = React.forwardRef((props, ref) => {
     );
 
     useEffect(() => {
-        fetchDays(id);
-        fetchWeekDays(id);
         const onScroll = () => {
             const maxScrollLeft =
                 divScroll.current.scrollWidth - divScroll.current.clientWidth;
@@ -127,18 +87,6 @@ const Main = React.forwardRef((props, ref) => {
             return () => el.removeEventListener("scroll", onScroll);
         }
     }, []);
-
-    const renderOP = (b, a) => {
-        let td = [];
-        for (let i = b; i <= a; i += 1800000) {
-            td.push(
-                <option key={i} value={i}>
-                    {format(i, "HH:mm")}
-                </option>
-            );
-        }
-        return td;
-    };
 
     return (
         <>
@@ -178,73 +126,12 @@ const Main = React.forwardRef((props, ref) => {
                                 {data?.content.heroDescription}
                             </p>
                         </div>
-                        <div className='flex flex-row flex-wrap gap-4 px-3 items-center justify-center'>
-                            <CustomDatePicker
-                                filterDate={isWeekday}
-                                excludeDates={blackDays}
-                                selected={startDate}
-                                onChange={(date) => {
-                                    setStartDate(date);
-                                    setTime("");
-                                }}
+                        <div className='flex items-center justify-center'>
+                            <RippleButton
+                                label={"Prenota un tavolo"}
+                                onClick={() => setOpen(!open)}
+                                icon={"ic:round-restaurant"}
                             />
-                            <div className='relative z-20 bg-transparent dark:bg-form-input'>
-                                <div className='relative z-20 bg-transparent dark:bg-form-input'>
-                                    <select
-                                        value={time}
-                                        onChange={(e) =>
-                                            setTime(e.target.value)
-                                        }
-                                        className='text-center w-32 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
-                                    >
-                                        {weekDays?.map(
-                                            (day, idx) =>
-                                                day.weekday ===
-                                                    startDate.getDay() &&
-                                                renderOP(
-                                                    day.startBookingHour,
-                                                    day.endBookingHour
-                                                )
-                                        )}
-                                    </select>
-                                    <span className='absolute top-1/2 left-4 z-30 -translate-y-1/2'>
-                                        <Icon
-                                            className='w-5 h-5 text-slate-800'
-                                            icon='mingcute:time-fill'
-                                        />
-                                    </span>
-                                </div>
-                            </div>
-                            <div className='relative z-20 bg-transparent dark:bg-form-input'>
-                                <div className='relative z-20 bg-transparent dark:bg-form-input'>
-                                    <select
-                                        value={people}
-                                        onChange={(e) =>
-                                            setPeople(e.target.value)
-                                        }
-                                        className='text-center w-24 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
-                                    >
-                                        <option value='1'>1</option>
-                                        <option value='2'>2</option>
-                                        <option value='3'>3</option>
-                                        <option value='4'>4</option>
-                                        <option value='5'>5</option>
-                                        <option value='6'>6</option>
-                                    </select>
-                                    <span className='absolute top-1/2 left-4 z-30 -translate-y-1/2'>
-                                        <Icon
-                                            className='w-5 h-5 text-slate-800'
-                                            icon='ion:people'
-                                        />
-                                    </span>
-                                </div>
-                            </div>
-                            <button
-                                type='button'
-                                className={`h-11 max-w-max text-base font-medium items-center justify-center flex bg-zinc-800 hover:bg-zinc-800/75 relative overflow-hidden text-center rounded-full px-7 py-4 cursor-pointer  text-zinc-200 hover:text-white`}
-                            >
-                                Prenota un tavolo
-                            </button>
                         </div>
                     </div>
                 </div>

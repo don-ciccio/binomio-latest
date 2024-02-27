@@ -3,6 +3,7 @@ import Providers from "./providers";
 import Toast from "@/app/components/ui/Toast";
 import Footer from "./components/Footer/Footer";
 import { Bricolage_Grotesque } from "next/font/google";
+import StickyBottom from "./components/Footer/StickyBottom";
 
 const Bricolage = Bricolage_Grotesque({
     subsets: ["latin"],
@@ -24,8 +25,11 @@ export default async function RootLayout({ children }) {
                     >
                         <Providers>
                             {children}
+
                             <Footer />
+
                             <Toast />
+                            <StickyBottom />
                         </Providers>
                     </div>
                 </div>
