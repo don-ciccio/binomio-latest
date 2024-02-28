@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useGesture } from "@use-gesture/react";
 import { a, useSpring } from "@react-spring/web";
-import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 /* utils */
 import { vectorScaling, clamp } from "@/app/lib/utils/utilFuncs";
@@ -127,10 +127,16 @@ const Main = React.forwardRef((props, ref) => {
                             </p>
                         </div>
                         <div className='flex items-center justify-center'>
-                            <RippleButton
-                                label={"Prenota un tavolo"}
-                                onClick={() => setOpen(!open)}
-                            />
+                            {categories?.menu.map(
+                                (category, index) =>
+                                    category.slug === "menu" && (
+                                        <Link href='/menu' key={index}>
+                                            <span className='text-white shadow-sm shadow-zinc-600 bg-orange-600 px-6 cursor-pointer hover:text-zinc-800 hover:bg-gray-150  text-lg block rounded-3xl transition ease-in-out duration-300 bg-left-top py-2.5'>
+                                                {category.name}
+                                            </span>
+                                        </Link>
+                                    )
+                            )}
                         </div>
                     </div>
                 </div>
