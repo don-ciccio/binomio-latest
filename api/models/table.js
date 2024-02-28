@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const tableSchema = new Schema({
     name: {
         type: String,
-        unique: true,
+        required: true,
     },
     isAvailable: {
         type: Boolean,

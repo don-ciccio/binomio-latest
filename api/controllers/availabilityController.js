@@ -14,7 +14,7 @@ exports.newDay = catchAsyncErrors(async (req, res, next) => {
     try {
         const result = await ReservationDays.find({
             $and: [{ date: dateTime, owner: req.params.id }],
-        }).clone();
+        });
 
         if (result.length > 0) {
             console.log("Record exists. Sent docs.");
