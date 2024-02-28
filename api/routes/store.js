@@ -17,6 +17,7 @@ const {
     bookingSettings,
     getTables,
     getBookingBlackoutDays,
+    newDay,
 } = require("../controllers/availabilityController");
 
 router
@@ -44,6 +45,8 @@ router
 router
     .route("/admin/booking/:id/blackoutdays")
     .get(isAuthenticatedUser, authorizeRoles("admin"), getBookingBlackoutDays);
+
+router.route("/booking/availability/:id").post(isAuthenticatedUser, newDay);
 
 router
     .route("/admin/booking/:id/area")

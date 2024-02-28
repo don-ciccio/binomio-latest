@@ -130,7 +130,6 @@ const Main = React.forwardRef((props, ref) => {
                             <RippleButton
                                 label={"Prenota un tavolo"}
                                 onClick={() => setOpen(!open)}
-                                icon={"ic:round-restaurant"}
                             />
                         </div>
                     </div>

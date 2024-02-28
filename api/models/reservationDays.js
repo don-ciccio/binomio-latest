@@ -8,4 +8,4 @@ const reservationDaysSchema = new Schema({
     tables: [tableSchema],
 });
 
-module.exports = mongoose.model("Days", reservationDaysSchema);
+module.exports = mongoose.model("reservationDays", reservationDaysSchema);

@@ -36,3 +36,20 @@ export const useReservationDaysStore = create((set) => ({
         }
     },
 }));
+
+export const useAreaStore = create((set) => ({
+    loading: false,
+    hasErrors: false,
+    fetch: async (id) => {
+        set(() => ({ loading: true }));
+        try {
+            const response = await api.get(`api/admin/booking/${id}/area`);
+            set((state) => ({
+                data: (state.data = response.data.area),
+                loading: false,
+            }));
+        } catch (error) {
+            set(() => ({ hasErrors: true, loading: false }));
+        }
+    },
+}));

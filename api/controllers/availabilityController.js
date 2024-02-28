@@ -2,65 +2,46 @@ const mongoose = require("mongoose");
 const Store = require("../models/store");
 const Table = require("../models/table");
 const Days = require("../models/days");
+const ReservationDays = require("../models/reservationDays");
 
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
 
-/* exports.newDay = catchAsyncErrors(async (req, res, next) => {
-    const dateTime = new Date(req.body.date);
-
+exports.newDay = catchAsyncErrors(async (req, res, next) => {
+    const dateTime = new Date(
+        new Date(req.body.data).setDate(new Date(req.body.data).getDate())
+    );
     try {
-        ReservationDays.find(
-            { $and: [{ date: dateTime, owner: req.params.id }] },
-            (err, docs) => {
-                if (!err) {
-                    if (docs.length > 0) {
-                        // Record already exists
-                        console.log("Record exists. Sent docs.");
-                        res.status(200).send(docs[0]);
-                    } else {
-                        // Searched date does not exist and we need to create it
-                        const allTables = require("../data/allTables");
-                        const day = new ReservationDays({
-                            date: dateTime,
-                            tables: allTables,
-                            owner: req.params.id,
-                        });
-                        day.save((err) => {
-                            if (err) {
-                                res.status(400).send("Error saving new date");
-                            } else {
-                                // Saved date and need to return all tables (because all are now available)
-                                console.log(
-                                    "Created new datetime. Here are the default docs"
-                                );
-                                ReservationDays.find(
-                                    {
-                                        $and: [
-                                            {
-                                                date: dateTime,
-                                                owner: req.params.id,
-                                            },
-                                        ],
-                                    },
-                                    (err, docs) => {
-                                        err
-                                            ? res.sendStatus(400)
-                                            : res.status(200).send(docs[0]);
-                                    }
-                                );
-                            }
-                        });
-                    }
-                } else {
-                    res.status(400).send("Could not search for date");
-                }
+        const result = await ReservationDays.find({
+            $and: [{ date: dateTime, owner: req.params.id }],
+        }).clone();
+
+        if (result.length > 0) {
+            console.log("Record exists. Sent docs.");
+            res.status(200).send(...result);
+        } else {
+            const tables = await Table.find({
+                restaurant: mongoose.Types.ObjectId(req.params.id),
+            });
+
+            const day = new ReservationDays({
+                date: dateTime,
+                tables: tables,
+                owner: req.params.id,
+            });
+
+            if (day) {
+                day.save(day);
+            } else {
+                res.status(400).send("Error saving new date");
             }
-        );
+
+            res.status(200).send(day);
+        }
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }
-}); */
+});
 
 exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
     const {
