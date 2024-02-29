@@ -63,8 +63,8 @@ exports.reservationForm = catchAsyncErrors(async (req, res, next) => {
                 if (table._id == req.body.table) {
                     // The correct table is table
                     table.reservation = new Reservation({
-                        name: req.body.name,
-                        phone: req.body.phone,
+                        firstName: req.body.name,
+                        phoneNumber: req.body.phone,
                         email: req.body.email,
                     });
                     table.isAvailable = false;
@@ -74,7 +74,7 @@ exports.reservationForm = catchAsyncErrors(async (req, res, next) => {
                             console.log(err);
                         } else {
                             console.log("Reserved");
-                            res.status(200).send(day);
+                            res.status(200).send("Added Reservation");
                         }
                     });
                 }

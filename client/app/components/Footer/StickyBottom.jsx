@@ -107,7 +107,7 @@ const StickyBottom = () => {
                     data: datetime,
                 });
                 res = res.data;
-                console.log(res);
+
                 // Filter available tables with location and group size criteria
                 let tables = res.tables.filter(
                     (table) =>
@@ -177,16 +177,6 @@ const StickyBottom = () => {
                             selectTable={selectTable}
                         />
                     );
-                } else {
-                    tables.push(
-                        <Table
-                            key={totalTables[i]._id}
-                            id={totalTables[i]._id}
-                            seats={totalTables[i].capacity}
-                            name={totalTables[i].name}
-                            selectTable={selectTable}
-                        />
-                    );
                 }
             }
             const results = tables.filter(function (table) {
@@ -202,6 +192,7 @@ const StickyBottom = () => {
                     }
                 }
             });
+
             if (selection.size === 0) return tables;
             return results;
         }
