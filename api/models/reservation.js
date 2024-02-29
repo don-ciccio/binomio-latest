@@ -6,7 +6,4 @@ let reservationSchema = new mongoose.Schema({
     phoneNumber: String,
 });
 
-let Reservation = mongoose.model("Reservation", reservationSchema);
-
-module.exports.model = Reservation;
-module.exports.schema = reservationSchema;
+module.exports = mongoose.model("Reservation", reservationSchema);

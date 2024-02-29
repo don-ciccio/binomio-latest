@@ -3,14 +3,17 @@ const Store = require("../models/store");
 const Table = require("../models/table");
 const Days = require("../models/days");
 const ReservationDays = require("../models/reservationDays");
+const Reservation = require("../models/reservation");
 
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
 
 exports.newDay = catchAsyncErrors(async (req, res, next) => {
-    const dateTime = new Date(
-        new Date(req.body.data).setDate(new Date(req.body.data).getDate())
+    let dateTime = new Date(req.body.data);
+    dateTime = new Date(
+        dateTime.getTime() + Math.abs(dateTime.getTimezoneOffset() * 60000)
     );
+
     try {
         const result = await ReservationDays.find({
             $and: [{ date: dateTime, owner: req.params.id }],
@@ -43,6 +46,46 @@ exports.newDay = catchAsyncErrors(async (req, res, next) => {
     }
 });
 
+exports.reservationForm = catchAsyncErrors(async (req, res, next) => {
+    let dateTime = new Date(req.body.date);
+    dateTime = new Date(
+        dateTime.getTime() + Math.abs(dateTime.getTimezoneOffset() * 60000)
+    );
+
+    try {
+        const result = await ReservationDays.find({
+            $and: [{ date: dateTime, owner: req.params.id }],
+        });
+
+        if (result.length > 0) {
+            let day = result[0];
+            day.tables.forEach((table) => {
+                if (table._id == req.body.table) {
+                    // The correct table is table
+                    table.reservation = new Reservation({
+                        name: req.body.name,
+                        phone: req.body.phone,
+                        email: req.body.email,
+                    });
+                    table.isAvailable = false;
+                    console.log(day);
+                    day.save((err) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log("Reserved");
+                            res.status(200).send(day);
+                        }
+                    });
+                }
+            });
+        } else {
+            console.log("Day not found");
+        }
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+});
 exports.bookingSettings = catchAsyncErrors(async (req, res, next) => {
     const {
         area,

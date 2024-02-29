@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const reservationSchema = require("./reservation").schema;
 
 const tableSchema = new Schema({
     name: {
@@ -21,11 +22,7 @@ const tableSchema = new Schema({
         ref: "Store",
         required: false,
     },
-    reservation: {
-        type: mongoose.Schema.ObjectId,
-        ref: "Reservation",
-        required: false,
-    },
+    reservation: reservationSchema,
 });
 
 const Table = mongoose.model("Table", tableSchema);
