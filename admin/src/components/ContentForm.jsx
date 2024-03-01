@@ -117,7 +117,7 @@ const ContentForm = ({
                             color='red'
                             onClick={resetState}
                         >
-                            Rimuovi modifiche
+                            Anulla modifiche
                         </Button>
                     </div>
                 </DialogPanel>

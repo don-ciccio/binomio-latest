@@ -27,11 +27,11 @@ const BookingTable = ({ id }) => {
                 <Table className='mt-6'>
                     <TableHead>
                         <TableRow>
-                            <TableHeaderCell>Tavolo</TableHeaderCell>
                             <TableHeaderCell>Giorno</TableHeaderCell>
                             <TableHeaderCell>Nome</TableHeaderCell>
                             <TableHeaderCell>Email</TableHeaderCell>
                             <TableHeaderCell>Telefono</TableHeaderCell>
+                            <TableHeaderCell>Persone</TableHeaderCell>
                             <TableHeaderCell>Orario</TableHeaderCell>
                         </TableRow>
                     </TableHead>
@@ -41,9 +41,6 @@ const BookingTable = ({ id }) => {
                                 (table, i) =>
                                     table.isAvailable === false && (
                                         <TableRow key={i}>
-                                            <TableCell className='p-0 lg:p-4'>
-                                                {table.name}
-                                            </TableCell>
                                             <TableCell className='p-0 lg:p-4'>
                                                 {format(
                                                     parseISO(day.date),
@@ -58,6 +55,9 @@ const BookingTable = ({ id }) => {
                                             </TableCell>
                                             <TableCell className='p-0 lg:p-4'>
                                                 {table.reservation.phoneNumber}
+                                            </TableCell>
+                                            <TableCell className='p-0 lg:p-4'>
+                                                {table.reservation.size}
                                             </TableCell>
                                             <TableCell className='p-0 lg:p-4'>
                                                 {format(

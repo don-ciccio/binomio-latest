@@ -248,7 +248,7 @@ const AddCategoryForm = ({
                             color='red'
                             onClick={resetState}
                         >
-                            Rimuovi modifiche
+                            Annulla modifiche
                         </Button>
                     </div>
                 </DialogPanel>

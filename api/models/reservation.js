@@ -5,6 +5,7 @@ let reservationSchema = new mongoose.Schema({
     email: String,
     phoneNumber: String,
     time: Number,
+    size: Number,
 });
 
 module.exports = mongoose.model("Reservation", reservationSchema);

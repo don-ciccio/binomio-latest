@@ -100,7 +100,7 @@ const ReservationForm = ({ setPage }) => {
 
     useEffect(() => {
         // Check availability of tables from DB when a date and time is selected
-        if (selection.time && selection.date) {
+        if (selection.time && selection.date && selection.size) {
             (async (_) => {
                 let datetime = selection.date.setHours(0, 0, 0, 0);
                 let res = await api.post(`/api/booking/availability/${id}`, {
@@ -144,7 +144,8 @@ const ReservationForm = ({ setPage }) => {
         if (
             (booking.name.length === 0) |
             (booking.phone.length === 0) |
-            (booking.email.length === 0)
+            (booking.email.length === 0) |
+            (selection.size === 0)
         ) {
             console.log("Incomplete Details");
             setReservationError(true);
@@ -154,6 +155,7 @@ const ReservationForm = ({ setPage }) => {
                 ...booking,
                 date: datetime,
                 time: selection.time,
+                size: selection.size,
                 table: selection.table.id,
             });
             res = res.data;
@@ -215,11 +217,13 @@ const ReservationForm = ({ setPage }) => {
     };
     return (
         <BottomSheet onDismiss={onDismiss} open={open}>
-            <div className='min-h-[28px] py-2 px-8 flex flex-col  gap-3  items-center justify-center'>
+            <div className='min-h-[34px] pb-2  pt-3 px-8 flex flex-col  gap-3  items-center justify-center'>
                 {!selection.table.id ? (
-                    <span className='font-bold text-lg'>Prenota un tavolo</span>
+                    <span className='font-semibold text-xl uppercase'>
+                        Prenota un tavolo
+                    </span>
                 ) : (
-                    <span className='font-bold text-lg'>
+                    <span className='font-semibold text-xl uppercase'>
                         Conferma prenotazione
                     </span>
                 )}
@@ -368,6 +372,10 @@ const ReservationForm = ({ setPage }) => {
                         {selection.date && selection.time ? (
                             getEmptyTables() > 0 ? (
                                 getTables()
+                            ) : selection.size === 0 ? (
+                                <p className='font-bold'>
+                                    Selezionare il numero di persone
+                                </p>
                             ) : (
                                 <p className='font-bold'>
                                     Non ci sono tavoli disponibili
@@ -375,8 +383,8 @@ const ReservationForm = ({ setPage }) => {
                             )
                         ) : (
                             <p className='font-bold'>
-                                Per favore selezionare una data ed un orario di
-                                prenotazione.
+                                Per favore selezionare un orario di prenotazione
+                                ed il numero di persone.
                             </p>
                         )}
                     </div>
