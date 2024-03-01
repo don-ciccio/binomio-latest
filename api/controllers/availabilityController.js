@@ -66,6 +66,7 @@ exports.reservationForm = catchAsyncErrors(async (req, res, next) => {
                         firstName: req.body.name,
                         phoneNumber: req.body.phone,
                         email: req.body.email,
+                        time: req.body.time,
                     });
                     table.isAvailable = false;
                     console.log(day);
