@@ -36,6 +36,10 @@ export const getStore = async (id) => {
     return await axios.get(`${API_URL}/api/stores/${id}`);
 };
 
+export const getReservations = async (id) => {
+    return await axios.get(`${API_URL}/api/admin/booking/${id}/reservations`);
+};
+
 export const getContent = async () => {
     return await axios.get(`${API_URL}/api/admin/content`);
 };

@@ -3,6 +3,7 @@ import { InformationCircleIcon } from "@heroicons/react/20/solid";
 import { useGetStores } from "@/store/react-query/hooks/useQueries";
 import { Link } from "react-router-dom";
 import TableLoader from "@/components/common/TableLoader";
+import BookingTable from "../../components/bookingTable/BookingTable";
 
 const Booking = () => {
     const { data: stores, isLoading } = useGetStores();
@@ -51,15 +52,7 @@ const Booking = () => {
                                 </div>
 
                                 <div className='flex flex-col px-6 pt-6'>
-                                    <div>
-                                        <label className='block font-medium mb-3'>
-                                            Elenco prenotazioni
-                                        </label>
-                                        <span className='block text-sm text-gray-500'>
-                                            TODO
-                                        </span>
-                                    </div>
-                                    <Divider />
+                                    <BookingTable id={store._id} />
                                 </div>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ import {
     getStore,
     getContent,
     getSessions,
+    getReservations,
 } from "../queries";
 
 export const useGetProducts = ({
@@ -38,6 +39,10 @@ export const useGetCategoryById = (id) => {
 
 export const useGetStoreById = (id) => {
     return useQuery(["stores", "details", id], () => getStore(id));
+};
+
+export const useGetReservations = (id) => {
+    return useQuery(["stores", "reservations", id], () => getReservations(id));
 };
 
 export const useGetCategories = ({ search }) => {

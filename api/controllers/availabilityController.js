@@ -225,6 +225,18 @@ exports.getTables = catchAsyncErrors(async (req, res, next) => {
     }
 });
 
+exports.getReservationDays = catchAsyncErrors(async (req, res, next) => {
+    try {
+        const reservation = await ReservationDays.find({
+            owner: req.params.id,
+        });
+
+        res.json(reservation);
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+});
+
 exports.getBookingBlackoutDays = catchAsyncErrors(async (req, res, next) => {
     try {
         const result = await Store.findById(req.params.id).select(
