@@ -106,8 +106,6 @@ export const useGetProducts = ({
         ],
         queryFn: () =>
             getProducts(page, sort, filterCategory, status, search, limit),
-
-        keepPreviousData: true,
     });
 };
 

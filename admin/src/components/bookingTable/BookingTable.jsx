@@ -7,18 +7,13 @@ import {
     TableHead,
     TableHeaderCell,
     TableBody,
-    Icon,
-    DialogPanel,
-    Title,
-    Dialog,
-    Button,
 } from "@tremor/react";
 import { format, parseISO } from "date-fns";
 
-const BookingTable = ({ id }) => {
-    const { data: reservations, isLoading } = useGetReservations(id);
+const BookingTable = ({ id, date }) => {
+    const { data: reservations, isLoading } = useGetReservations({ id, date });
     if (isLoading) return <div>Loading...</div>;
-    console.log(reservations.data);
+
     return (
         <>
             {isLoading ? (

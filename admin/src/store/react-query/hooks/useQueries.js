@@ -41,8 +41,10 @@ export const useGetStoreById = (id) => {
     return useQuery(["stores", "details", id], () => getStore(id));
 };
 
-export const useGetReservations = (id) => {
-    return useQuery(["stores", "reservations", id], () => getReservations(id));
+export const useGetReservations = ({ id, date }) => {
+    return useQuery(["stores", "reservations", { id, date }], () =>
+        getReservations(id, date)
+    );
 };
 
 export const useGetCategories = ({ search }) => {

@@ -11,7 +11,7 @@ const ProductsSection = () => {
     return (
         <div className='relative z-2'>
             <div className='md:px-10 xxs:px-4 lg:pb-14 py-8  relative z-1 text-center bg-gray-150 block'>
-                {data?.menu.map(
+                {data?.menu?.map(
                     (cat) =>
                         cat.number_of_product > 0 &&
                         !cat.parent && (

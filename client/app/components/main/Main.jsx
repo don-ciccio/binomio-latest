@@ -127,7 +127,7 @@ const Main = React.forwardRef((props, ref) => {
                             </p>
                         </div>
                         <div className='flex items-center justify-center'>
-                            {categories?.menu.map(
+                            {categories?.menu?.map(
                                 (category, index) =>
                                     category.slug === "menu" && (
                                         <Link href='/menu' key={index}>

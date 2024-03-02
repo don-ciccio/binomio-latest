@@ -15,7 +15,7 @@ const Links = () => {
             <div className='relative h-full items-center'>
                 <div className='md:block rounded-3xl shadow-md shadow-zinc-400/25 bg-white -z-1 absolute left-0 top-0 w-full h-12 transition ease-in-out duration-300'></div>
                 <ul className=' flex text-base font-medium items-center h-3 py-6 px-2 relative'>
-                    {data?.menu.map(
+                    {data?.menu?.map(
                         (category, index) =>
                             category.slug !== "menu" && (
                                 <Link

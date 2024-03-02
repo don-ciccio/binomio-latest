@@ -227,9 +227,16 @@ exports.getTables = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getReservationDays = catchAsyncErrors(async (req, res, next) => {
+    let dateTime = new Date(req.query.date);
+
     try {
         const reservation = await ReservationDays.find({
-            owner: req.params.id,
+            $and: [
+                {
+                    date: dateTime,
+                    owner: req.params.id,
+                },
+            ],
         });
 
         res.json(reservation);

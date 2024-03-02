@@ -1,12 +1,18 @@
-import { Flex, Icon, Divider } from "@tremor/react";
+import { Flex, Icon, Card } from "@tremor/react";
 import { InformationCircleIcon } from "@heroicons/react/20/solid";
 import { useGetStores } from "@/store/react-query/hooks/useQueries";
 import { Link } from "react-router-dom";
 import TableLoader from "@/components/common/TableLoader";
 import BookingTable from "../../components/bookingTable/BookingTable";
+import { CustomDatePicker } from "../../components/common/CustomDatePicker";
+import { useState } from "react";
 
 const Booking = () => {
+    const [startDate, setStartDate] = useState(new Date());
     const { data: stores, isLoading } = useGetStores();
+    const handleDay = (date) => {
+        setStartDate(new Date(date.setHours(0, 0, 0, 0)));
+    };
 
     return (
         <>
@@ -44,17 +50,27 @@ const Booking = () => {
                                     </Link>
                                 </div>
                             </Flex>
-                            <div className='w-full rounded-md border border-gray-200 bg-white mt-6'>
-                                <div className='border-b border-gray-200 py-4 px-6 flex items-center justify-between'>
+
+                            <Card shadow={"false"} className='mt-6'>
+                                <div className='border-b border-gray-200 pb-4 px-4 flex items-center justify-between'>
                                     <span className='text-xl font-medium'>
                                         Prenotazioni
                                     </span>
                                 </div>
-
-                                <div className='flex flex-col px-6 pt-6'>
-                                    <BookingTable id={store._id} />
+                                <div className='mt-5 flex flex-col md:flex-row md:space-x-2 gap-2'>
+                                    <CustomDatePicker
+                                        selected={startDate}
+                                        onChange={(date) => handleDay(date)}
+                                        minDate={new Date()}
+                                    />
                                 </div>
-                            </div>
+                                <div className='flex flex-col px-6 pt-6'>
+                                    <BookingTable
+                                        date={startDate}
+                                        id={store._id}
+                                    />
+                                </div>
+                            </Card>
                         </div>
                     ))}
                 </>
