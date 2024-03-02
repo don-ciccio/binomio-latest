@@ -54,7 +54,6 @@ function AccountDetails({ setActiveStep }) {
                                 name='email'
                                 value={loginData.email}
                                 onChange={(e) => onLoginChange(e)}
-                                width='w-[534px]'
                                 className='border rounded-r-none relative flex-auto mb-0 rounded-3xl h-12 text-sm focus:outline-none leading-5 block px-5 py-4 w-1% !bg-white border-white'
                             />
                             <div className='ml-0 flex bg-white rounded-l-none items-center px-5 rounded-3xl border-0 whitespace-nowrap'></div>
@@ -71,7 +70,6 @@ function AccountDetails({ setActiveStep }) {
                                 name='password'
                                 value={loginData.password}
                                 onChange={(e) => onLoginChange(e)}
-                                width='w-[534px]'
                                 className='border rounded-r-none relative flex-auto mb-0 rounded-3xl h-12 text-sm focus:outline-none leading-5 block px-5 py-4 w-1%   border-white'
                             />
                             <div className='ml-0 flex bg-white rounded-l-none items-center px-5 rounded-3xl border-0 whitespace-nowrap'></div>
@@ -82,11 +80,7 @@ function AccountDetails({ setActiveStep }) {
                             Registrati
                         </p>
 
-                        <RippleButton
-                            type='submit'
-                            label='Login'
-                            width='w-[150px]'
-                        />
+                        <RippleButton type='submit' label='Login' />
                     </div>
                 </form>
             ) : (

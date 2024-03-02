@@ -70,7 +70,7 @@ exports.reservationForm = catchAsyncErrors(async (req, res, next) => {
                         size: req.body.size,
                     });
                     table.isAvailable = false;
-                    console.log(day);
+
                     day.save((err) => {
                         if (err) {
                             console.log(err);

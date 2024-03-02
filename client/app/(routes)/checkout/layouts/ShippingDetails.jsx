@@ -78,16 +78,16 @@ const ShippingDetails = ({ setActiveStep }) => {
     };
 
     return (
-        <div className='flex-auto grid items-center lg:px-[50px]'>
+        <div className='grid items-center px-3 lg:px-[20px]'>
             <p className='font-medium text-[20px] mb-6'>
                 Indirizzo di consegna
             </p>
-            <div className='min-h-[427px]'>
+            <div className='mr-4'>
                 <div className='flex flex-row justify-between items-center'>
                     <p className='text-[#2D3748] font-medium'>
                         Usa indirizzo salvato
                     </p>
-                    <Input placeholder='via Roma 10' width='w-[65%]' />
+                    <Input placeholder='via Roma 10' />
                 </div>
 
                 <div className='py-[11px]'>
@@ -104,12 +104,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                     <div>
                         <p className='text-[#718096] text-[15px] mb-2'>Città</p>
 
-                        <Input
-                            placeholder='Città'
-                            name='city'
-                            type='text'
-                            width='w-[278px]'
-                        />
+                        <Input placeholder='Città' name='city' type='text' />
                     </div>
                     <div>
                         <p className='text-[#718096] text-[15px] mb-2'>
@@ -120,7 +115,6 @@ const ShippingDetails = ({ setActiveStep }) => {
                             placeholder='Cap'
                             name='postalCode'
                             type='text'
-                            width='w-[212px]'
                         />
                     </div>
                 </div>
@@ -152,7 +146,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                                 <select
                                     value={time}
                                     onChange={(e) => setTime(e.target.value)}
-                                    className='w-44 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
+                                    className=' cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
                                 >
                                     <option disabled value=''>
                                         Orario
