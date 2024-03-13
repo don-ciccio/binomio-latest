@@ -11,8 +11,8 @@ const StepperSection = () => {
     const user = useSession();
 
     return (
-        <div className='flex flex-col md:flex-row md:px-6 xxs:px-4 lg:pb-14 pt-8  gap-4'>
-            <div className='flex-basis-66  pt-[35px] md:px-8 rounded-md bg-gray-200 justify-center items-center'>
+        <div className='flex flex-col lg:flex-row md:px-6 xxs:px-4 lg:pb-14 pt-8  gap-4'>
+            <div className='flex-basis-66  pt-[35px] px-2 md:px-8 rounded-md bg-gray-200 justify-center items-center'>
                 <Stepper activeStep={activeStep} />
                 {activeStep === 0 && (
                     <div className='mt-2'>

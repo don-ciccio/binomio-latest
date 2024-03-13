@@ -78,11 +78,11 @@ const ShippingDetails = ({ setActiveStep }) => {
     };
 
     return (
-        <div className='grid items-center px-3 lg:px-[20px]'>
+        <div className='grid items-center px-4 lg:px-[20px]'>
             <p className='font-medium text-[20px] mb-6'>
                 Indirizzo di consegna
             </p>
-            <div className='mr-4'>
+            <div className=''>
                 <div className='flex flex-row justify-between items-center'>
                     <p className='text-[#2D3748] font-medium'>
                         Usa indirizzo salvato
@@ -129,10 +129,10 @@ const ShippingDetails = ({ setActiveStep }) => {
                 </div>
                 {verificationResult && (
                     <div className='py-[11px] flex flex-col'>
-                        <span className='flex font-medium text-[20px] mb-6'>
+                        <span className='flex font-medium  mb-6'>
                             Giorno e orario di consegna
                         </span>
-                        <div className='flex flex-row gap-4'>
+                        <div className='flex flex-row gap-4 text-sm'>
                             <CustomDatePicker
                                 filterDate={isWeekday}
                                 excludeDates={blackDays}

@@ -10,7 +10,7 @@ const RippleButton = ({ label, onClick, disabled, icon }) => {
         <button
             disabled={disabled}
             onClick={onClick}
-            className={` min-w-200 flex items-center justify-center gap-2 font-medium bg-zinc-800 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer text-zinc-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-zinc-800/75 hover:text-white`}
+            className={` min-w-100 flex items-center justify-center gap-2 font-medium bg-zinc-800 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer text-zinc-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-zinc-800/75 hover:text-white`}
             ref={ref}
         >
             <Icon className='w-5 h-5' icon={icon} />

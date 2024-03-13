@@ -8,19 +8,19 @@ const OrderSummary = () => {
     const { cartData, totalPrice, isLoading } = useCart();
 
     return (
-        <div className='flex-auto pt-[35px] pb-[25px] rounded-md bg-gray-200'>
+        <div className='flex-auto pt-[17px] pb-[25px] rounded-md bg-gray-200'>
             <div className='grid lg:justify-start justify-center items-center'>
-                <p className='text-left font-medium text-[22px] pl-6 py-4'>
+                <p className='text-left font-medium text-[22px] pl-6 pt-4 pb-6'>
                     Riepilogo ordine
                 </p>
 
                 <div className='px-5 relative  mb-4 max-h-[380px] h-[380px] overflow-y-auto'>
                     <div>
-                        <ul>
+                        <ul className='md:w-[100%] lg:w-[89%]'>
                             {cartData.map((item) => (
                                 <li key={item.id} className='pb-5'>
-                                    <div className='flex flex-row gap-1.5 w-11/12'>
-                                        <div className='flex flex-basis-25 max-w-1/4 px-2.5 h-full'>
+                                    <div className='flex flex-row gap-1.5'>
+                                        <div className='flex flex-basis-23 md:flex-basis-13 lg:flex-basis-25 xl:flex-basis-23 max-w-1/4 pr-2.5 h-full'>
                                             <div className='flex flex-col gap-1'>
                                                 <div className='flex'>
                                                     <img
@@ -78,7 +78,7 @@ const OrderSummary = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='flex flex-basis-58 max-w-2/4 font-medium'>
+                                        <div className='flex flex-basis-58 md:flex-basis-70 max-w-2/4 font-medium'>
                                             <div className='flex flex-col justify-between'>
                                                 <div className='flex justify-start pt-2'>
                                                     {item.name}
@@ -108,6 +108,7 @@ const OrderSummary = () => {
                         </ul>
                     </div>
                 </div>
+
                 <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between w-11/12'>
                     <div className='flex flex-col gap-2 w-full pt-8'>
                         <div className='flex justify-between'>
@@ -128,6 +129,7 @@ const OrderSummary = () => {
                         </div>
                     </div>
                 </div>
+
                 <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between w-11/12'>
                     <span className='text-base'>Totale carrello:</span>
                     <span className='text-base font-semibold'>
