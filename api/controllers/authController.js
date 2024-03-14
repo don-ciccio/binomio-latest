@@ -262,7 +262,13 @@ exports.countSessions = catchAsyncErrors(async (req, res, next) => {
     const sessions = await Session.find();
 
     if (total === 0) {
-        return next(new ErrorHandler("No db sessions found", 400));
+        return res.status(200).json({
+            total,
+            sessions,
+            totalProducts,
+            activeProducts: activeProducts.length,
+            inactiveProducts: inactiveProducts.length,
+        });
     }
 
     res.status(200).json({

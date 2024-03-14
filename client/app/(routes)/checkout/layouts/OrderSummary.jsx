@@ -107,6 +107,7 @@ const OrderSummary = () => {
                             ))}
                         </ul>
                     </div>
+                    <div className=' border-b border-[#dfdfdf] ' />
                 </div>
 
                 <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between w-11/12'>

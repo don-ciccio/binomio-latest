@@ -11,7 +11,7 @@ const CustomDatePicker = (props) => {
     const maxDate = addDays(new Date(), 15);
 
     return (
-        <div className='relative w-48'>
+        <div className='relative w-40 sm:w-48'>
             <DatePicker
                 {...props}
                 locale={it}

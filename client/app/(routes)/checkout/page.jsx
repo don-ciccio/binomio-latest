@@ -21,7 +21,7 @@ export default async function Checkout() {
                     <Breadcrumb />
                 </div>
 
-                <div className='xs:px-5 px-3'>
+                <div className='px-0 xs:px-3'>
                     <StepperSection />
                 </div>
             </div>

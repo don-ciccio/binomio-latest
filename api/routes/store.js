@@ -32,9 +32,7 @@ router
     .put(isAuthenticatedUser, authorizeRoles("admin"), updateStore)
     .get(isAuthenticatedUser, authorizeRoles("admin"), getAllStores);
 
-router
-    .route("/admin/calendar/:id")
-    .get(isAuthenticatedUser, getCalendarByStore);
+router.route("/admin/calendar/:id").get(getCalendarByStore);
 
 router
     .route("/admin/calendar/:id/slots")
@@ -44,9 +42,7 @@ router
     .route("/admin/calendar/:id/blackoutdays")
     .get(isAuthenticatedUser, authorizeRoles("admin"), getBlackoutDays);
 
-router
-    .route("/admin/booking/:id/blackoutdays")
-    .get(isAuthenticatedUser, authorizeRoles("admin"), getBookingBlackoutDays);
+router.route("/admin/booking/:id/blackoutdays").get(getBookingBlackoutDays);
 
 router.route("/booking/availability/:id").post(isAuthenticatedUser, newDay);
 router
