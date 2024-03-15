@@ -284,6 +284,8 @@ const ReservationForm = ({ setPage }) => {
                                         (day, idx) =>
                                             day.weekday ===
                                                 selection.date.getDay() - 1 &&
+                                            day.reservationAvailable !==
+                                                false &&
                                             renderOP(
                                                 day.startBookingHour,
                                                 day.endBookingHour

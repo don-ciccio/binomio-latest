@@ -142,11 +142,11 @@ const ShippingDetails = ({ setActiveStep }) => {
                                     setTime("");
                                 }}
                             />
-                            <div className='relative z-20 bg-transparent dark:bg-form-input'>
+                            <div className='min-w-[145px] relative z-20 bg-transparent dark:bg-form-input'>
                                 <select
                                     value={time}
                                     onChange={(e) => setTime(e.target.value)}
-                                    className=' cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
+                                    className='min-w-[145px] cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
                                 >
                                     <option disabled value=''>
                                         Orario

@@ -5,6 +5,7 @@ import AccountDetails from "./AccountDetails";
 import OrderSummary from "./OrderSummary";
 import ShippingDetails from "./ShippingDetails";
 import useSession from "@/app/lib/hooks/useSession";
+import Payment from "./Payment";
 
 const StepperSection = () => {
     const [activeStep, setActiveStep] = useState(0);
@@ -22,6 +23,11 @@ const StepperSection = () => {
                 {activeStep === 1 && (
                     <div className='mt-2'>
                         <ShippingDetails setActiveStep={setActiveStep} />
+                    </div>
+                )}
+                {activeStep === 2 && (
+                    <div className='mt-2'>
+                        <Payment setActiveStep={setActiveStep} />
                     </div>
                 )}
             </div>
