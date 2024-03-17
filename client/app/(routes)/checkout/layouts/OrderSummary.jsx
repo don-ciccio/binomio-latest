@@ -1,7 +1,7 @@
 import { useCart } from "@/app/lib/hooks/useCart";
 import { useCartStore } from "@/app/lib/store";
 import { Icon } from "@iconify/react";
-import { IvaTax } from "@/app/lib/utils/utilFuncs";
+import { IvaTax, formatCurrency } from "@/app/lib/utils/utilFuncs";
 
 const OrderSummary = () => {
     const { removeFromCart, updateQuantity } = useCartStore();
@@ -84,7 +84,7 @@ const OrderSummary = () => {
                                                     {item.name}
                                                 </div>
                                                 <div className='flex font-light items-baseline'>
-                                                    €{item.price}
+                                                    {formatCurrency(item.price)}
                                                 </div>
                                             </div>
                                         </div>
@@ -115,17 +115,22 @@ const OrderSummary = () => {
                         <div className='flex justify-between'>
                             <span className='text-base'>Subtotale:</span>
                             <span className='text-base font-semibold'>
-                                €
-                                {Number(
-                                    parseFloat(totalPrice) -
-                                        IvaTax(parseFloat(totalPrice), 10)
-                                ).toFixed(2)}
+                                {formatCurrency(
+                                    Number(
+                                        parseFloat(totalPrice) -
+                                            IvaTax(parseFloat(totalPrice), 10)
+                                    ).toFixed(2)
+                                )}
                             </span>
                         </div>
                         <div className='flex justify-between'>
                             <span className='text-base'>Tasse:</span>
                             <span className='text-base font-semibold'>
-                                €{IvaTax(parseFloat(totalPrice), 10).toFixed(2)}
+                                {formatCurrency(
+                                    IvaTax(parseFloat(totalPrice), 10).toFixed(
+                                        2
+                                    )
+                                )}
                             </span>
                         </div>
                     </div>
@@ -134,7 +139,7 @@ const OrderSummary = () => {
                 <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between w-11/12'>
                     <span className='text-base'>Totale carrello:</span>
                     <span className='text-base font-semibold'>
-                        €{totalPrice}
+                        {formatCurrency(totalPrice)}
                     </span>
                 </div>
             </div>

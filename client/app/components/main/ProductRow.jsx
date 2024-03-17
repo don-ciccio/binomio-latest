@@ -3,6 +3,7 @@ import ProductCardSkeleton from "@/app/components/ui/ProductCardSkeleton";
 import ProductCard from "@/app/components/main/Cards/ProductCard";
 import { useGetProducts } from "@/app/lib/api";
 import { useState } from "react";
+import { formatCurrency } from "@/app/lib/utils/utilFuncs";
 
 const ProductRow = ({ filterCategory }) => {
     const [sort, setSort] = useState({ sort: "price", order: "asc" });

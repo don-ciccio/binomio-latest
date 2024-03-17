@@ -1,5 +1,6 @@
 import { useCart } from "@/app/lib/hooks/useCart";
 import { useCartStore } from "@/app/lib/store";
+import { formatCurrency } from "@/app/lib/utils/utilFuncs";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 
@@ -93,7 +94,9 @@ const MiniCart = () => {
                                                             {item.name}
                                                         </div>
                                                         <div className='flex font-light items-baseline'>
-                                                            €{item.price}
+                                                            {formatCurrency(
+                                                                item.price
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -122,7 +125,7 @@ const MiniCart = () => {
                         <div className='pl-6 pr-7 relative mt-2 mb-4 flex items-baseline justify-between'>
                             <span className='text-base'>Totale carrello:</span>
                             <span className='text-base font-semibold'>
-                                €{totalPrice}
+                                {formatCurrency(totalPrice)}
                             </span>
                         </div>
                         <div className='flex justify-between gap-x-2 text-sm font-semibold px-5'>

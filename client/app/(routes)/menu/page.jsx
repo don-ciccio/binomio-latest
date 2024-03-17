@@ -4,6 +4,7 @@ import { getCategories, getContent, getMenuBySlug } from "@/app/lib/api";
 
 import Breadcrumb from "@/app/components/ui/Breadcrumb";
 import MenuListCard from "@/app/components/main/Cards/MenuListCard";
+import { formatCurrency } from "@/app/lib/utils/utilFuncs";
 
 function shorten(str, maxLen) {
     if (str.length <= maxLen) return str;
@@ -47,7 +48,7 @@ export default async function Home() {
                                     <MenuListCard
                                         id={product._id}
                                         name={product.name}
-                                        price={product.price}
+                                        price={formatCurrency(product.price)}
                                         images={product.images}
                                         description={
                                             shorten(product.description, 25) +

@@ -5,7 +5,7 @@ import ReactCardFlip from "react-card-flip";
 import { useCartStore, useWishlistStore, useToastStore } from "@/app/lib/store";
 import HeartIcon from "../../icons/HeartIcon";
 import Link from "next/link";
-import { slugify } from "@/app/lib/utils/utilFuncs";
+import { formatCurrency, slugify } from "@/app/lib/utils/utilFuncs";
 import { useRouter } from "next/navigation";
 
 const MenuListCard = ({ name, price, images, id, description }) => {
@@ -80,7 +80,7 @@ const MenuListCard = ({ name, price, images, id, description }) => {
                             }
                         ></span>
                         <div className='inline-block ml-1.5 text-xl font-semibold justify-center mr-3'>
-                            €{price}
+                            {formatCurrency(price)}
                         </div>
                     </div>
                     <p className='text-left font-light'>{description}</p>

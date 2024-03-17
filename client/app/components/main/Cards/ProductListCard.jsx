@@ -5,7 +5,7 @@ import ReactCardFlip from "react-card-flip";
 import { useCartStore, useWishlistStore, useToastStore } from "@/app/lib/store";
 import HeartIcon from "../../icons/HeartIcon";
 import Link from "next/link";
-import { slugify } from "@/app/lib/utils/utilFuncs";
+import { formatCurrency, slugify } from "@/app/lib/utils/utilFuncs";
 import { useRouter } from "next/navigation";
 
 const ProductListCard = ({ name, price, images, id, description }) => {
@@ -82,7 +82,7 @@ const ProductListCard = ({ name, price, images, id, description }) => {
                     <div className={"flex  h-full flex-col flex-basis-20"}>
                         <div className='flex flex-col gap-3'>
                             <div className='flex text-xl font-medium justify-center'>
-                                €{price}
+                                {formatCurrency(price)}
                             </div>
                             <div className='flex'>
                                 <button

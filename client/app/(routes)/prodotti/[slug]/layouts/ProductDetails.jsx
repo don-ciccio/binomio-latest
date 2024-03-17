@@ -6,6 +6,7 @@ import { useGetProduct } from "@/app/lib/api";
 import { useParams } from "next/navigation";
 import { useCartStore, useToastStore } from "@/app/lib/store";
 import { useState } from "react";
+import { formatCurrency } from "@/app/lib/utils/utilFuncs";
 
 const ProductDetails = () => {
     const params = useParams();
@@ -73,7 +74,9 @@ const ProductDetails = () => {
                             <div className='mt-3 flex items-end justify-between'>
                                 <div className='text-2xl text-gray-900'>
                                     <p className='font-semibold'>
-                                        €{data?.product[0]?.price}
+                                        {formatCurrency(
+                                            data?.product[0]?.price
+                                        )}
                                     </p>
                                 </div>
                             </div>

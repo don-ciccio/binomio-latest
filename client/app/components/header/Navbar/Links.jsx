@@ -32,7 +32,7 @@ const Links = () => {
                         onClick={() => setOpen(!open)}
                         className='cursor-pointer hover:bg-gray-150 lg:px-2 text-lg block rounded-3xl transition ease-in-out duration-300 bg-left-top py-2.5 last-of-type:text-orange-600'
                     >
-                        <span>Prenota Ora</span>
+                        <span>Prenota</span>
                     </button>
                 </ul>
             </div>

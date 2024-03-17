@@ -48,3 +48,9 @@ export function IvaTax(totale, aliquotaIVA) {
     const importoIVA = totale - imponibile;
     return importoIVA;
 }
+
+export const formatCurrency = (amount = 0, currency = "EUR") =>
+    new Intl.NumberFormat("it-IT", {
+        style: "currency",
+        currency,
+    }).format(amount);
