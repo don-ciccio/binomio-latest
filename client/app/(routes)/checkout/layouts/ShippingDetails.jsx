@@ -127,7 +127,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                         Verifica
                     </button>
                 </div>
-                {verificationResult ? (
+                {verificationResult && (
                     <div className='py-[11px] flex flex-col'>
                         <span className='flex font-medium  mb-6'>
                             Giorno e orario di consegna
@@ -202,12 +202,6 @@ const ShippingDetails = ({ setActiveStep }) => {
                                 </span>
                             </div>
                         </div>
-                    </div>
-                ) : (
-                    <div className='py-[11px] flex flex-col'>
-                        <span className='flex font-medium  mb-6'>
-                            Consegna non disponibile.
-                        </span>
                     </div>
                 )}
             </div>

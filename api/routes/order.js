@@ -9,6 +9,7 @@ const {
     updateOrder,
     deleteOrder,
     checkRadius,
+    stripeIntent,
 } = require("../controllers/orderController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
@@ -16,6 +17,7 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 router.route("/checkRadius").post(isAuthenticatedUser, checkRadius);
 
 router.route("/order/new").post(isAuthenticatedUser, newOrder);
+router.route("/stripe_intent").post(stripeIntent);
 router.route("/order/:id").get(isAuthenticatedUser, getOrderById);
 router.route("/orders/me").get(isAuthenticatedUser, myOrders);
 
