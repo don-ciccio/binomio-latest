@@ -36,18 +36,33 @@ const Payment = () => {
             colorDanger: "#df1b41",
             fontFamily: "Bricolage Grotesque, system-ui, sans-serif",
             spacingUnit: "2px",
-            borderRadius: "1.5rem",
+            borderRadius: "2rem",
+
             // See all possible variables below
         },
         labels: "floating",
+        rules: {
+            ".Input": {
+                paddingLeft: "1.25rem",
+                paddingRight: "1.25rem",
+            },
+        },
     };
     const options = {
         clientSecret,
         appearance,
+        fonts: [
+            {
+                family: "Bricolage Grotesque",
+                src: "url(https://fonts.gstatic.com/s/bricolagegrotesque/v2/3y9K6as8bTXq_nANBjzKo3IeZx8z6up5BeSl9D4dj_x9PpZBMlGIInHWVyNJ.woff2) format('woff2')",
+                style: "normal",
+                weight: "400",
+            },
+        ],
     };
 
     return (
-        <div>
+        <div className='pb-[35px]  lg:pb-0'>
             {clientSecret && (
                 <Elements options={options} stripe={stripe}>
                     <CheckoutForm paymentIntent={paymentIntent} />

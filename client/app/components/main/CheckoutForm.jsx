@@ -88,36 +88,43 @@ export default function CheckoutForm(paymentIntent) {
         <>
             <form id='payment-form' onSubmit={handleSubmit} className='m-auto'>
                 <div className='mb-6'>
-                    Email address:
                     <input
                         className='block
             w-full
-            rounded-md
-            border-gray-300
-            shadow-sm h-16'
+            rounded-3xl
+            px-5
+            py-6
+          h-12'
                         id='email'
                         type='text'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder='Enter email address'
+                        placeholder='Email'
                     />
                 </div>
                 <PaymentElement id='payment-element' />
-                <button
-                    className='elements-style-background'
-                    disabled={isLoading || !stripe || !elements}
-                    id='submit'
-                >
-                    <span id='button-text'>
-                        {isLoading ? (
-                            <div className='spinner' id='spinner'></div>
-                        ) : (
-                            "Pay now"
-                        )}
-                    </span>
-                </button>
+                <div className='mt-6'>
+                    <button
+                        className={`h-11 items-center justify-center flex   bg-zinc-800 hover:bg-zinc-800/75 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer  text-zinc-200 hover:text-white`}
+                        disabled={isLoading || !stripe || !elements}
+                        id='submit'
+                    >
+                        <span id='button-text'>
+                            {isLoading ? (
+                                <div className='spinner' id='spinner'></div>
+                            ) : (
+                                "Paga Ora"
+                            )}
+                        </span>
+                    </button>
+                </div>
+
                 {/* Show any error or success messages */}
-                {message && <div id='payment-message'>{message}</div>}
+                {message && (
+                    <div className='mt-3' id='payment-message'>
+                        {message}
+                    </div>
+                )}
             </form>
         </>
     );
