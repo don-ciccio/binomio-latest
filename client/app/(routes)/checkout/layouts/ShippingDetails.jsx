@@ -5,15 +5,17 @@ import { useCart } from "@/app/lib/hooks/useCart";
 import { useAddressStore } from "@/app/lib/store";
 import { useWeekdaysStore } from "@/app/lib/store/weekdaysStore";
 import api from "@/app/lib/utils/axiosInterceptor";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
 const ShippingDetails = ({ setActiveStep }) => {
     const [startDate, setStartDate] = useState(new Date());
     const [time, setTime] = useState("");
+    const [message, setMessage] = useState(null);
+
     const { cartData } = useCart();
     const completed = useAddressStore((state) => state.completed);
-
+    const [dirty, setDirty] = useState(false);
     const [verificationResult, setVerificationResult] = useState(null);
 
     const fetchWeekdays = useWeekdaysStore((state) => state.fetch);
@@ -50,6 +52,19 @@ const ShippingDetails = ({ setActiveStep }) => {
         }
     };
 
+    useEffect(() => {
+        if (verificationResult === true && completed) {
+            setDirty(false);
+        } else if (verificationResult === false && completed) {
+            setDirty(false);
+            setMessage("L'indirizzo si trova fuori dalla zona di consegna.");
+        } else if (!completed) {
+            setMessage("Inserire un indirizzo valido.");
+        } else {
+            setMessage(null);
+        }
+    }, [verificationResult, completed]);
+
     const offDay = weekdays
         ?.filter((weekday) => {
             return weekday.available !== false;
@@ -83,17 +98,13 @@ const ShippingDetails = ({ setActiveStep }) => {
                 Indirizzo di consegna
             </p>
             <div className=''>
-                <div className='flex flex-row justify-between items-center'>
-                    <p className='text-[#2D3748] font-medium'>
-                        Usa indirizzo salvato
-                    </p>
-                    <Input placeholder='via Roma 10' />
-                </div>
-
                 <div className='py-[11px]'>
                     <p className='text-[#718096] text-[15px] mb-2'>Indirizzo</p>
 
                     <Input
+                        dirty={dirty}
+                        setDirty={setDirty}
+                        setVerificationResult={setVerificationResult}
                         name='address'
                         placeholder='Indirizzo'
                         width='w-full'
@@ -104,7 +115,14 @@ const ShippingDetails = ({ setActiveStep }) => {
                     <div>
                         <p className='text-[#718096] text-[15px] mb-2'>Città</p>
 
-                        <Input placeholder='Città' name='city' type='text' />
+                        <Input
+                            dirty={dirty}
+                            setDirty={setDirty}
+                            setVerificationResult={setVerificationResult}
+                            placeholder='Città'
+                            name='city'
+                            type='text'
+                        />
                     </div>
                     <div>
                         <p className='text-[#718096] text-[15px] mb-2'>
@@ -112,6 +130,9 @@ const ShippingDetails = ({ setActiveStep }) => {
                         </p>
 
                         <Input
+                            dirty={dirty}
+                            setDirty={setDirty}
+                            setVerificationResult={setVerificationResult}
                             placeholder='Cap'
                             name='postalCode'
                             type='text'
@@ -127,83 +148,98 @@ const ShippingDetails = ({ setActiveStep }) => {
                         Verifica
                     </button>
                 </div>
-                {verificationResult && (
-                    <div className='py-[11px] flex flex-col'>
-                        <span className='flex font-medium  mb-6'>
-                            Giorno e orario di consegna
-                        </span>
-                        <div className='flex flex-row gap-4 text-sm'>
-                            <CustomDatePicker
-                                filterDate={isWeekday}
-                                excludeDates={blackDays}
-                                selected={startDate}
-                                onChange={(date) => {
-                                    setStartDate(date);
-                                    setTime("");
-                                }}
-                            />
-                            <div className='min-w-[145px] relative z-20 bg-transparent dark:bg-form-input'>
-                                <select
-                                    value={time}
-                                    onChange={(e) => setTime(e.target.value)}
-                                    className='min-w-[145px] cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
-                                >
-                                    <option disabled value=''>
-                                        Orario
-                                    </option>
-
-                                    {slotTime?.map(
-                                        (slot, idx) =>
-                                            slot.weekday ===
-                                                startDate.getDay() - 1 &&
-                                            slot.slotTime
-                                                .slice(0, -1)
-                                                .map((s, i) => (
-                                                    <option
-                                                        disabled={
-                                                            s.active
-                                                                ? null
-                                                                : true
-                                                        }
-                                                        key={i}
-                                                        value={s.time}
-                                                    >
-                                                        {format(
-                                                            s.time,
-                                                            "HH:mm"
-                                                        )}{" "}
-                                                        -{" "}
-                                                        {format(
-                                                            s.time + 1800000,
-                                                            "HH:mm"
-                                                        )}
-                                                    </option>
-                                                ))
-                                    )}
-                                </select>
-                                <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2'>
-                                    <svg
-                                        className='fill-current'
-                                        width='24'
-                                        height='24'
-                                        viewBox='0 0 24 24'
-                                        fill='none'
-                                        xmlns='http://www.w3.org/2000/svg'
+                <div className='min-h-[116px]'>
+                    {verificationResult && !dirty ? (
+                        <div className='py-[11px] flex flex-col'>
+                            <span className='flex font-medium  mb-6'>
+                                Giorno e orario di consegna
+                            </span>
+                            <div className='flex flex-row gap-4 text-sm'>
+                                <CustomDatePicker
+                                    filterDate={isWeekday}
+                                    excludeDates={blackDays}
+                                    selected={startDate}
+                                    onChange={(date) => {
+                                        setStartDate(date);
+                                        setTime("");
+                                    }}
+                                />
+                                <div className='min-w-[145px] relative z-20 bg-transparent dark:bg-form-input'>
+                                    <select
+                                        value={time}
+                                        onChange={(e) =>
+                                            setTime(e.target.value)
+                                        }
+                                        className='min-w-[145px] cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
                                     >
-                                        <g opacity='0.8'>
-                                            <path
-                                                fillRule='evenodd'
-                                                clipRule='evenodd'
-                                                d='M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z'
-                                                fill=''
-                                            ></path>
-                                        </g>
-                                    </svg>
-                                </span>
+                                        <option disabled value=''>
+                                            Orario
+                                        </option>
+
+                                        {slotTime?.map(
+                                            (slot, idx) =>
+                                                slot.weekday ===
+                                                    startDate.getDay() - 1 &&
+                                                slot.slotTime
+                                                    .slice(0, -1)
+                                                    .map((s, i) => (
+                                                        <option
+                                                            disabled={
+                                                                s.active
+                                                                    ? null
+                                                                    : true
+                                                            }
+                                                            key={i}
+                                                            value={s.time}
+                                                        >
+                                                            {format(
+                                                                s.time,
+                                                                "HH:mm"
+                                                            )}{" "}
+                                                            -{" "}
+                                                            {format(
+                                                                s.time +
+                                                                    1800000,
+                                                                "HH:mm"
+                                                            )}
+                                                        </option>
+                                                    ))
+                                        )}
+                                    </select>
+                                    <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2'>
+                                        <svg
+                                            className='fill-current'
+                                            width='24'
+                                            height='24'
+                                            viewBox='0 0 24 24'
+                                            fill='none'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                        >
+                                            <g opacity='0.8'>
+                                                <path
+                                                    fillRule='evenodd'
+                                                    clipRule='evenodd'
+                                                    d='M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z'
+                                                    fill=''
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
+                    ) : (
+                        <div className='py-[11px] flex flex-col'>
+                            <span className='flex font-medium  mb-6'>
+                                {message && (
+                                    <div className='mt-3' id='payment-message'>
+                                        {message}
+                                    </div>
+                                )}
+                            </span>
+                        </div>
+                    )}
+                </div>
             </div>
 
             <div className=' border-b border-[#dfdfdf] pt-[50px]' />

@@ -4,9 +4,16 @@ import {
     useStripe,
     useElements,
 } from "@stripe/react-stripe-js";
+import { formatCurrency } from "@/app/lib/utils/utilFuncs";
+import { useCart } from "@/app/lib/hooks/useCart";
+import { useAddressStore } from "@/app/lib/store";
+import useSession from "@/app/lib/hooks/useSession";
 
 export default function CheckoutForm(paymentIntent) {
+    const shippingInfo = useAddressStore.getState().shippingInfo;
+    const user = useSession();
     const [email, setEmail] = useState("");
+    const { totalPrice } = useCart();
 
     const [message, setMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -64,12 +71,16 @@ export default function CheckoutForm(paymentIntent) {
                 return_url: "http://localhost:3000/",
                 receipt_email: email,
                 shipping: {
-                    address: { line1: "New york", city: "NY" },
-                    name: "Shipping user",
+                    address: {
+                        line1: shippingInfo.address,
+                        city: shippingInfo.city,
+                        postal_code: shippingInfo.postalCode,
+                    },
+                    name: user.name,
                 },
                 payment_method_data: {
                     billing_details: {
-                        name: "Billing user",
+                        name: user.name,
                     },
                 },
             },
@@ -88,6 +99,8 @@ export default function CheckoutForm(paymentIntent) {
         <>
             <form id='payment-form' onSubmit={handleSubmit} className='m-auto'>
                 <div className='mb-6'>
+                    <p className='text-[#718096] text-[15px] mb-2'>Email</p>
+
                     <input
                         className='block
             w-full
@@ -105,7 +118,7 @@ export default function CheckoutForm(paymentIntent) {
                 <PaymentElement id='payment-element' />
                 <div className='mt-6'>
                     <button
-                        className={`h-11 items-center justify-center flex   bg-zinc-800 hover:bg-zinc-800/75 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer  text-zinc-200 hover:text-white`}
+                        className={`h-11 items-center justify-center flex w-full  bg-zinc-800 hover:bg-zinc-800/75 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer  text-zinc-200 hover:text-white`}
                         disabled={isLoading || !stripe || !elements}
                         id='submit'
                     >
@@ -113,7 +126,7 @@ export default function CheckoutForm(paymentIntent) {
                             {isLoading ? (
                                 <div className='spinner' id='spinner'></div>
                             ) : (
-                                "Paga Ora"
+                                `Paga ${formatCurrency(totalPrice)}`
                             )}
                         </span>
                     </button>
