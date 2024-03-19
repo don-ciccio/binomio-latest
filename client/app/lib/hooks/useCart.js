@@ -41,7 +41,7 @@ export const useCart = () => {
     const cartData = data?.products
         .map((item) => {
             return {
-                id: item._id,
+                product: item._id,
                 name: item.name,
                 price: item.price,
                 image: item.images[0],
@@ -52,17 +52,15 @@ export const useCart = () => {
         })
         .sort((a, b) => b.timestamp - a.timestamp);
 
-    let totalPrice = "0";
+    let totalPrice = 0;
     let totalQuantity = 0;
 
     if (cartData) {
-        totalPrice = cartData
-            .reduce(
-                (accumulator, currentItem) =>
-                    accumulator + currentItem.price * currentItem.quantity,
-                0
-            )
-            .toLocaleString();
+        totalPrice = cartData.reduce(
+            (accumulator, currentItem) =>
+                accumulator + currentItem.price * currentItem.quantity,
+            0
+        );
     }
 
     totalQuantity = cart.reduce(

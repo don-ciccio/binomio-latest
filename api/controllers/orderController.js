@@ -50,9 +50,7 @@ exports.stripeIntent = catchAsyncErrors(async (req, res, next) => {
             amount: amount,
             currency: "eur",
             description: "Payment description",
-            automatic_payment_methods: {
-                enabled: true,
-            },
+            payment_method_types: ["card", "paypal"],
         };
         const payment_intent = await stripe.paymentIntents.create(params);
         //Return the payment_intent object
@@ -78,11 +76,10 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
             storeId = item.store;
             stores.push(storeId);
         });
-        console.log(orderItems);
+
         let address = `${shippingInfo.address} ${shippingInfo.postalCode} ${shippingInfo.city} `;
 
         let location = await getAddressCordinates(address, API_KEY);
-        // console.log(location);
 
         //couldn't determine coordinates
         if (!location.status) {
@@ -204,26 +201,17 @@ exports.checkRadius = catchAsyncErrors(async (req, res, next) => {
 
 //route POST /api/v1/order/new
 exports.newOrder = catchAsyncErrors(async (req, res, next) => {
-    const {
-        orderItems,
-        shippingInfo,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
-        totalPrice,
-        paymentInfo,
-    } = req.fields;
-
+    const { orderItems, shippingInfo, totalPrice, paymentInfo, isPaid, user } =
+        req.body;
+    console.log(orderItems);
     const order = await Order.create({
-        orderItems,
+        orderItems: orderItems,
         shippingInfo,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
         totalPrice,
         paymentInfo,
+        isPaid,
+        user,
         paidAt: Date.now(),
-        user: req.user._id,
     });
 
     await Store.findByIdAndUpdate(

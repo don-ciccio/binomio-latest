@@ -46,6 +46,37 @@ const Payment = () => {
                 paddingLeft: "1.25rem",
                 paddingRight: "1.25rem",
             },
+
+            ".Tab": {
+                paddingLeft: "1.25rem",
+                paddingRight: "1.25rem",
+                paddingTop: "0.75rem",
+                paddingBottom: "0.75rem",
+                borderRadius: "0.5rem",
+                border: "1px solid #E0E6EB",
+                boxShadow:
+                    "0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(18, 42, 66, 0.02)",
+            },
+
+            ".Block": {
+                paddingLeft: "1.25rem",
+                paddingRight: "1.25rem",
+                borderRadius: "0.5rem",
+            },
+            ".Tab:hover": {
+                color: "var(--colorText)",
+            },
+
+            ".Tab--selected": {
+                borderColor: "#E0E6EB",
+                boxShadow:
+                    "0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(18, 42, 66, 0.02), 0 0 0 2px rgba(39, 39, 42, 1)",
+                backgroundColor: " rgba(39, 39, 42, 1)",
+            },
+            ".Tab--selected:focus": {
+                boxShadow:
+                    "0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(18, 42, 66, 0.02), 0 0 0 2px rgba(39, 39, 42, 1)",
+            },
         },
     };
     const options = {

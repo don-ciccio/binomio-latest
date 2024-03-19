@@ -13,7 +13,11 @@ const StepperSection = () => {
 
     return (
         <div className='flex flex-col lg:flex-row md:px-6 xxs:px-4 lg:pb-14 pt-8  gap-4'>
-            <div className='flex-basis-66  pt-[35px] px-2 md:px-8 rounded-md bg-gray-200 justify-center items-center'>
+            <div
+                className={`${
+                    activeStep !== 2 ? "flex-basis-66" : "flex-basis-100%"
+                }  pt-[35px] px-2 md:px-8 rounded-md bg-gray-200 justify-center items-center`}
+            >
                 <Stepper activeStep={activeStep} />
                 {activeStep === 0 && (
                     <div className='mt-2'>
@@ -31,9 +35,11 @@ const StepperSection = () => {
                     </div>
                 )}
             </div>
-            <div className='flex-basis-33'>
-                <OrderSummary />
-            </div>
+            {activeStep !== 2 && (
+                <div className='flex-basis-33'>
+                    <OrderSummary />
+                </div>
+            )}
         </div>
     );
 };

@@ -17,15 +17,11 @@ const orderSchema = mongoose.Schema(
         },
         orderItems: [
             {
-                name: {
+                image: {
                     type: String,
                     required: true,
                 },
-                quantity: {
-                    type: Number,
-                    required: true,
-                },
-                image: {
+                name: {
                     type: String,
                     required: true,
                 },
@@ -38,10 +34,18 @@ const orderSchema = mongoose.Schema(
                     required: true,
                     ref: "Product",
                 },
+                quantity: {
+                    type: Number,
+                    required: true,
+                },
                 store: {
                     type: Schema.Types.ObjectId,
                     required: true,
                     ref: "Store",
+                },
+                timestamp: {
+                    type: Number,
+                    required: true,
                 },
             },
         ],
@@ -60,45 +64,14 @@ const orderSchema = mongoose.Schema(
             },
             country: {
                 type: String,
-                required: true,
             },
             phoneNo: {
                 type: String,
-                required: [true, "Please add a valid phone number"],
             },
         },
         paymentMethod: {
             type: String,
             default: "COD",
-        },
-        paymentInfo: {
-            id: {
-                type: String,
-            },
-            status: {
-                type: String,
-            },
-            update_time: {
-                type: String,
-            },
-            email_address: {
-                type: String,
-            },
-        },
-        taxPrice: {
-            type: Number,
-            required: true,
-            default: 0.0,
-        },
-        itemsPrice: {
-            type: Number,
-            required: true,
-            default: 0.0,
-        },
-        shippingPrice: {
-            type: Number,
-            required: true,
-            default: 0.0,
         },
         totalPrice: {
             type: Number,
@@ -117,9 +90,6 @@ const orderSchema = mongoose.Schema(
             type: String,
             required: true,
             default: "Processing",
-        },
-        deliveredAt: {
-            type: Date,
         },
     },
     { timestamps: true }

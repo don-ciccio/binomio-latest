@@ -11,6 +11,13 @@ export const useCartStore = create()(
                 set((state) => removeCartItem(state.cart, id)),
             updateQuantity: (id, action) =>
                 set((state) => updateItemQuantity(state.cart, id, action)),
+            clearCart: () =>
+                set(() => {
+                    localStorage.removeItem("cart-storage");
+                    return {
+                        cart: [],
+                    };
+                }),
         }),
         {
             name: "cart-storage",
