@@ -9,8 +9,6 @@ import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
 const ShippingDetails = ({ setActiveStep }) => {
-    const [startDate, setStartDate] = useState(new Date());
-    const [time, setTime] = useState("");
     const [message, setMessage] = useState(null);
 
     const { cartData } = useCart();

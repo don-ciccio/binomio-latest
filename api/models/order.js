@@ -68,6 +68,12 @@ const orderSchema = mongoose.Schema(
             phoneNo: {
                 type: String,
             },
+            date: {
+                type: Date,
+            },
+            time: {
+                type: Number,
+            },
         },
         paymentMethod: {
             type: String,
