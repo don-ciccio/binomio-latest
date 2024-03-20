@@ -23,6 +23,11 @@ const ShippingDetails = ({ setActiveStep }) => {
     const blackoutDays = useWeekdaysStore((state) => state.blackOutDays);
     const slotTime = useWeekdaysStore((state) => state.slotList);
 
+    const { fieldsValue, setFieldsValue } = useAddressStore((state) => ({
+        fieldsValue: state.shippingInfo,
+        setFieldsValue: state.setShippingInfo,
+    }));
+
     const checkRadiusFn = async () => {
         try {
             let res;
@@ -156,30 +161,38 @@ const ShippingDetails = ({ setActiveStep }) => {
                             </span>
                             <div className='flex flex-row gap-4 text-sm'>
                                 <CustomDatePicker
+                                    name='date'
                                     filterDate={isWeekday}
                                     excludeDates={blackDays}
-                                    selected={startDate}
+                                    selected={fieldsValue["date"]}
                                     onChange={(date) => {
-                                        setStartDate(date);
-                                        setTime("");
+                                        setFieldsValue("date", date);
+                                        setFieldsValue("time", 0);
                                     }}
                                 />
                                 <div className='min-w-[150px] relative z-20 bg-transparent dark:bg-form-input'>
                                     <select
-                                        value={time}
+                                        name='time'
+                                        value={fieldsValue["time"]}
                                         onChange={(e) =>
-                                            setTime(e.target.value)
+                                            setFieldsValue(
+                                                "time",
+                                                e.target.value
+                                            )
                                         }
                                         className='min-w-[150px] cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
                                     >
-                                        <option disabled value=''>
+                                        <option disabled value={0}>
                                             Orario
                                         </option>
 
                                         {slotTime?.map(
                                             (slot, idx) =>
                                                 slot.weekday ===
-                                                    startDate.getDay() - 1 &&
+                                                    fieldsValue[
+                                                        "date"
+                                                    ].getDay() -
+                                                        1 &&
                                                 slot.slotTime
                                                     .slice(0, -1)
                                                     .map((s, i) => (
@@ -255,7 +268,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                 </p>
 
                 <RippleButton
-                    disabled={!time}
+                    disabled={fieldsValue["time"] === 0}
                     onClick={handleSubmit}
                     label='Pagamento'
                     width='w-[200px]'

@@ -18,6 +18,8 @@ export const useAddressStore = create(
                 address: "",
                 city: "",
                 postalCode: "",
+                date: new Date(),
+                time: 0,
             },
             completed: false,
             setShippingInfo: (field, value) =>

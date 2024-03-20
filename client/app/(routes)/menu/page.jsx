@@ -48,7 +48,7 @@ export default async function Home() {
                                     <MenuListCard
                                         id={product._id}
                                         name={product.name}
-                                        price={formatCurrency(product.price)}
+                                        price={product.price}
                                         images={product.images}
                                         description={
                                             shorten(product.description, 25) +
