@@ -10,7 +10,7 @@ import { format, parseISO } from "date-fns";
 
 const ShippingDetails = ({ setActiveStep }) => {
     const [message, setMessage] = useState(null);
-
+    const [startDate, setStartDate] = useState(new Date());
     const { cartData } = useCart();
     const completed = useAddressStore((state) => state.completed);
     const [dirty, setDirty] = useState(false);
@@ -95,6 +95,12 @@ const ShippingDetails = ({ setActiveStep }) => {
         setActiveStep(2);
     };
 
+    const onDateChange = (date) => {
+        setStartDate(date);
+        setFieldsValue("date", startDate);
+        setFieldsValue("time", 0);
+    };
+
     return (
         <div className='grid items-center px-4 lg:px-[20px]'>
             <p className='font-medium text-[20px] mb-6'>
@@ -162,11 +168,8 @@ const ShippingDetails = ({ setActiveStep }) => {
                                     name='date'
                                     filterDate={isWeekday}
                                     excludeDates={blackDays}
-                                    selected={fieldsValue["date"]}
-                                    onChange={(date) => {
-                                        setFieldsValue("date", date);
-                                        setFieldsValue("time", 0);
-                                    }}
+                                    selected={startDate}
+                                    onChange={(date) => onDateChange(date)}
                                 />
                                 <div className='min-w-[145px] relative z-20 bg-transparent dark:bg-form-input'>
                                     <select
@@ -187,10 +190,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                                         {slotTime?.map(
                                             (slot, idx) =>
                                                 slot.weekday ===
-                                                    fieldsValue[
-                                                        "date"
-                                                    ].getDay() -
-                                                        1 &&
+                                                    startDate.getDay() - 1 &&
                                                 slot.slotTime
                                                     .slice(0, -1)
                                                     .map((s, i) => (
