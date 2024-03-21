@@ -6,9 +6,10 @@ import { useAddressStore } from "@/app/lib/store";
 import { useWeekdaysStore } from "@/app/lib/store/weekdaysStore";
 import api from "@/app/lib/utils/axiosInterceptor";
 import { useState, useEffect } from "react";
-import { format, parseISO } from "date-fns";
+import { format, formatISO, parseISO } from "date-fns";
 
 const ShippingDetails = ({ setActiveStep }) => {
+    const today = new Date();
     const [message, setMessage] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
     const { cartData } = useCart();
@@ -100,6 +101,13 @@ const ShippingDetails = ({ setActiveStep }) => {
         setStartDate(date);
         setFieldsValue("time", 0);
     };
+
+    console.log(
+        new Date(formatISO(Date.now(startDate))).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+        })
+    );
 
     return (
         <div className='grid items-center px-4 lg:px-[20px]'>
@@ -193,28 +201,77 @@ const ShippingDetails = ({ setActiveStep }) => {
                                                     startDate.getDay() - 1 &&
                                                 slot.slotTime
                                                     .slice(0, -1)
-                                                    .map((s, i) => (
-                                                        <option
-                                                            disabled={
-                                                                s.active
-                                                                    ? null
-                                                                    : true
-                                                            }
-                                                            key={i}
-                                                            value={s.time}
-                                                        >
-                                                            {format(
-                                                                s.time,
-                                                                "HH:mm"
-                                                            )}{" "}
-                                                            -{" "}
-                                                            {format(
-                                                                s.time +
-                                                                    1800000,
-                                                                "HH:mm"
-                                                            )}
-                                                        </option>
-                                                    ))
+                                                    .map((s, i) =>
+                                                        startDate.setHours(
+                                                            0,
+                                                            0,
+                                                            0,
+                                                            0
+                                                        ) ===
+                                                        today.setHours(
+                                                            0,
+                                                            0,
+                                                            0,
+                                                            0
+                                                        ) ? (
+                                                            <option
+                                                                disabled={
+                                                                    new Date(
+                                                                        formatISO(
+                                                                            Date.now(
+                                                                                startDate
+                                                                            )
+                                                                        )
+                                                                    ).toLocaleTimeString(
+                                                                        [],
+                                                                        {
+                                                                            hour: "2-digit",
+                                                                            minute: "2-digit",
+                                                                        }
+                                                                    ) >=
+                                                                        format(
+                                                                            s.time,
+                                                                            "HH:mm"
+                                                                        ) ||
+                                                                    s.active !==
+                                                                        true
+                                                                }
+                                                                key={i}
+                                                                value={s.time}
+                                                            >
+                                                                {format(
+                                                                    s.time,
+                                                                    "HH:mm"
+                                                                )}{" "}
+                                                                -{" "}
+                                                                {format(
+                                                                    s.time +
+                                                                        1800000,
+                                                                    "HH:mm"
+                                                                )}
+                                                            </option>
+                                                        ) : (
+                                                            <option
+                                                                disabled={
+                                                                    s.active !==
+                                                                    true
+                                                                }
+                                                                key={i}
+                                                                value={s.time}
+                                                            >
+                                                                {format(
+                                                                    s.time,
+                                                                    "HH:mm"
+                                                                )}{" "}
+                                                                -{" "}
+                                                                {format(
+                                                                    s.time +
+                                                                        1800000,
+                                                                    "HH:mm"
+                                                                )}
+                                                            </option>
+                                                        )
+                                                    )
                                         )}
                                     </select>
                                     <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2'>
