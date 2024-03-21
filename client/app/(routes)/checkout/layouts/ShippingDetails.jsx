@@ -6,7 +6,7 @@ import { useAddressStore } from "@/app/lib/store";
 import { useWeekdaysStore } from "@/app/lib/store/weekdaysStore";
 import api from "@/app/lib/utils/axiosInterceptor";
 import { useState, useEffect } from "react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 const ShippingDetails = ({ setActiveStep }) => {
     const [message, setMessage] = useState(null);
@@ -168,7 +168,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                                         setFieldsValue("time", 0);
                                     }}
                                 />
-                                <div className='min-w-[150px] relative z-20 bg-transparent dark:bg-form-input'>
+                                <div className='min-w-[145px] relative z-20 bg-transparent dark:bg-form-input'>
                                     <select
                                         name='time'
                                         value={fieldsValue["time"]}
@@ -178,7 +178,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                                                 e.target.value
                                             )
                                         }
-                                        className='min-w-[150px] cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
+                                        className='min-w-[145px] cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
                                     >
                                         <option disabled value={0}>
                                             Orario
