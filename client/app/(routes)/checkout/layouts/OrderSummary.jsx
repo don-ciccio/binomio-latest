@@ -18,7 +18,7 @@ const OrderSummary = () => {
                     <div>
                         <ul className='md:w-[100%] lg:w-[89%]'>
                             {cartData.map((item) => (
-                                <li key={item.product} className='pb-5'>
+                                <li key={item.id} className='pb-5'>
                                     <div className='flex flex-row gap-1.5'>
                                         <div className='flex flex-basis-23 md:flex-basis-13 lg:flex-basis-25 xl:flex-basis-23 max-w-1/4 pr-2.5 h-full'>
                                             <div className='flex flex-col gap-1'>

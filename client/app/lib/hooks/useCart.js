@@ -41,7 +41,7 @@ export const useCart = () => {
     const cartData = data?.products
         .map((item) => {
             return {
-                product: item._id,
+                id: item._id,
                 name: item.name,
                 price: item.price,
                 image: item.images[0],

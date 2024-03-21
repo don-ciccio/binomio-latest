@@ -92,12 +92,12 @@ const ShippingDetails = ({ setActiveStep }) => {
     );
 
     const handleSubmit = () => {
+        setFieldsValue("date", startDate);
         setActiveStep(2);
     };
 
     const onDateChange = (date) => {
         setStartDate(date);
-        setFieldsValue("date", startDate);
         setFieldsValue("time", 0);
     };
 
