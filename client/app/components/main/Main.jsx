@@ -131,7 +131,7 @@ const Main = React.forwardRef((props, ref) => {
                                 (category, index) =>
                                     category.slug === "menu" && (
                                         <Link href='/menu' key={index}>
-                                            <span className='text-white shadow-md active:translate-y-[2px] active:shadow-zinc-800 active:shadow shadow-zinc-600/50 bg-orange-600 px-8 cursor-pointer hover:text-zinc-800 hover:bg-gray-150  text-lg block rounded-3xl transition ease-in-out duration-300 bg-left-top py-2.5'>
+                                            <span className='text-white shadow-sm active:translate-y-[1px] active:shadow-zinc-800 active:shadow shadow-zinc-600/50 bg-orange-600 px-8 cursor-pointer hover:text-zinc-800 hover:bg-gray-150  text-lg block rounded-3xl transition ease-in-out duration-300 bg-left-top py-2.5'>
                                                 {category.name}
                                             </span>
                                         </Link>

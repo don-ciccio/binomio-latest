@@ -4,7 +4,14 @@ import { getCategories, getContent, getMenuBySlug } from "@/app/lib/api";
 
 import Breadcrumb from "@/app/components/ui/Breadcrumb";
 import MenuListCard from "@/app/components/main/Cards/MenuListCard";
-import { formatCurrency } from "@/app/lib/utils/utilFuncs";
+import PeanutIcon from "../../components/icons/allergens/PeanutIcon";
+import WheatIcon from "@/app/components/icons/allergens/WheatIcon";
+import SoyIcon from "@/app/components/icons/allergens/SoyIcon";
+import EggsIcon from "@/app/components/icons/allergens/EggsIcon";
+import MilkIcon from "@/app/components/icons/allergens/MilkIcon";
+import WalnutIcon from "@/app/components/icons/allergens/WalnutIcon";
+import SulfiteIcon from "@/app/components/icons/allergens/SulfiteIcon";
+import FishIcon from "@/app/components/icons/allergens/FishIcon";
 
 function shorten(str, maxLen) {
     if (str.length <= maxLen) return str;
@@ -43,6 +50,60 @@ export default async function Home() {
                             key={index}
                             className='md:px-6 xxs:px-4 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'
                         >
+                            <div className='flex justify-between items-center mb-6 h-8'>
+                                <div className='flex flex-row gap-3 '>
+                                    <div className='inline-flex font-[500] text-sm leading-5 px-3 py-1 border-gray-300  border rounded-3xl items-center m-1 gap-3'>
+                                        <div className='flex items-center justify-center gap-1'>
+                                            <PeanutIcon />
+                                            <span className='font-light mt-1'>
+                                                Arachidi
+                                            </span>
+                                        </div>
+                                        <div className='flex items-center justify-center gap-1'>
+                                            <WheatIcon />
+                                            <span className='font-light mt-1'>
+                                                Cereali
+                                            </span>
+                                        </div>
+                                        <div className='flex items-center justify-center gap-1'>
+                                            <SoyIcon />
+                                            <span className='font-light mt-1'>
+                                                Soia
+                                            </span>
+                                        </div>
+                                        <div className='flex items-center justify-center gap-1'>
+                                            <EggsIcon />
+                                            <span className='font-light mt-1'>
+                                                Uova
+                                            </span>
+                                        </div>
+                                        <div className='flex items-center justify-center gap-1'>
+                                            <MilkIcon />
+                                            <span className='font-light mt-1'>
+                                                Latte
+                                            </span>
+                                        </div>
+                                        <div className='flex items-center justify-center gap-1'>
+                                            <WalnutIcon />
+                                            <span className='font-light mt-1'>
+                                                Frutta a guscio
+                                            </span>
+                                        </div>
+                                        <div className='flex items-center justify-center gap-1'>
+                                            <SulfiteIcon />
+                                            <span className='font-light mt-1'>
+                                                Solfiti
+                                            </span>
+                                        </div>
+                                        <div className='flex items-center justify-center gap-1'>
+                                            <FishIcon />
+                                            <span className='font-light mt-1'>
+                                                Pesce
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className='grid-cols-1'>
                                 <div className='flex'>
                                     <MenuListCard
