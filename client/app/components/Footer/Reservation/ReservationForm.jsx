@@ -154,7 +154,8 @@ const ReservationForm = ({ setPage }) => {
             (booking.name.length === 0) |
             (booking.phone.length === 0) |
             (booking.email.length === 0) |
-            (selection.size === 0)
+            (selection.size === 0) |
+            (selection.time === 0)
         ) {
             console.log("Incomplete Details");
             setReservationError(true);
@@ -221,6 +222,7 @@ const ReservationForm = ({ setPage }) => {
             });
 
             if (selection.size === 0) return tables;
+
             return results;
         }
     };
@@ -277,19 +279,21 @@ const ReservationForm = ({ setPage }) => {
                             <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                 <select
                                     value={selection.time}
-                                    onChange={(e) =>
-                                        setSelection({
+                                    onChange={(e) => {
+                                        let newSel = {
                                             ...selection,
                                             table: {
                                                 ...selection.table,
                                             },
                                             time: e.target.value,
-                                        })
-                                    }
+                                        };
+                                        setSelection(newSel);
+                                    }}
                                     className='text-center w-32 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
                                 >
-                                    <option value={0}>Orario</option>
-
+                                    <option disabled={true} value=''>
+                                        Orario
+                                    </option>
                                     {selection.date !== null &&
                                         weekDays?.map(
                                             (day, idx) =>
@@ -387,6 +391,10 @@ const ReservationForm = ({ setPage }) => {
                             ) : selection.size === 0 ? (
                                 <p className='font-bold'>
                                     Selezionare il numero di persone
+                                </p>
+                            ) : selection.time === 0 ? (
+                                <p className='font-bold'>
+                                    Selezionare l'orario
                                 </p>
                             ) : (
                                 <p className='font-bold'>
