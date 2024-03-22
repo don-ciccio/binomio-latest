@@ -31,7 +31,7 @@ const ReservationForm = ({ setPage }) => {
             name: "",
             id: "",
         },
-        date: new Date(),
+        date: null,
         time: 0,
         location: "Any Location",
         size: 0,
@@ -87,7 +87,16 @@ const ReservationForm = ({ setPage }) => {
         let td = [];
         for (let i = b; i <= a; i += 1800000) {
             td.push(
-                <option key={i} value={i}>
+                <option
+                    disabled={
+                        selection.date.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        }) >= format(i, "HH:mm")
+                    }
+                    key={i}
+                    value={i}
+                >
                     {format(i, "HH:mm")}
                 </option>
             );
@@ -165,7 +174,7 @@ const ReservationForm = ({ setPage }) => {
                     name: "",
                     id: "",
                 },
-                date: new Date(),
+                date: null,
                 time: 0,
                 location: "Any Location",
                 size: 0,
@@ -258,7 +267,7 @@ const ReservationForm = ({ setPage }) => {
                                         table: {
                                             ...selection.table,
                                         },
-                                        date: new Date(),
+                                        date: null,
                                     };
                                     setSelection(newSel);
                                 }
@@ -280,15 +289,18 @@ const ReservationForm = ({ setPage }) => {
                                     className='text-center w-32 cursor-pointer appearance-none outline-none  bg-gray-50 border pl-5 p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
                                 >
                                     <option value={0}>Orario</option>
-                                    {weekDays?.map(
-                                        (day, idx) =>
-                                            day.weekday ===
-                                                selection.date.getDay() - 1 &&
-                                            renderOP(
-                                                day.startBookingHour,
-                                                day.endBookingHour
-                                            )
-                                    )}
+
+                                    {selection.date !== null &&
+                                        weekDays?.map(
+                                            (day, idx) =>
+                                                day.weekday ===
+                                                    selection.date.getDay() -
+                                                        1 &&
+                                                renderOP(
+                                                    day.startBookingHour,
+                                                    day.endBookingHour
+                                                )
+                                        )}
                                 </select>
                                 <span className='absolute top-1/2 left-4 z-30 -translate-y-1/2'>
                                     <Icon

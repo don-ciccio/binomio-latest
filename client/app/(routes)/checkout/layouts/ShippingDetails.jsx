@@ -102,13 +102,6 @@ const ShippingDetails = ({ setActiveStep }) => {
         setFieldsValue("time", 0);
     };
 
-    console.log(
-        new Date(formatISO(Date.now(startDate))).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-        })
-    );
-
     return (
         <div className='grid items-center px-4 lg:px-[20px]'>
             <p className='font-medium text-[20px] mb-6'>
