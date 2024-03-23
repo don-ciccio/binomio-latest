@@ -230,11 +230,11 @@ const ReservationForm = ({ setPage }) => {
         <BottomSheet onDismiss={onDismiss} open={open}>
             <div className='min-h-[34px] pb-2  pt-3 px-8 flex flex-col  gap-3  items-center justify-center'>
                 {!selection.table.id ? (
-                    <span className='font-semibold text-xl uppercase'>
+                    <span className='font-semibold text-xl'>
                         Prenota un tavolo
                     </span>
                 ) : (
-                    <span className='font-semibold text-xl uppercase'>
+                    <span className='font-semibold text-xl'>
                         Conferma prenotazione
                     </span>
                 )}

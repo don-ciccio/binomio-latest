@@ -50,7 +50,7 @@ export default async function Home() {
                             key={index}
                             className='md:px-6 xxs:px-4 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'
                         >
-                            <div className='flex justify-between items-center mb-6 h-8'>
+                            <div className='flex flex-col mb-6 gap-2'>
                                 <div className='flex flex-row gap-3 '>
                                     <div className='flex flex-wrap font-[500] text-sm leading-5 px-3 py-1  items-center m-1 gap-2'>
                                         <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
@@ -104,20 +104,22 @@ export default async function Home() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className='grid-cols-1'>
-                                <div className='flex'>
-                                    <MenuListCard
-                                        id={product._id}
-                                        name={product.name}
-                                        price={product.price}
-                                        images={product.images}
-                                        description={
-                                            shorten(product.description, 25) +
-                                            "..."
-                                        }
-                                        properties={product.properties}
-                                    />
+                                <div className='grid-cols-1'>
+                                    <div className='flex'>
+                                        <MenuListCard
+                                            id={product._id}
+                                            name={product.name}
+                                            price={product.price}
+                                            images={product.images}
+                                            description={
+                                                shorten(
+                                                    product.description,
+                                                    25
+                                                ) + "..."
+                                            }
+                                            properties={product.properties}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
