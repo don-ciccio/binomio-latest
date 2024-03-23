@@ -52,50 +52,51 @@ export default async function Home() {
                         >
                             <div className='flex justify-between items-center mb-6 h-8'>
                                 <div className='flex flex-row gap-3 '>
-                                    <div className='inline-flex font-[500] text-sm leading-5 px-3 py-1 border-gray-300  border rounded-3xl items-center m-1 gap-3'>
-                                        <div className='flex items-center justify-center gap-1'>
+                                    <div className='flex flex-wrap font-[500] text-sm leading-5 px-3 py-1  items-center m-1 gap-2'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <PeanutIcon />
                                             <span className='font-light mt-1'>
                                                 Arachidi
                                             </span>
                                         </div>
-                                        <div className='flex items-center justify-center gap-1'>
+
+                                        <span className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <WheatIcon />
                                             <span className='font-light mt-1'>
                                                 Cereali
                                             </span>
-                                        </div>
-                                        <div className='flex items-center justify-center gap-1'>
+                                        </span>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <SoyIcon />
                                             <span className='font-light mt-1'>
                                                 Soia
                                             </span>
                                         </div>
-                                        <div className='flex items-center justify-center gap-1'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <EggsIcon />
                                             <span className='font-light mt-1'>
                                                 Uova
                                             </span>
                                         </div>
-                                        <div className='flex items-center justify-center gap-1'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <MilkIcon />
                                             <span className='font-light mt-1'>
                                                 Latte
                                             </span>
                                         </div>
-                                        <div className='flex items-center justify-center gap-1'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <WalnutIcon />
                                             <span className='font-light mt-1'>
                                                 Frutta a guscio
                                             </span>
                                         </div>
-                                        <div className='flex items-center justify-center gap-1'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <SulfiteIcon />
                                             <span className='font-light mt-1'>
                                                 Solfiti
                                             </span>
                                         </div>
-                                        <div className='flex items-center justify-center gap-1'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <FishIcon />
                                             <span className='font-light mt-1'>
                                                 Pesce
@@ -115,6 +116,7 @@ export default async function Home() {
                                             shorten(product.description, 25) +
                                             "..."
                                         }
+                                        properties={product.properties}
                                     />
                                 </div>
                             </div>

@@ -77,23 +77,22 @@ const ProductsByCatSection = () => {
                     <div className='flex flex-row gap-2'>
                         {existingParams.map(([key, value]) => (
                             <li key={key} className='inline-block'>
-                                <div className='inline-flex font-[500] text-sm leading-5 pr-2 pl-3 py-1 border-gray-300  border rounded-3xl items-center m-1'>
+                                <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                     <span>{value}</span>
                                     <button
                                         onClick={() => onSelect(key, value)}
-                                        className='text-gray-500 hover:text-gray-600 inline-flex w-4 h-4 ml-1 p-1 shrink-0 cursor-pointer transform-none rounded-full hover:bg-gray-300'
                                     >
                                         <svg
-                                            className='block align-middle'
-                                            stroke='currentColor'
-                                            fill='none'
-                                            viewBox='0 0 8 8'
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className='h-5 w-5 ml-1 hover:text-gray-300'
+                                            viewBox='0 0 20 20'
+                                            fill='currentColor'
                                         >
                                             <path
-                                                strokeLinecap='round'
-                                                strokeWidth='1.5'
-                                                d='M1 1l6 6m0-6L1 7'
-                                            ></path>
+                                                fillRule='evenodd'
+                                                d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z'
+                                                clipRule='evenodd'
+                                            />
                                         </svg>
                                     </button>
                                 </div>

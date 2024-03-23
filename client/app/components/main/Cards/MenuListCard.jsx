@@ -1,51 +1,29 @@
 "use client";
-import { Icon } from "@iconify/react";
-import { useState } from "react";
-import ReactCardFlip from "react-card-flip";
-import { useCartStore, useWishlistStore, useToastStore } from "@/app/lib/store";
-import HeartIcon from "../../icons/HeartIcon";
-import Link from "next/link";
+
 import { formatCurrency, slugify } from "@/app/lib/utils/utilFuncs";
 import { useRouter } from "next/navigation";
+import PeanutIcon from "@/app/components/icons/allergens/PeanutIcon";
+import WheatIcon from "@/app/components/icons/allergens/WheatIcon";
+import SoyIcon from "@/app/components/icons/allergens/SoyIcon";
+import EggsIcon from "@/app/components/icons/allergens/EggsIcon";
+import MilkIcon from "@/app/components/icons/allergens/MilkIcon";
+import WalnutIcon from "@/app/components/icons/allergens/WalnutIcon";
+import SulfiteIcon from "@/app/components/icons/allergens/SulfiteIcon";
+import FishIcon from "@/app/components/icons/allergens/FishIcon";
 
-const MenuListCard = ({ name, price, images, id, description }) => {
-    const [isFlipped, setIsFlipped] = useState(false);
-    const { cart, addToCart } = useCartStore();
-    const { wishlist, toggleWishlist } = useWishlistStore();
-    const { setToast } = useToastStore();
+const MenuListCard = ({ name, price, images, id, description, properties }) => {
     const router = useRouter();
+    const { Allergeni } = properties;
 
-    async function handleClick(e) {
-        e.stopPropagation();
-        const alreadyAdded = cart.find((item) => item.id === id);
-        if (alreadyAdded) {
-            setToast({
-                status: "info",
-                message: "Il prodotto è già stato aggiunto!",
-            });
-        } else {
-            addToCart({ id, quantity: 1 });
-            setToast({
-                status: "successo",
-                message: "Il prodotto è stato aggiunto al carrello!",
-            });
-        }
-
-        setIsFlipped(!isFlipped);
-        await delay(800);
-        setIsFlipped((prev) => !prev);
-    }
-
-    const hasWished = wishlist.some((item) => item.id === id);
-    const handleAddToWishlist = (e) => {
-        e.stopPropagation();
-        setToast({
-            status: hasWished ? "info" : "successo",
-            message: `Il prodotto è stato ${
-                hasWished ? "rimosso dalla" : "aggiunto alla"
-            } wishlist`,
-        });
-        toggleWishlist(id);
+    const availableIcons = {
+        uova: EggsIcon,
+        "frutta a guscio": WalnutIcon,
+        solfiti: SulfiteIcon,
+        pesce: FishIcon,
+        latte: MilkIcon,
+        soia: SoyIcon,
+        cereali: WheatIcon,
+        arachidi: PeanutIcon,
     };
 
     const handleClickRoute = () => {
@@ -84,26 +62,19 @@ const MenuListCard = ({ name, price, images, id, description }) => {
                         </div>
                     </div>
                     <p className='text-left font-light'>{description}</p>
-                    {/* <div className={"flex  h-full flex-col flex-basis-20"}>
-                        <div className='flex flex-col gap-3'>
-                            <div className='flex'>
-                                <button
-                                    onClick={handleClick}
-                                    className='h-11 font-medium items-center justify-center flex w-full  bg-zinc-800 hover:bg-zinc-800/75 relative overflow-hidden text-center rounded-full px-5 py-4 cursor-pointer  text-zinc-200 hover:text-white'
+                    <div className='flex flex-row gap-1 mt-4'>
+                        {Allergeni.map((p, i) => {
+                            let Tagname = availableIcons[p];
+                            return (
+                                <div
+                                    key={i}
+                                    className='bg-zinc-800 rounded-full w-8 h-8 pt-0.5'
                                 >
-                                    Aggiungi al carrello
-                                </button>
-                            </div>
-                            <div className='flex'>
-                                <button
-                                    onClick={handleAddToWishlist}
-                                    className='h-11 font-light items-center justify-center flex w-full relative overflow-hidden text-center rounded-full  pb-4 cursor-pointer hover:text-orange-600'
-                                >
-                                    Aggiungi alla wishlist
-                                </button>
-                            </div>
-                        </div>
-                    </div> */}
+                                    <Tagname />
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@ const SoyIcon = ({ className = "" }) => {
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
-            className={`${className} inline-block h-6 w-6`}
+            className={`${className} inline-block h-6 w-6 fill-white`}
             version='1.1'
             x='0px'
             y='0px'
