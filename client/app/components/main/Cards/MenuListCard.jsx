@@ -47,7 +47,7 @@ const MenuListCard = ({ name, price, images, id, description, properties }) => {
             </div>
 
             <div className={"flex flex-auto h-full items-start"}>
-                <div className='grow mt-3'>
+                <div className='grow lg:mt-2'>
                     <div className='flex mb-4'>
                         <div className='inline-block text-left  text-xl font-semibold mr-1.5'>
                             {name}

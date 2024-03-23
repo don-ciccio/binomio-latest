@@ -52,53 +52,53 @@ export default async function Home() {
                         >
                             <div className='flex flex-col mb-6 gap-2'>
                                 <div className='flex flex-row gap-3 '>
-                                    <div className='flex flex-wrap font-[500] text-sm leading-5 px-3 py-1  items-center m-1 gap-2'>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
+                                    <div className='flex flex-wrap font-[500] text-xs leading-5 px-3 py-1  items-center m-1 gap-1'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <PeanutIcon />
-                                            <span className='font-light mt-1'>
+                                            <span className='font-light'>
                                                 Arachidi
                                             </span>
                                         </div>
 
-                                        <span className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
+                                        <span className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <WheatIcon />
-                                            <span className='font-light mt-1'>
+                                            <span className='font-light'>
                                                 Cereali
                                             </span>
                                         </span>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <SoyIcon />
-                                            <span className='font-light mt-1'>
+                                            <span className='font-light'>
                                                 Soia
                                             </span>
                                         </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <EggsIcon />
-                                            <span className='font-light mt-1'>
+                                            <span className='font-light'>
                                                 Uova
                                             </span>
                                         </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <MilkIcon />
-                                            <span className='font-light mt-1'>
+                                            <span className='font-light'>
                                                 Latte
                                             </span>
                                         </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <WalnutIcon />
-                                            <span className='font-light mt-1'>
+                                            <span className='font-light'>
                                                 Frutta a guscio
                                             </span>
                                         </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <SulfiteIcon />
-                                            <span className='font-light mt-1'>
+                                            <span className='font-light'>
                                                 Solfiti
                                             </span>
                                         </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-sm font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
+                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
                                             <FishIcon />
-                                            <span className='font-light mt-1'>
+                                            <span className='font-light'>
                                                 Pesce
                                             </span>
                                         </div>

@@ -172,7 +172,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                                     selected={startDate}
                                     onChange={(date) => onDateChange(date)}
                                 />
-                                <div className='min-w-[145px] relative z-20 bg-transparent dark:bg-form-input'>
+                                <div className='min-w-[123px] xs:min-w-[145px] relative z-20 bg-transparent dark:bg-form-input'>
                                     <select
                                         name='time'
                                         value={fieldsValue["time"]}
@@ -182,7 +182,7 @@ const ShippingDetails = ({ setActiveStep }) => {
                                                 e.target.value
                                             )
                                         }
-                                        className='min-w-[145px] cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
+                                        className='min-w-[123px] xs:min-w-[145px] cursor-pointer appearance-none outline-none  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
                                     >
                                         <option disabled value={0}>
                                             Orario
@@ -267,11 +267,9 @@ const ShippingDetails = ({ setActiveStep }) => {
                                                     )
                                         )}
                                     </select>
-                                    <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2'>
+                                    <span className='absolute top-1/2 right-3 xs:right-4 z-30 -translate-y-1/2'>
                                         <svg
-                                            className='fill-current'
-                                            width='24'
-                                            height='24'
+                                            className='fill-current h-3 w-3 xs:h-6 xs:w-6'
                                             viewBox='0 0 24 24'
                                             fill='none'
                                             xmlns='http://www.w3.org/2000/svg'
