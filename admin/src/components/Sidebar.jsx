@@ -7,6 +7,7 @@ import {
     TruckIcon,
     Cog6ToothIcon,
     CalendarDaysIcon,
+    ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 
 import { NavLink } from "react-router-dom";
@@ -16,6 +17,11 @@ const sidebarLinks = [
         name: "Dashboard",
         href: "/dashboard",
         icon: HomeIcon,
+    },
+    {
+        name: "Ordini",
+        href: "/orders",
+        icon: ClipboardDocumentListIcon,
     },
     {
         name: "Prodotti",

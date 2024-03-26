@@ -21,6 +21,7 @@ import Content from "@/pages/Theme/Content";
 import DefaultLayout from "./layout/DefaultLayout";
 import Booking from "@/pages/Booking/Booking";
 import BookingSettings from "./pages/Booking/BookingSettings";
+import Orders from "@/pages/Orders/Orders";
 
 const routes = (isAuthenticated) => [
     {
@@ -36,6 +37,10 @@ const routes = (isAuthenticated) => [
             {
                 path: "dashboard",
                 element: <Ecommerce />,
+            },
+            {
+                path: "orders",
+                element: <Orders />,
             },
             {
                 path: "products",

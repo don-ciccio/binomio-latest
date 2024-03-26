@@ -9,6 +9,7 @@ import {
     getContent,
     getSessions,
     getReservations,
+    getOrders,
 } from "../queries";
 
 export const useGetProducts = ({
@@ -45,6 +46,14 @@ export const useGetReservations = ({ id, date }) => {
     return useQuery(["stores", "reservations", { id, date }], () =>
         getReservations(id, date)
     );
+};
+
+export const useGetOrders = () => {
+    return useQuery(["orders"], () => getOrders(), {
+        keepPreviousData: true,
+        staleTime: 5000,
+        cacheTime: 1000 * 60 * 60 * 24,
+    });
 };
 
 export const useGetCategories = ({ search }) => {

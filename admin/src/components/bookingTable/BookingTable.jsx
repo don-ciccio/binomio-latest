@@ -12,7 +12,7 @@ import { format, parseISO } from "date-fns";
 
 const BookingTable = ({ id, date }) => {
     const { data: reservations, isLoading } = useGetReservations({ id, date });
-    console.log(reservations);
+
     return (
         <>
             {isLoading ? (
@@ -66,11 +66,13 @@ const BookingTable = ({ id, date }) => {
                     </TableBody>
                 </Table>
             ) : (
-                <div className='flex items-center justify-center mt-8 '>
-                    <span className='text-[#6B7280] font-semibold'>
-                        Non ci sono prenotazioni per oggi.
-                    </span>
-                </div>
+                reservations.data.length === 0 && (
+                    <div className='flex items-center justify-center mt-8 '>
+                        <span className='text-[#6B7280] font-semibold'>
+                            Non ci sono prenotazioni per oggi.
+                        </span>
+                    </div>
+                )
             )}
         </>
     );

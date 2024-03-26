@@ -102,7 +102,7 @@ export default function CheckoutForm(paymentIntent) {
                             shippingInfo,
                             totalPrice,
                             isPaid: true,
-                            user: user.id,
+                            user: user._id,
                         };
                         const config = {
                             headers: {
@@ -139,7 +139,7 @@ export default function CheckoutForm(paymentIntent) {
                 <form
                     id='payment-form'
                     onSubmit={handleSubmit}
-                    className='m-auto max-w-lg lg:pb-[35px]'
+                    className='m-auto max-w-xl lg:pb-[35px]'
                 >
                     <div className='mb-6'>
                         <p className='text-[#718096] text-[15px] mb-2'>Email</p>
