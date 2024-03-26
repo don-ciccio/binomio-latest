@@ -10,3 +10,9 @@ export const formatCurrency = (amount = 0, currency = "EUR") =>
         style: "currency",
         currency,
     }).format(amount);
+
+export function IvaTax(totale, aliquotaIVA) {
+    const imponibile = totale / ((100 + aliquotaIVA) / 100);
+    const importoIVA = totale - imponibile;
+    return importoIVA;
+}
