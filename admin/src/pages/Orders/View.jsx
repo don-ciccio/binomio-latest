@@ -32,7 +32,7 @@ const View = () => {
                         <ul className='mt-4 text-sm text-zinc-600'>
                             {data?.data.order.orderItems.map((item) => (
                                 <>
-                                    <li className='p-3 list-none'>
+                                    <li className='py-3 pr-6 pl-4 list-none'>
                                         <div className='flex'>
                                             <div className='flex-initial'>
                                                 <img
@@ -51,7 +51,7 @@ const View = () => {
                                                         )}{" "}
                                                         x {item.quantity}
                                                     </div>
-                                                    <div className='col-span-2'>
+                                                    <div className='col-span-2 justify-self-end'>
                                                         {formatCurrency(
                                                             item.price *
                                                                 item.quantity
@@ -84,7 +84,7 @@ const View = () => {
                                     : "Annullato"}
                             </Badge>
                         </div>
-                        <div className='grid grid-rows-3 gap-3 pt-5 px-4 pb-3 text-sm text-zinc-600'>
+                        <div className='grid grid-rows-3 gap-3 pt-5 px-6 pb-3 text-sm text-zinc-600'>
                             <div className='row-span-1'>
                                 <div className=''>
                                     <div className='grid grid-cols-10'>
@@ -100,8 +100,8 @@ const View = () => {
                                                 articoli
                                             </span>
                                         </div>
-                                        <div className='col-span-2'>
-                                            <span className='text-base font-semibold'>
+                                        <div className='col-span-2 justify-self-end'>
+                                            <span className=''>
                                                 {formatCurrency(
                                                     Number(
                                                         parseFloat(
@@ -129,7 +129,7 @@ const View = () => {
                                     <span className='col-span-5'>
                                         IVA (22%) (incluso)
                                     </span>
-                                    <span className='col-span-2 text-base font-semibold'>
+                                    <span className='col-span-2  justify-self-end'>
                                         {formatCurrency(
                                             IvaTax(
                                                 parseFloat(
@@ -147,12 +147,58 @@ const View = () => {
                                         Totale carrello:
                                     </span>
                                     <span className='col-span-5'></span>
-                                    <span className='col-span-2 text-base font-semibold'>
+                                    <span className='col-span-2 font-semibold justify-self-end'>
                                         {formatCurrency(
                                             data?.data.order.totalPrice
                                         )}
                                     </span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='flex flex-col gap-5'>
+                    <div className='rounded-md border border-gray-200 bg-white'>
+                        <div className='border-b border-gray-200 py-4 px-6'>
+                            <span className='text-lg font-medium'>Note</span>
+                        </div>
+                        <div className='flex flex-col gap-6 p-6 text-sm text-zinc-600'>
+                            Consegna alle 21.30
+                        </div>
+                    </div>
+                    <div className='rounded-md border border-gray-200 bg-white'>
+                        <div className='border-b border-gray-200 py-4 px-6'>
+                            <span className='text-lg font-medium'>Cliente</span>
+                        </div>
+                        <div className='flex flex-col gap-6 p-6 text-sm text-zinc-600'>
+                            <div>
+                                <label className='block text-sm font-medium text-gray-600 mb-2'>
+                                    Nome
+                                </label>
+                                {data?.data.order.user.name}
+                            </div>
+                            <div>
+                                <label className='block text-sm font-medium text-gray-600 mb-2'>
+                                    Recapiti
+                                </label>
+                                {data?.data.order.user.email}
+                            </div>
+                            <div>
+                                <label className='block text-sm font-medium text-gray-600 mb-2'>
+                                    Indirizzo di consegna
+                                </label>
+                                <ul className='list-none'>
+                                    <li>
+                                        {data?.data.order.shippingInfo.address}
+                                    </li>
+                                    <li>
+                                        {
+                                            data?.data.order.shippingInfo
+                                                .postalCode
+                                        }{" "}
+                                        {data?.data.order.shippingInfo.city}
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
