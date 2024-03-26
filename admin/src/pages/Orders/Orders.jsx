@@ -11,12 +11,14 @@ import {
     TableBody,
     Badge,
 } from "@tremor/react";
-import { InformationCircleIcon } from "@heroicons/react/20/solid";
+import { InformationCircleIcon, EyeIcon } from "@heroicons/react/20/solid";
+
 import { CustomDatePicker } from "../../components/common/CustomDatePicker";
 import { useState } from "react";
 import TableLoader from "../../components/common/TableLoader";
 import { format, parseISO } from "date-fns";
 import { formatCurrency } from "../../utils";
+import { Link } from "react-router-dom";
 
 const Orders = () => {
     const { data, isLoading } = useGetOrders();
@@ -24,7 +26,7 @@ const Orders = () => {
     const handleDay = (date) => {
         setStartDate(new Date(date.setHours(0, 0, 0, 0)));
     };
-    console.log(data?.data);
+
     return (
         <div className='h-full w-full bg-gray-50 px-3 xl:px-20 py-12'>
             <Flex
@@ -61,9 +63,7 @@ const Orders = () => {
                                     <TableHeaderCell>Data</TableHeaderCell>
                                     <TableHeaderCell>Cliente</TableHeaderCell>
                                     <TableHeaderCell>Totale</TableHeaderCell>
-                                    <TableHeaderCell>
-                                        Stato del pagamento
-                                    </TableHeaderCell>
+                                    <TableHeaderCell>Pagamento</TableHeaderCell>
                                     <TableHeaderCell>Articoli</TableHeaderCell>
                                     <TableHeaderCell>
                                         Stato della consegna
@@ -71,6 +71,7 @@ const Orders = () => {
                                     <TableHeaderCell>
                                         Orario consegna
                                     </TableHeaderCell>
+                                    <TableHeaderCell>Azione</TableHeaderCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -81,7 +82,9 @@ const Orders = () => {
                                         </TableCell>
                                         <TableCell className='p-0 lg:p-4'>
                                             {format(
-                                                parseISO(order.paidAt),
+                                                parseISO(
+                                                    order.shippingInfo.date
+                                                ),
                                                 "dd/MM/yyyy"
                                             )}
                                         </TableCell>
@@ -114,7 +117,25 @@ const Orders = () => {
                                             {format(
                                                 order.shippingInfo.time,
                                                 "HH:mm"
+                                            )}{" "}
+                                            -{" "}
+                                            {format(
+                                                order.shippingInfo.time +
+                                                    1800000,
+                                                "HH:mm"
                                             )}
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className='flex gap-1.5 items-center'>
+                                                <Link to={`${order._id}`}>
+                                                    <Icon
+                                                        icon={EyeIcon}
+                                                        variant='light'
+                                                        tooltip='Visualizza'
+                                                        size='sm'
+                                                    />
+                                                </Link>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))}

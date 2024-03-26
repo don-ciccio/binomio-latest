@@ -10,6 +10,7 @@ import {
     getSessions,
     getReservations,
     getOrders,
+    getOrderById,
 } from "../queries";
 
 export const useGetProducts = ({
@@ -40,6 +41,10 @@ export const useGetCategoryById = (id) => {
 
 export const useGetStoreById = (id) => {
     return useQuery(["stores", "details", id], () => getStore(id));
+};
+
+export const useGetOrderById = (id) => {
+    return useQuery(["orders", "details", id], () => getOrderById(id));
 };
 
 export const useGetReservations = ({ id, date }) => {

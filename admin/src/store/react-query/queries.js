@@ -54,6 +54,10 @@ export const getOrders = async () => {
     return await axios.get(`${API_URL}/api/admin/orders`);
 };
 
+export const getOrderById = async (id) => {
+    return await axios.get(`${API_URL}/api/order/${id}`);
+};
+
 export const changeProductStatus = async (id, status) => {
     return await axios.put(`${API_URL}/api/admin/product/status/${id}`, {
         status,

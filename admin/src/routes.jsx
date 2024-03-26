@@ -22,6 +22,7 @@ import DefaultLayout from "./layout/DefaultLayout";
 import Booking from "@/pages/Booking/Booking";
 import BookingSettings from "./pages/Booking/BookingSettings";
 import Orders from "@/pages/Orders/Orders";
+import { ViewOrder } from "@/pages/Orders/View";
 
 const routes = (isAuthenticated) => [
     {
@@ -42,6 +43,7 @@ const routes = (isAuthenticated) => [
                 path: "orders",
                 element: <Orders />,
             },
+            { path: "orders/:id", element: <ViewOrder /> },
             {
                 path: "products",
                 element: <Products />,

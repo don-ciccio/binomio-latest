@@ -108,7 +108,7 @@ const ProductListCard = ({ name, price, images, id, description }) => {
                             <div className='hidden lg:flex'>
                                 <button
                                     onClick={handleAddToWishlist}
-                                    className='h-11 font-light items-center justify-center flex w-full relative overflow-hidden text-center rounded-full  pb-4 cursor-pointer hover:text-orange-600'
+                                    className='h-11 font-light items-center justify-center flex w-full relative overflow-hidden text-center rounded-full cursor-pointer hover:text-orange-600'
                                 >
                                     Aggiungi alla wishlist
                                 </button>
