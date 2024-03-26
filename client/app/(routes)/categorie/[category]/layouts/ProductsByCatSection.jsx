@@ -136,7 +136,10 @@ const ProductsByCatSection = () => {
             >
                 {mounted && !isLoading ? (
                     data?.products.map((product, index) => (
-                        <div key={index} className='flex'>
+                        <div
+                            key={index}
+                            className='flex items-center justify-center'
+                        >
                             {toggleView ? (
                                 <ProductCard
                                     id={product._id}

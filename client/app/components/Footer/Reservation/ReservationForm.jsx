@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { BottomSheet } from "react-spring-bottom-sheet";
 
 import CustomDatePicker from "@/app/components/ui/CustomDatePicker";
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 import { Icon } from "@iconify/react";
 
 import {
@@ -21,6 +21,7 @@ import Table from "@/app/components/ui/Table";
 const ReservationForm = ({ setPage }) => {
     const open = useToggleBooking((state) => state.open);
     const setOpen = useToggleBooking((state) => state.setOpen);
+    const today = new Date();
 
     const id = "64787b91837e138ddfed4ed0";
 
@@ -87,18 +88,27 @@ const ReservationForm = ({ setPage }) => {
         let td = [];
         for (let i = b; i <= a; i += 1800000) {
             td.push(
-                <option
-                    disabled={
-                        selection.date.toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                        }) >= format(i, "HH:mm")
-                    }
-                    key={i}
-                    value={i}
-                >
-                    {format(i, "HH:mm")}
-                </option>
+                selection.date.setHours(0, 0, 0, 0) ===
+                    today.setHours(0, 0, 0, 0) ? (
+                    <option
+                        disabled={
+                            new Date(
+                                formatISO(Date.now(selection.date))
+                            ).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                            }) >= format(i, "HH:mm")
+                        }
+                        key={i}
+                        value={i}
+                    >
+                        {format(i, "HH:mm")}
+                    </option>
+                ) : (
+                    <option key={i} value={i}>
+                        {format(i, "HH:mm")}
+                    </option>
+                )
             );
         }
         return td;
