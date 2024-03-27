@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Session = require("../models/session");
 const Product = require("../models/product");
+const mongoose = require("mongoose");
 
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
@@ -48,6 +49,53 @@ exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
         success: true,
         user,
         message: `Bentornato, ${user.name}`,
+    });
+});
+
+// route GET /api/v1/user/:id
+exports.getUserById = catchAsyncErrors(async (req, res, next) => {
+    /* const user = await User.findById(req.params.id); */
+    const user = await User.aggregate([
+        {
+            $match: { _id: mongoose.Types.ObjectId(req.params.id) },
+        },
+        {
+            $lookup: {
+                from: "orders",
+                localField: "_id",
+                foreignField: "user",
+                as: "orders",
+            },
+        },
+        { $addFields: { number_of_orders: { $size: "$orders" } } },
+        {
+            $unwind: "$orders",
+        },
+        {
+            $group: {
+                _id: "$_id",
+                detail: { $last: "$$ROOT" },
+                totalCost: {
+                    $sum: "$orders.totalPrice",
+                },
+            },
+        },
+        {
+            $replaceRoot: {
+                newRoot: {
+                    $mergeObjects: [{ totalCost: "$totalCost" }, "$detail"],
+                },
+            },
+        },
+    ]);
+
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        user,
     });
 });
 

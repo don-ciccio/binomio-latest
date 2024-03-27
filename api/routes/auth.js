@@ -10,6 +10,7 @@ const {
     refreshToken,
     logout,
     countSessions,
+    getUserById,
 } = require("../controllers/authController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
@@ -21,6 +22,10 @@ router.route("/logout").get(logout);
 
 router.route("/me").get(isAuthenticatedUser, getUserProfile);
 router.route("/admin/session").get(isAuthenticatedUser, countSessions);
+
+router
+    .route("/admin/user/:id")
+    .get(isAuthenticatedUser, authorizeRoles("admin"), getUserById);
 
 // Google and Facebook Login
 router.route("/auth/google").post(googleController);

@@ -149,6 +149,20 @@ const ShippingDetails = ({ setActiveStep }) => {
                         />
                     </div>
                 </div>
+                <div className='py-[11px]'>
+                    <p className='text-[#718096] text-[15px] mb-2'>
+                        Scala/Interno Citofono
+                    </p>
+
+                    <Input
+                        dirty={dirty}
+                        setDirty={setDirty}
+                        setVerificationResult={setVerificationResult}
+                        name='details'
+                        placeholder='Scala/Interno citofono'
+                        width='w-full'
+                    />
+                </div>
                 <div className='py-[11px] inline-flex'>
                     <button
                         disabled={!completed}
@@ -285,6 +299,19 @@ const ShippingDetails = ({ setActiveStep }) => {
                                         </svg>
                                     </span>
                                 </div>
+                            </div>
+                            <div className='mt-5 text-sm'>
+                                <p className=' text-[15px] mb-2'>Note</p>
+                                <textarea
+                                    name='notes'
+                                    value={fieldsValue["notes"]}
+                                    onChange={(e) =>
+                                        setFieldsValue("notes", e.target.value)
+                                    }
+                                    className='resize-none appearance-none outline-none w-full  bg-gray-50 border  p-3 rounded-3xl border-gray-300 text-gray-900 sm:text-sm  focus:ring-slate-500 focus:border-slate-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500'
+                                    cols='70'
+                                    rows='5'
+                                ></textarea>
                             </div>
                         </div>
                     ) : (

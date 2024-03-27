@@ -62,6 +62,9 @@ const orderSchema = mongoose.Schema(
                 type: String,
                 required: true,
             },
+            details: {
+                type: String,
+            },
             country: {
                 type: String,
             },
@@ -70,9 +73,14 @@ const orderSchema = mongoose.Schema(
             },
             date: {
                 type: Date,
+                required: true,
             },
             time: {
                 type: Number,
+                required: true,
+            },
+            notes: {
+                type: String,
             },
         },
         paymentMethod: {

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetOrderById } from "../../store/react-query/hooks/useQueries";
 import Loader from "@/components/common/Loader";
 import { Metric, Badge } from "@tremor/react";
@@ -163,7 +163,7 @@ const View = () => {
                             <span className='text-lg font-medium'>Note</span>
                         </div>
                         <div className='flex flex-col gap-6 p-6 text-sm text-zinc-600'>
-                            Consegna alle 21.30
+                            {data?.data.order.shippingInfo.notes}
                         </div>
                     </div>
                     <div className='rounded-md border border-gray-200 bg-white'>
@@ -172,19 +172,24 @@ const View = () => {
                         </div>
                         <div className='flex flex-col gap-6 p-6 text-sm text-zinc-600'>
                             <div>
-                                <label className='block text-sm font-medium text-gray-600 mb-2'>
+                                <label className='block text-sm font-medium text-zinc-800  mb-2'>
                                     Nome
                                 </label>
-                                {data?.data.order.user.name}
+                                <Link
+                                    to={`/customers/${data?.data.order.user._id}`}
+                                    className='font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline'
+                                >
+                                    {data?.data.order.user.name}
+                                </Link>
                             </div>
                             <div>
-                                <label className='block text-sm font-medium text-gray-600 mb-2'>
+                                <label className='block text-sm font-medium text-zinc-800 mb-2'>
                                     Recapiti
                                 </label>
                                 {data?.data.order.user.email}
                             </div>
                             <div>
-                                <label className='block text-sm font-medium text-gray-600 mb-2'>
+                                <label className='block text-sm font-medium text-zinc-800 mb-2'>
                                     Indirizzo di consegna
                                 </label>
                                 <ul className='list-none'>
@@ -197,6 +202,9 @@ const View = () => {
                                                 .postalCode
                                         }{" "}
                                         {data?.data.order.shippingInfo.city}
+                                    </li>
+                                    <li>
+                                        {data?.data.order.shippingInfo.details}
                                     </li>
                                 </ul>
                             </div>

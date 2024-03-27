@@ -18,6 +18,8 @@ export const useAddressStore = create(
                 address: "",
                 city: "",
                 postalCode: "",
+                details: "",
+                notes: "",
                 date: new Date(),
                 time: 0,
             },

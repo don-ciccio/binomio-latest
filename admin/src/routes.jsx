@@ -23,6 +23,8 @@ import Booking from "@/pages/Booking/Booking";
 import BookingSettings from "./pages/Booking/BookingSettings";
 import Orders from "@/pages/Orders/Orders";
 import { ViewOrder } from "@/pages/Orders/View";
+import Customers from "@/pages/Customers/Customers";
+import { ViewCustomer } from "@/pages/Customers/View";
 
 const routes = (isAuthenticated) => [
     {
@@ -56,6 +58,11 @@ const routes = (isAuthenticated) => [
             },
             { path: "categories/add", element: <AddCategory /> },
             { path: "categories/:id", element: <EditCategory /> },
+            {
+                path: "customers",
+                element: <Customers />,
+            },
+            { path: "customers/:id", element: <ViewCustomer /> },
             {
                 path: "stores",
                 element: <Stores />,

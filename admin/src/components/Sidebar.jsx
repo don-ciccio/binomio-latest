@@ -8,6 +8,7 @@ import {
     Cog6ToothIcon,
     CalendarDaysIcon,
     ClipboardDocumentListIcon,
+    UserGroupIcon,
 } from "@heroicons/react/24/outline";
 
 import { NavLink } from "react-router-dom";
@@ -32,6 +33,11 @@ const sidebarLinks = [
         name: "Categorie",
         href: "/categories",
         icon: TagIcon,
+    },
+    {
+        name: "Clienti",
+        href: "/customers",
+        icon: UserGroupIcon,
     },
     {
         name: "Sedi",
