@@ -11,6 +11,7 @@ const {
     logout,
     countSessions,
     getUserById,
+    getAllUsers,
 } = require("../controllers/authController");
 
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
@@ -26,6 +27,10 @@ router.route("/admin/session").get(isAuthenticatedUser, countSessions);
 router
     .route("/admin/user/:id")
     .get(isAuthenticatedUser, authorizeRoles("admin"), getUserById);
+
+router
+    .route("/admin/users")
+    .get(isAuthenticatedUser, authorizeRoles("admin"), getAllUsers);
 
 // Google and Facebook Login
 router.route("/auth/google").post(googleController);

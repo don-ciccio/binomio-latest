@@ -62,6 +62,10 @@ export const getUserById = async (id) => {
     return await axios.get(`${API_URL}/api/admin/user/${id}`);
 };
 
+export const getAllUsers = async () => {
+    return await axios.get(`${API_URL}/api/admin/users`);
+};
+
 export const changeProductStatus = async (id, status) => {
     return await axios.put(`${API_URL}/api/admin/product/status/${id}`, {
         status,

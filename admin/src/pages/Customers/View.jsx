@@ -33,10 +33,10 @@ const View = () => {
                                     />
                                 </span>
                             </div>
-                            <div className='flex flex-initial border-r'>
+                            <div className='flex flex-initial border-x'>
                                 <div className='p-4'>
                                     <div className='flex flex-col gap-2'>
-                                        <div className='flex items-center justify-center text-[#374151]'>
+                                        <div className='flex items-center justify-center font-medium text-zinc-800'>
                                             Importo speso
                                         </div>
                                         <div className='flex items-center justify-center font-medium text-base text-zinc-600'>
@@ -50,10 +50,10 @@ const View = () => {
                             <div className='flex'>
                                 <div className='p-4'>
                                     <div className='flex flex-col gap-2'>
-                                        <div className='flex items-center justify-center text-[#374151]'>
+                                        <div className='flex items-center justify-center font-medium text-zinc-800'>
                                             Ordini
                                         </div>
-                                        <div className='flex items-center justify-center font-medium text-base  text-zinc-600'>
+                                        <div className='flex items-center justify-center font-medium text-base text-zinc-600'>
                                             {
                                                 data?.data.user[0]
                                                     .number_of_orders
@@ -126,6 +126,57 @@ const View = () => {
                                 )}
                             </ul>
                         </Card>
+                    </div>
+                </div>
+                <div className='flex flex-col gap-5'>
+                    <div className='rounded-md border border-gray-200 bg-white'>
+                        <div className='border-b border-gray-200 py-4 px-6'>
+                            <span className='text-lg font-medium'>Cliente</span>
+                        </div>
+                        <div className='flex flex-col gap-6 p-6 text-sm text-zinc-600'>
+                            <div>
+                                <label className='block text-sm font-medium text-zinc-800  mb-2'>
+                                    Nome
+                                </label>
+
+                                {data?.data.user[0].name}
+                            </div>
+                            <div>
+                                <label className='block text-sm font-medium text-zinc-800 mb-2'>
+                                    Recapiti
+                                </label>
+                                {data?.data.user[0].email}
+                            </div>
+                            <div>
+                                <label className='block text-sm font-medium text-zinc-800 mb-2'>
+                                    Indirizzo di consegna
+                                </label>
+                                <ul className='list-none'>
+                                    <li>
+                                        {
+                                            data?.data.user[0].orders
+                                                .shippingInfo.address
+                                        }
+                                    </li>
+                                    <li>
+                                        {
+                                            data?.data.user[0].orders
+                                                .shippingInfo.postalCode
+                                        }{" "}
+                                        {
+                                            data?.data.user[0].orders
+                                                .shippingInfo.city
+                                        }
+                                    </li>
+                                    <li>
+                                        {
+                                            data?.data.user[0].orders
+                                                .shippingInfo.details
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

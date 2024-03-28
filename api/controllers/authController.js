@@ -99,6 +99,48 @@ exports.getUserById = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
+    const users = await User.aggregate([
+        {
+            $lookup: {
+                from: "orders",
+                localField: "_id",
+                foreignField: "user",
+                as: "orders",
+            },
+        },
+        { $addFields: { number_of_orders: { $size: "$orders" } } },
+        {
+            $unwind: "$orders",
+        },
+        {
+            $group: {
+                _id: "$_id",
+                detail: { $last: "$$ROOT" },
+                totalCost: {
+                    $sum: "$orders.totalPrice",
+                },
+            },
+        },
+        {
+            $replaceRoot: {
+                newRoot: {
+                    $mergeObjects: [{ totalCost: "$totalCost" }, "$detail"],
+                },
+            },
+        },
+    ]);
+
+    if (!users) {
+        return next(new ErrorHandler("Users not found", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        users,
+    });
+});
+
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
     const { email, password } = req.body;
 

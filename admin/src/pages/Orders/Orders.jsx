@@ -89,7 +89,12 @@ const Orders = () => {
                                             )}
                                         </TableCell>
                                         <TableCell className='p-0 lg:p-4'>
-                                            {order.user.name}
+                                            <Link
+                                                to={`/customers/${order.user._id}`}
+                                                className='font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline'
+                                            >
+                                                {order.user.name}
+                                            </Link>
                                         </TableCell>
                                         <TableCell className='p-0 lg:p-4'>
                                             {formatCurrency(order.totalPrice)}
