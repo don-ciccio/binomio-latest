@@ -21,7 +21,8 @@ function shorten(str, maxLen) {
 
 export default async function Home() {
     const initialCategories = await getCategories("");
-    const withParent = initialCategories.filter((p) =>
+
+    const withParent = initialCategories.admin.filter((p) =>
         p.hasOwnProperty("parent")
     );
     let result = [];

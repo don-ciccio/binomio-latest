@@ -7,30 +7,29 @@ import {
 } from "@/app/lib/api";
 import ProductsByCatSection from "./layouts/ProductsByCatSection";
 import Breadcrumb from "@/app/components/ui/Breadcrumb";
-import {
-    dehydrate,
-    HydrationBoundary,
-    QueryClient,
-} from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getQueryClient } from "@/app/get-query-client";
 
 export default async function Home({ params, searchParams }) {
-    const queryClient = new QueryClient();
+    const { category } = await params;
 
-    await queryClient.prefetchQuery({
+    const queryClient = getQueryClient();
+
+    queryClient.prefetchQuery({
         queryKey: ["categories"],
         queryFn: getCategories,
     });
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
         queryKey: ["content"],
         queryFn: getContent,
     });
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
         queryKey: [
             "products",
             "category",
-            { cat: params.category, query: searchParams },
+            { cat: category, query: await searchParams },
         ],
-        queryFn: getProductsByCategory(params.category, searchParams),
+        queryFn: getProductsByCategory(category, await searchParams),
     });
 
     return (

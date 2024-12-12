@@ -1,28 +1,26 @@
 import Header from "@/app/components/header/Header";
 import SVGLogo from "@/app/components/icons/SVGLogo";
 import { getCategories, getContent, getProductsBySlug } from "@/app/lib/api";
-import {
-    dehydrate,
-    HydrationBoundary,
-    QueryClient,
-} from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import Breadcrumb from "@/app/components/ui/Breadcrumb";
 import ProductDetails from "./layouts/ProductDetails";
+import { getQueryClient } from "@/app/get-query-client";
 
 export default async function Home({ params }) {
-    const queryClient = new QueryClient();
+    const { slug } = await params;
+    const queryClient = getQueryClient();
 
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
         queryKey: ["categories"],
         queryFn: getCategories,
     });
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
         queryKey: ["content"],
         queryFn: getContent,
     });
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
         queryKey: ["products", "detail"],
-        queryFn: getProductsBySlug(params.slug),
+        queryFn: getProductsBySlug(slug),
     });
 
     return (
