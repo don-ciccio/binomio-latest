@@ -1,24 +1,21 @@
 import { getCategories, getContent, getProducts } from "@/app/lib/api";
 import HeroSection from "./layouts/HeroSection";
 import ProductsSection from "./layouts/ProductsSection";
-import {
-    dehydrate,
-    HydrationBoundary,
-    QueryClient,
-} from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getQueryClient } from "@/app/get-query-client";
 
 export default async function Home() {
-    const queryClient = new QueryClient();
+    const queryClient = getQueryClient();
 
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
         queryKey: ["categories", "list"],
         queryFn: getCategories,
     });
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
         queryKey: ["content"],
         queryFn: getContent,
     });
-    await queryClient.prefetchQuery({
+    queryClient.prefetchQuery({
         queryKey: ["products", "list"],
         queryFn: getProducts,
     });

@@ -14,7 +14,7 @@ const OrderSummary = () => {
                     Riepilogo ordine
                 </p>
 
-                <div className='px-5 relative  mb-4 max-h-[380px] h-[380px] overflow-y-auto'>
+                <div className='px-5 relative  mb-4 max-h-[380px] overflow-y-auto'>
                     <div>
                         <ul className='md:w-[100%] lg:w-[89%]'>
                             {cartData.map((item) => (

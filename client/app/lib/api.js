@@ -18,18 +18,16 @@ export const getProducts = async (
         sort.order
     }&category=${filterCategory.toString()}&status=${status}&search=${search}&limit=${limit}`;
 
-    const response = await fetch(url, { method: "GET" });
-    const data = await response.json();
+    const { data } = await api.get(url);
+
     return data;
 };
 
 export const getCategories = async (search) => {
-    const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories?search=${search}`,
-        { method: "GET" }
+    const { data } = await api.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories?search=${search}`
     );
 
-    const data = await response.json();
     return data;
 };
 
@@ -38,35 +36,33 @@ export const getProductsByCategory = async (cat, query) => {
         url: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/${cat}`,
         query: query,
     });
-    const response = await fetch(url, { method: "GET" });
-    const data = await response.json();
+
+    const { data } = await api.get(url);
+
     return data;
 };
 
 export const getProductsBySlug = async (slug) => {
-    const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/single/${slug}`,
-        { method: "GET" }
+    const { data } = await api.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/single/${slug}`
     );
-    const data = await response.json();
+
     return data;
 };
 
 export const getMenuBySlug = async (slug) => {
-    const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/menu/${slug}`,
-        { method: "GET" }
+    const { data } = await api.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/menu/${slug}`
     );
-    const data = await response.json();
+
     return data;
 };
 
 export const getContent = async () => {
-    const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/content`,
-        { method: "GET" }
+    const { data } = await api.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/content`
     );
-    const data = await response.json();
+
     return data;
 };
 
@@ -74,11 +70,10 @@ export const getProductsByIds = async (ids) => {
     const idArray = ids.length < 1 ? null : ids;
     const query = qs.stringify({ filterBy: idArray });
 
-    const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/cart?${query}`,
-        { method: "GET" }
+    const { data } = await api.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/cart?${query}`
     );
-    const data = await response.json();
+
     return data;
 };
 

@@ -90,16 +90,20 @@ const ProductCard = ({ name, price, images, id }) => {
             </div>
 
             <div className={"mt-5"}>
-                <div className='flex gap-1 flex-auto'>
+                <div className='flex gap-2 flex-auto'>
                     <div
                         className={
-                            "items-start text-left flex-basis-66 max-w-2/3"
+                            "items-start text-left xxs:flex-basis-70 xs:flex-basis-66 max-w-2/3"
                         }
                     >
                         {name}
                     </div>
-                    <div className={"items-end flex-basis-33 max-w-1/3 pr-1.5"}>
-                        <div className='flex font-medium flex-row gap-1 items-center justify-end'>
+                    <div
+                        className={
+                            "items-end xxs:flex-basis-52 xs:flex-basis-33 max-w-1/3 pr-1.5"
+                        }
+                    >
+                        <div className='flex font-medium xxs:flex-col xs:flex-row gap-1 items-center justify-end'>
                             <div className='flex  max-w-2/3 justify-end'>
                                 {formatCurrency(price)}
                             </div>

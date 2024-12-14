@@ -68,10 +68,10 @@ const Sidebar = () => {
         >
             {/* <!-- SIDEBAR HEADER --> */}
             <div className='ie-logo px-3 py-0 text-center xl:text-left'>
-                <NavLink to='/'>
+                <NavLink to='/dashboard'>
                     <div className='text-xl font-medium text-gray-900 xl:px-3 xl:text-2xl'>
-                        <span className='block xl:hidden'>AP</span>
-                        <span className='hidden xl:block'>Admin Panel</span>
+                        <span className='block xl:hidden'>BS</span>
+                        <span className='hidden xl:block'>Binomio Store</span>
                     </div>
                 </NavLink>
             </div>

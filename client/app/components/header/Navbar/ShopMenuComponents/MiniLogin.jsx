@@ -7,6 +7,7 @@ import useSession from "@/app/lib/hooks/useSession";
 import { logOut } from "@/app/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import api from "@/app/lib/utils/axiosInterceptor";
 
 const MiniLogin = () => {
     const { setAuthUser, authUser } = useAuthStore();
@@ -27,7 +28,7 @@ const MiniLogin = () => {
 
     const googleLogin = useGoogleLogin({
         onSuccess: async ({ code }) => {
-            const resp = await axios.post(
+            const resp = await api.post(
                 `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/google`,
 
                 {
@@ -51,15 +52,10 @@ const MiniLogin = () => {
 
     const loginSubmit = async (e) => {
         e.preventDefault();
-        const config = {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-            credentials: "same-origin",
-        };
-        const { data } = await axios.post(
+
+        const { data } = await api.post(
             `${process.env.NEXT_PUBLIC_SERVER_URL}/api/login`,
-            loginData,
-            config
+            loginData
         );
 
         setAuthUser(data.user);
