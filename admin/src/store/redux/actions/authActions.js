@@ -8,7 +8,6 @@ export const getLoginAction = (loginData) => async (dispatch) => {
         const config = {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
-            credentials: "same-origin",
         };
         const { data } = await axios.post(
             `${API_URL}/api/login`,
@@ -30,7 +29,6 @@ export const registerAction = (registerData) => async (dispatch) => {
         const config = {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
-            credentials: "same-origin",
         };
 
         const { data } = await axios.post(
