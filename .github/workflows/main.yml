@@ -23,7 +23,7 @@ jobs:
                   username: ${{ secrets.REMOTE_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   source: "./" # This now correctly points to the current directory
-                  target: "/var/www/binomio-latest/api"
+                  target: "/var/www/binomio-latest"
 
             - name: Restart PM2 application
               uses: appleboy/ssh-action@master

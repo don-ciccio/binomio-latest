@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: "binomio-latest",
-            script: "yarn",
+            script: "npm",
             args: "run dev",
             env: {
                 NODE_ENV: "development",
