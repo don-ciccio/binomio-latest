@@ -1,9 +1,22 @@
 const app = require("./app");
 const connectDatabase = require("./config/database");
+const https = require("https");
+const fs = require("fs");
 
 // Connecting to database
 connectDatabase();
 
-app.listen(process.env.PORT || 5000, "0.0.0.0", () => {
-    console.log(`Listening on port ${process.env.PORT || 5000}`);
+const options = {
+    cert: fs.readFileSync(
+        "/etc/letsencrypt/live/api.noboringcoffee.com/fullchain.pem"
+    ),
+    key: fs.readFileSync(
+        "/etc/letsencrypt/live/api.noboringcoffee.com/privkey.pem"
+    ),
+};
+
+const server = https.createServer(options, app);
+
+server.listen(process.env.PORT || 443, () => {
+    console.log(`Listening on port ${process.env.PORT || 443}`);
 });
