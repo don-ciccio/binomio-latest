@@ -33,4 +33,4 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
                       cd /var/www/binomio-latest/api
-                      pm2 reload all  # This command restarts your application
+                      pm2 reload all  # This command restarts your application!
