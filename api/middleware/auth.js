@@ -16,19 +16,19 @@ exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
         }
         next();
     };
-    getAuthToken(req, res, async () => {
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            req.user = await User.findById(decoded.id);
+    try {
+        const token = getAuthToken(req);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            next();
-        } catch (e) {
-            return res
-                .status(401)
-                .send({ error: "You are not authorized to make this request" });
-        }
-    });
+        req.user = await User.findById(decoded.id);
+
+        next();
+    } catch (e) {
+        return res
+            .status(401)
+            .send({ error: "You are not authorized to make this request" });
+    }
 });
 
 // Handle the user role change
