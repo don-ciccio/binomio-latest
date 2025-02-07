@@ -30,8 +30,7 @@ jobs:
                   username: ${{ secrets.REMOTE_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   source: "./" # This now correctly points to the current directory
-                  target: "/home/root/binomio-latest"
-                  cmd: sudo su -
+                  target: "/var/www/binomio-latest"
 
             - name: Restart PM2 application
               uses: appleboy/ssh-action@master
@@ -40,5 +39,5 @@ jobs:
                   username: ${{ secrets.REMOTE_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   script: |
-                      cd /home/root/binomio-latest/api
+                      cd /var/www/binomio-latest/api
                       pm2 reload all  # This command restarts your application!
