@@ -8,7 +8,6 @@ export const getLoginAction = (loginData) => async (dispatch) => {
         const config = {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
-            credentials: "same-origin",
         };
         const { data } = await axios.post(
             `${API_URL}/api/login`,
@@ -30,7 +29,6 @@ export const registerAction = (registerData) => async (dispatch) => {
         const config = {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
-            credentials: "same-origin",
         };
 
         const { data } = await axios.post(
@@ -51,7 +49,11 @@ export const registerAction = (registerData) => async (dispatch) => {
 export const LoadUser = () => async (dispatch) => {
     try {
         dispatch({ type: "LOAD_REQUEST" });
-        const { data } = await axios.get(`${API_URL}/api/me`);
+        const config = {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        };
+        const { data } = await axios.get(`${API_URL}/api/me`, config);
         dispatch({ type: "LOAD_SUCCESS", payload: data });
     } catch (error) {
         dispatch({
