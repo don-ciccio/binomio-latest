@@ -17,6 +17,6 @@ const options = {
 
 const server = https.createServer(options, app);
 
-server.listen(process.env.PORT || 443, () => {
+server.listen(process.env.PORT || 443, "0.0.0.0", () => {
     console.log(`Listening on port ${process.env.PORT || 443}`);
 });
