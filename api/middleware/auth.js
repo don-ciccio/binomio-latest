@@ -5,19 +5,30 @@ const ErrorHandler = require("../utils/errorHandler");
 
 // Check if user is authenticated or not
 exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
-    const token = req.cookies.token;
-    console.log(req.cookies);
-    if (!token) {
-        return next(
-            new ErrorHandler("Login first to access this resource", 401)
-        );
-    }
+    const getAuthToken = (req, res, next) => {
+        if (
+            req.headers.authorization &&
+            req.headers.authorization.split(" ")[0] === "Bearer"
+        ) {
+            req.authToken = req.headers.authorization.split(" ")[1];
+        } else {
+            req.authToken = null;
+        }
+        next();
+    };
+    getAuthToken(req, res, async () => {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = await User.findById(decoded.id);
 
-    req.user = await User.findById(decoded.id);
-
-    next();
+            next();
+        } catch (e) {
+            return res
+                .status(401)
+                .send({ error: "You are not authorized to make this request" });
+        }
+    });
 });
 
 // Handle the user role change
