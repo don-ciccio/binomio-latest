@@ -37,6 +37,7 @@ app.use(
 app.use(
     cors({
         origin: [process.env.FRONTEND_URL, process.env.CLIENT_URL],
+        methods: ["GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS"],
         credentials: true,
         optionsSuccessStatus: 200,
     })
