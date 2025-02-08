@@ -144,7 +144,7 @@ exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
     const { email, password } = req.body;
 
-    console.log(req.cookies["token"]);
+    console.log(JSON.stringify(req.cookies));
 
     // Check if email and password are entered by the user
     if (!email || !password) {

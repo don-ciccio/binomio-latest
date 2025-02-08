@@ -44,6 +44,8 @@ app.use(
         origin: [process.env.FRONTEND_URL, process.env.CLIENT_URL],
         methods: ["GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS"],
         credentials: true,
+        preflightContinue: true,
+        allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
         optionsSuccessStatus: 200,
     })
 );
