@@ -40,7 +40,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
 // Get currently logged in user profile => /api/v1/me
 exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findById(req.user.id);
-
+    console.log(req.cookies);
     if (!user) {
         next(new ErrorHandler("User not login", 403));
     }
