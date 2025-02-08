@@ -14,7 +14,6 @@ const sessionStore = MongoStore.create({
     ttl: 20000,
     touchAfter: 24 * 3600,
 });
-app.use(cookieParser());
 
 app.use(
     session({
@@ -34,6 +33,12 @@ app.use(
 );
 
 // global middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use(errorMiddleware);
+
 app.use(
     cors({
         origin: [process.env.FRONTEND_URL, process.env.CLIENT_URL],
@@ -42,10 +47,6 @@ app.use(
         optionsSuccessStatus: 200,
     })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use(errorMiddleware);
 
 // Import all routes
 const auth = require("./routes/auth");
