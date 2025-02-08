@@ -1,14 +1,15 @@
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 
-axios.defaults.withCredentials = true;
 export const getLoginAction = (loginData) => async (dispatch) => {
     try {
         dispatch({ type: "LOGIN_REQUEST" });
         const config = {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
+            crossorigin: true,
         };
+
         const { data } = await axios.post(
             `${API_URL}/api/login`,
             loginData,
@@ -29,6 +30,7 @@ export const registerAction = (registerData) => async (dispatch) => {
         const config = {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
+            crossorigin: true,
         };
 
         const { data } = await axios.post(
@@ -52,6 +54,7 @@ export const LoadUser = () => async (dispatch) => {
         const config = {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
+            crossorigin: true,
         };
         const { data } = await axios.get(`${API_URL}/api/me`, config);
         dispatch({ type: "LOAD_SUCCESS", payload: data });
