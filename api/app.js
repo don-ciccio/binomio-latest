@@ -34,7 +34,14 @@ app.use(
 );
 
 // global middlewares
-app.use(cors());
+app.use(
+    cors({
+        origin: [process.env.FRONTEND_URL, process.env.CLIENT_URL],
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        optionsSuccessStatus: 200,
+    })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
