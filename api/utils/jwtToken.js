@@ -11,7 +11,8 @@ const sendToken = (user, statusCode, res) => {
         ),
         httpOnly: true,
         secure: true,
-        sameSite: "none",
+        domain: ".amplifyapp.com",
+        path: "/",
     };
 
     res.status(statusCode).cookie("token", token, options).json({
