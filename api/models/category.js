@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const mongooseSlugPlugin = require("mongoose-slug-plugin");
 
 const categorySchema = new mongoose.Schema({
+    idx: {
+        type: Number,
+        unique: true,
+        required: [true, "Please enter category index"],
+    },
     name: {
         type: String,
         required: [true, "Please enter category name"],

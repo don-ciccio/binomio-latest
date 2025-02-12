@@ -5,9 +5,9 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 
 // Create new product => /api/admin/category/new
 exports.newCategory = catchAsyncErrors(async (req, res, next) => {
-    const { name, parent, images, description, properties } = req.body;
-    if (!name) {
-        return next(new ErrorHandler("Field required", 400));
+    const { name, parent, images, description, properties, idx } = req.body;
+    if (!name || !idx) {
+        return next(new ErrorHandler("Name and index are required", 400));
     }
 
     let category = Category.create({
@@ -16,6 +16,7 @@ exports.newCategory = catchAsyncErrors(async (req, res, next) => {
         description,
         parent: parent || undefined,
         properties,
+        idx,
     });
     res.status(200).json({
         success: true,
@@ -52,6 +53,7 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
                         description: 1,
                         properties: 1,
                         slug: 1,
+                        idx: 1,
                         number_of_product: { $size: "$products" },
                     },
                 },
@@ -68,10 +70,10 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
-    const { name, parent, images, description, properties, _id } = req.body;
-    console.log(properties);
-    if (!name || !_id) {
-        return next(new ErrorHandler(error.message, 400));
+    const { name, parent, images, description, properties, _id, idx } =
+        req.body;
+    if (!name || !_id || !idx) {
+        return next(new ErrorHandler("Name, ID and index are required", 400));
     }
     const category = await Category.updateOne(
         { _id },
@@ -81,6 +83,7 @@ exports.updateCategory = catchAsyncErrors(async (req, res, next) => {
             description,
             parent: parent || undefined,
             properties,
+            idx,
         }
     );
 

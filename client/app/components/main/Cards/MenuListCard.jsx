@@ -33,28 +33,32 @@ const MenuListCard = ({ name, price, images, id, description, properties }) => {
         <div
             onClick={handleClickRoute}
             className={
-                "cursor-pointer w-full p-2 bg-white-200 hover:shadow-md hover:shadow-zinc-400/25 hover:bg-white from-gray-200 to-white/30 rounded-3xl flex flex-row mx-auto h-40"
+                "cursor-pointer w-full p-2 bg-white-200 from-gray-200 to-white/30 rounded-3xl flex flex-col md:flex-row mx-auto min-h-[10rem]"
             }
         >
-            <div className={"group flex flex-basis-140 h-full"}>
-                <div className='relative overflow-hidden'>
+            <div
+                className={
+                    "group flex w-full md:w-auto md:flex-basis-140 h-full"
+                }
+            >
+                <div className='relative overflow-hidden w-full md:w-auto'>
                     <img
                         src={images[0]}
                         alt={name}
-                        className={`block rounded-3xl relative overflow-hidden py-2 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-400 via-zinc-300 to-zinc-200  shadow-sm h-36`}
+                        className={`block rounded-3xl relative overflow-hidden py-2 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-400 via-zinc-300 to-zinc-200 shadow-sm w-full md:h-36 object-cover`}
                     />
                 </div>
             </div>
 
-            <div className={"flex flex-auto h-full items-start"}>
-                <div className='grow lg:mt-2'>
-                    <div className='flex mb-4'>
-                        <div className='inline-block text-left  text-xl font-semibold mr-1.5'>
+            <div className={"flex flex-auto h-full items-start p-2 md:p-0"}>
+                <div className='grow w-full'>
+                    <div className='flex mb-4 flex-wrap'>
+                        <div className='inline-block text-left text-xl font-semibold mr-1.5'>
                             {name}
                         </div>
                         <span
                             className={
-                                "border-b-2 grow border-dashed border-zinc-400 inline-block mb-1.5 "
+                                "border-b-2 grow border-dashed border-zinc-400 inline-block mb-1.5"
                             }
                         ></span>
                         <div className='inline-block ml-1.5 text-xl font-semibold justify-center mr-3'>
@@ -63,17 +67,22 @@ const MenuListCard = ({ name, price, images, id, description, properties }) => {
                     </div>
                     <p className='text-left font-light'>{description}</p>
                     <div className='flex flex-row gap-1 mt-4'>
-                        {Allergeni.map((p, i) => {
-                            let Tagname = availableIcons[p];
-                            return (
-                                <div
-                                    key={i}
-                                    className='bg-zinc-800 rounded-full w-8 h-8 pt-0.5'
-                                >
-                                    <Tagname />
-                                </div>
-                            );
-                        })}
+                        {Allergeni &&
+                            Allergeni.length > 0 &&
+                            Allergeni.map((p, i) => {
+                                const Tagname = availableIcons[p];
+                                return (
+                                    <div
+                                        key={i}
+                                        className='group relative bg-zinc-800 rounded-full w-8 h-8 flex items-center justify-center'
+                                    >
+                                        <Tagname />
+                                        <span className='absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100 whitespace-nowrap'>
+                                            {p}
+                                        </span>
+                                    </div>
+                                );
+                            })}
                     </div>
                 </div>
             </div>

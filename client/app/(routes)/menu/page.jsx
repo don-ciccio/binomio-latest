@@ -1,17 +1,10 @@
 import Header from "@/app/components/header/Header";
 import SVGLogo from "@/app/components/icons/SVGLogo";
 import { getCategories, getContent, getMenuBySlug } from "@/app/lib/api";
+import Link from "next/link";
 
 import Breadcrumb from "@/app/components/ui/Breadcrumb";
 import MenuListCard from "@/app/components/main/Cards/MenuListCard";
-import PeanutIcon from "../../components/icons/allergens/PeanutIcon";
-import WheatIcon from "@/app/components/icons/allergens/WheatIcon";
-import SoyIcon from "@/app/components/icons/allergens/SoyIcon";
-import EggsIcon from "@/app/components/icons/allergens/EggsIcon";
-import MilkIcon from "@/app/components/icons/allergens/MilkIcon";
-import WalnutIcon from "@/app/components/icons/allergens/WalnutIcon";
-import SulfiteIcon from "@/app/components/icons/allergens/SulfiteIcon";
-import FishIcon from "@/app/components/icons/allergens/FishIcon";
 
 function shorten(str, maxLen) {
     if (str.length <= maxLen) return str;
@@ -22,11 +15,23 @@ function shorten(str, maxLen) {
 export default async function Home() {
     const initialCategories = await getCategories("");
 
-    const withParent = initialCategories.admin.filter((p) =>
-        p.hasOwnProperty("parent")
+    const withParent = initialCategories.admin
+        .filter((p) => p.hasOwnProperty("parent"))
+        .sort((a, b) => a.idx - b.idx);
+
+    const menuCategories = initialCategories.admin.filter(
+        (cat) => cat.name.toLowerCase() === "menu"
     );
+
     let result = [];
-    withParent.forEach((arr) => result.push(arr._id));
+    if (menuCategories.length > 0) {
+        result.push(menuCategories[0]._id);
+        withParent.forEach((cat) => {
+            if (cat.parent?._id === menuCategories[0]._id) {
+                result.push(cat._id);
+            }
+        });
+    }
 
     const initialContent = await getContent();
     const initialProducts = await getMenuBySlug(result);
@@ -45,87 +50,66 @@ export default async function Home() {
                     <Breadcrumb />
                 </div>
 
-                <div className='xs:px-5 px-3'>
-                    {initialProducts.products.map((product, index) => (
-                        <div
-                            key={index}
-                            className='md:px-6 xxs:px-4 lg:pb-14 pt-8 relative z-1 text-center bg-gray-150 block'
-                        >
-                            <div className='flex flex-col mb-6 gap-2'>
-                                <div className='flex flex-row gap-3 '>
-                                    <div className='flex flex-wrap font-[500] text-xs leading-5 px-3 py-1  items-center m-1 gap-1'>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
-                                            <PeanutIcon />
-                                            <span className='font-bold'>
-                                                Arachidi
-                                            </span>
-                                        </div>
+                <section className='px-4 py-10 sm:px-6 lg:px-8'>
+                    {withParent
+                        .filter((cat) => result.includes(cat._id))
+                        .map((category) => (
+                            <div key={category._id}>
+                                <div className='h-fit flex flex-col mb-6 gap-2'>
+                                    <ul className='sticky top-[144px] z-30 mb-8 flex flex-wrap justify-start gap-2 py-2'>
+                                        <li className='flex gap-2'>
+                                            <Link
+                                                href={`/categorie/${category.slug}`}
+                                                className='inline-flex items-center gap-2 rounded-2xl px-4 py-1 text-sm uppercase transition-all duration-300 bg-orange-600 text-white hover:bg-orange-700'
+                                            >
+                                                <span className='font-bold'>
+                                                    {category.name}
+                                                </span>
+                                            </Link>
+                                        </li>
+                                    </ul>
 
-                                        <span className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
-                                            <WheatIcon />
-                                            <span className='font-bold'>
-                                                Cereali
-                                            </span>
-                                        </span>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
-                                            <SoyIcon />
-                                            <span className='font-bold'>
-                                                Soia
-                                            </span>
+                                    {category.description && (
+                                        <div className='mb-12'>
+                                            <p className='text-lg text-gray-600 max-w-2xl'>
+                                                {category.description}
+                                            </p>
                                         </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
-                                            <EggsIcon />
-                                            <span className='font-bold'>
-                                                Uova
-                                            </span>
-                                        </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
-                                            <MilkIcon />
-                                            <span className='font-bold'>
-                                                Latte
-                                            </span>
-                                        </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
-                                            <WalnutIcon />
-                                            <span className='font-bold'>
-                                                Frutta a guscio
-                                            </span>
-                                        </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
-                                            <SulfiteIcon />
-                                            <span className='font-bold'>
-                                                Solfiti
-                                            </span>
-                                        </div>
-                                        <div className='flex flex-wrap px-3 gap-1 py-2 m-1 justify-between items-center text-xs font-medium rounded-3xl cursor-pointer bg-zinc-800 text-gray-200 hover:bg-zinc-700 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-gray-100'>
-                                            <FishIcon />
-                                            <span className='font-bold'>
-                                                Pesce
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='grid-cols-1'>
-                                    <div className='flex'>
-                                        <MenuListCard
-                                            id={product._id}
-                                            name={product.name}
-                                            price={product.price}
-                                            images={product.images}
-                                            description={
-                                                shorten(
-                                                    product.description,
-                                                    25
-                                                ) + "..."
-                                            }
-                                            properties={product.properties}
-                                        />
+                                    )}
+                                    <div className='grid grid-cols-1 md:grid-cols-2  gap-4 md:gap-6'>
+                                        {initialProducts.products
+                                            .filter(
+                                                (product) =>
+                                                    product.category._id ===
+                                                    category._id
+                                            )
+                                            .map((product, index) => (
+                                                <div
+                                                    key={index}
+                                                    className='flex'
+                                                >
+                                                    <MenuListCard
+                                                        id={product._id}
+                                                        name={product.name}
+                                                        price={product.price}
+                                                        images={product.images}
+                                                        description={
+                                                            shorten(
+                                                                product.description,
+                                                                25
+                                                            ) + "..."
+                                                        }
+                                                        properties={
+                                                            product.properties
+                                                        }
+                                                    />
+                                                </div>
+                                            ))}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                </section>
             </div>
         </div>
     );

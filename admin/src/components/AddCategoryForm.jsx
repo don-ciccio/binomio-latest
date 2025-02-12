@@ -38,30 +38,32 @@ const AddCategoryForm = ({
     properties: existingProperties,
     images: existingImages,
     description: existingDescription,
+    idx: existingIdx,
 }) => {
     const [name, setName] = useState(existingTitle || "");
     const [parent, setParent] = useState(existingParent || "");
     const [properties, setProperties] = useState(existingProperties || []);
     const [images, setImages] = useState(existingImages || []);
     const [description, setDescription] = useState(existingDescription || "");
+    const [idx, setIdx] = useState(existingIdx || 0);
     const [isButtonShown, setIsButtonShown] = useState(null);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const markFormDirty = () => setDirty(true);
-
     const resetState = () => {
-        setDirty(false);
+        if (setDirty) {
+            setDirty(false);
+        }
         setIsOpen(false);
-        setName(existingTitle);
-        setParent(existingParent);
-        setDescription(existingDescription);
-        setProperties(existingProperties);
-        setImages(existingImages);
-
+        setName(existingTitle || "");
+        setParent(existingParent || "");
+        setDescription(existingDescription || "");
+        setProperties(existingProperties || []);
+        setImages(existingImages || []);
         setIsButtonShown(null);
+        setIdx(existingIdx || 0);
     };
 
     const resetHandler = (e) => {
@@ -208,6 +210,7 @@ const AddCategoryForm = ({
                 values: p.values,
                 multi: p.multi,
             })),
+            idx,
         };
 
         if (_id) {
@@ -221,8 +224,12 @@ const AddCategoryForm = ({
     return (
         <form
             id='category-form'
-            onChange={markFormDirty}
             onSubmit={saveCategory}
+            onChange={() => {
+                if (setDirty) {
+                    setDirty(true);
+                }
+            }}
             onReset={resetHandler}
         >
             <Dialog
@@ -281,7 +288,7 @@ const AddCategoryForm = ({
                                 <label className='block text-sm font-medium text-gray-600'>
                                     Collezione
                                 </label>
-                                <div className='flex flex-col'>
+                                <div className='flex flex-col gap-4'>
                                     <Select
                                         className='max-w-full'
                                         value={parent}
@@ -297,6 +304,29 @@ const AddCategoryForm = ({
                                             </SelectItem>
                                         ))}
                                     </Select>
+
+                                    <div>
+                                        <label className='block text-sm font-medium text-gray-600'>
+                                            Indice
+                                        </label>
+                                        <TextInput
+                                            type='number'
+                                            value={idx}
+                                            onValueChange={(value) => {
+                                                const parsedValue =
+                                                    value === ""
+                                                        ? 0
+                                                        : parseInt(value);
+                                                setIdx(
+                                                    isNaN(parsedValue)
+                                                        ? 0
+                                                        : parsedValue
+                                                );
+                                            }}
+                                            placeholder='Inserisci indice...'
+                                            className='mt-2'
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -562,4 +592,5 @@ AddCategoryForm.propTypes = {
     properties: PropTypes.array,
     images: PropTypes.array,
     description: PropTypes.string,
+    idx: PropTypes.number,
 };

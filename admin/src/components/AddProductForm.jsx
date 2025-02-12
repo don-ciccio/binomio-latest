@@ -59,9 +59,11 @@ const schema = z.object({
     description: z.string().min(10),
     price: z.number().min(1).or(z.string().min(1)),
     category: z.string().min(2),
-    properties: z.record(z.string().or(z.array())),
+    properties: z.record(z.string().or(z.array(z.string()))),
     status: z.string().min(2),
     store: z.string().min(2),
+    seller: z.string(),
+    images: z.array(z.string()),
 });
 
 const AddProductForm = ({
@@ -93,7 +95,15 @@ const AddProductForm = ({
     const [description, setDescription] = useState(existingDescription || "");
     const [price, setPrice] = useState(existingPrice || "");
     const [images, setImages] = useState(existingImages || []);
-    const [multiProperty, setMultiProperty] = useState({});
+    const [multiProperty, setMultiProperty] = useState(
+        assignedProperties
+            ? Object.fromEntries(
+                  Object.entries(assignedProperties).filter(([, value]) =>
+                      Array.isArray(value)
+                  )
+              )
+            : {}
+    );
     const [isButtonShown, setIsButtonShown] = useState(null);
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [suggestions, setSuggestions] = useState([]);
@@ -140,7 +150,11 @@ const AddProductForm = ({
         setIsOpen(true);
     };
 
-    const markFormDirty = () => setDirty(true);
+    const markFormDirty = () => {
+        if (setDirty) {
+            setDirty(true);
+        }
+    };
 
     const history = useNavigate();
     const queryClient = useQueryClient();
@@ -176,12 +190,16 @@ const AddProductForm = ({
     });
 
     const handleStatus = (event) => {
-        setDirty(true);
+        if (setDirty) {
+            setDirty(true);
+        }
         setStatus(event);
     };
 
     const handleStore = (event) => {
-        setDirty(true);
+        if (setDirty) {
+            setDirty(true);
+        }
         setStore(event);
     };
 
@@ -194,24 +212,23 @@ const AddProductForm = ({
             price: price,
             images: images,
             category: category,
-            seller: seller.toString(),
+            seller: seller,
             status: status,
             store: store,
             properties: { ...productProperties, ...multiProperty },
         };
 
-        const formData = schema.safeParse(data);
-
-        if (!formData.success) {
-            const { issues } = formData.error;
-
-            setErrors(issues);
-        } else {
+        try {
+            const formData = schema.parse(data);
             setErrors([]);
             if (_id) {
-                mutationPut.mutate({ data: data, _id: _id });
+                mutationPut.mutate({ data: formData, _id: _id });
             } else {
-                mutationPost.mutate({ data: data });
+                mutationPost.mutate({ data: formData });
+            }
+        } catch (error) {
+            if (error.issues) {
+                setErrors(error.issues);
             }
         }
 
@@ -239,7 +256,9 @@ const AddProductForm = ({
 
     const uploadImages = async (e) => {
         const files = e.target?.files;
-        setDirty(true);
+        if (setDirty) {
+            setDirty(true);
+        }
         if (files?.length !== undefined && files?.length > 0) {
             setIsUploading(true);
             const data = new FormData();
@@ -273,11 +292,10 @@ const AddProductForm = ({
 
     const setMultiProp = (e, name) => {
         setDirty(true);
-        setMultiProperty((prev) => {
-            const newProductProps = { ...prev };
-            newProductProps[name] = e.map((a) => a);
-            return newProductProps;
-        });
+        setMultiProperty((prev) => ({
+            ...prev,
+            [name]: e || [],
+        }));
     };
 
     let propertiesToFill = [];
@@ -315,6 +333,9 @@ const AddProductForm = ({
     }
 
     const onChangeSuggestion = async (e) => {
+        if (setDirty) {
+            setDirty(true);
+        }
         setSeller(e);
         let data = await getSuggestion(e);
         setSuggestions(data);
